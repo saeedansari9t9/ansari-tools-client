@@ -3,6 +3,7 @@ import { Eye, EyeOff, Facebook, Twitter } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../services/api";
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export default function SignupPage() {
     setError("");
     
     try {
-      const response = await fetch("http://localhost:5000/api/users/signup", {
+      const response = await fetch(`${API_BASE_URL}/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

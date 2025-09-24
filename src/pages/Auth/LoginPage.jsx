@@ -3,6 +3,7 @@ import { Eye, EyeOff, Facebook, Twitter, Instagram } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../services/api";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function LoginPage() {
     setError("");
     
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
+      const response = await fetch(`${API_BASE_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
