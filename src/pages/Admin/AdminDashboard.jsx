@@ -11,6 +11,7 @@ import {
   Filter,
   MoreVertical
 } from 'lucide-react';
+import { toast } from 'react-toastify';
 import { useProducts } from '../../hooks/useProducts';
 import ApiService from '../../services/api';
 
@@ -32,10 +33,24 @@ export default function AdminDashboard() {
       try {
         await ApiService.deleteProduct(productId);
         refetch();
-        alert('Product deleted successfully!');
+        toast.success('Product deleted successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } catch (error) {
         console.error('Error deleting product:', error);
-        alert('Error deleting product: ' + error.message);
+        toast.error('Error deleting product: ' + error.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     }
   };
@@ -48,10 +63,24 @@ export default function AdminDashboard() {
         await Promise.all(selectedProducts.map(id => ApiService.deleteProduct(id)));
         setSelectedProducts([]);
         refetch();
-        alert('Products deleted successfully!');
+        toast.success('Products deleted successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } catch (error) {
         console.error('Error deleting products:', error);
-        alert('Error deleting products: ' + error.message);
+        toast.error('Error deleting products: ' + error.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     }
   };

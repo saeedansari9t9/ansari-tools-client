@@ -9,11 +9,11 @@ import {
   Image as ImageIcon,
   Package
 } from 'lucide-react';
+import { toast } from 'react-toastify';
 import ApiService from '../../services/api';
 
 export default function AddProductPage() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   
@@ -151,7 +151,6 @@ export default function AddProductPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       let imageUrl = '';
@@ -175,17 +174,28 @@ export default function AddProductPage() {
       };
 
       // Create product
-      const response = await ApiService.createProduct(productData);
+      await ApiService.createProduct(productData);
       
-      alert('Product added successfully!');
-      navigate('/admin/products');
+      toast.success('Product added successfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      navigate('/admin');
       
     } catch (error) {
       console.error('Error adding product:', error);
-      alert('Error adding product: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
+      toast.error('Error adding product: ' + error.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
   };
 
   return (
@@ -383,7 +393,7 @@ export default function AddProductPage() {
                     <p className="text-gray-600 mb-4">Upload product image</p>
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/*,.svg"
                       onChange={handleImageUpload}
                       className="hidden"
                       id="image-upload"
@@ -620,20 +630,10 @@ export default function AddProductPage() {
             <div className="flex justify-end">
               <button
                 type="submit"
-                disabled={loading}
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
               >
-                {loading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4" />
-                    Save Product
-                  </>
-                )}
+                <Save className="w-4 h-4" />
+                Save Product
               </button>
             </div>
           </div>
@@ -641,4 +641,4 @@ export default function AddProductPage() {
       </div>
     </div>
   );
-}
+};}

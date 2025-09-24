@@ -86,12 +86,6 @@ const NavBarComponent = () => {
             >
               FAQ
             </NavLink>
-            <NavLink 
-              to="/admin" 
-              className="text-yellow-300 hover:text-yellow-200 font-medium transition-colors duration-200 border border-yellow-300 px-3 py-1 rounded-lg"
-            >
-              Admin
-            </NavLink>
           </nav>
 
           {/* Desktop Auth Buttons */}
@@ -128,15 +122,18 @@ const NavBarComponent = () => {
         </div>
 
         {/* Mobile Navigation */}
+        {open && (
+          <div className="lg:hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-md" />
+        )}
         <nav 
           ref={navRef} 
-          className={`lg:hidden fixed inset-0 z-50 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 transform transition-transform duration-300 ease-in-out ${
+          className={`lg:hidden fixed inset-0 z-50 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 backdrop-blur-2xl transform transition-transform duration-300 ease-in-out ${
             open ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full bg-gradient-to-br from-gray-900/95 via-blue-900/95 to-purple-900/95 backdrop-blur-2xl">
             {/* Mobile Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/20">
+            <div className="flex items-center justify-between p-4 border-b border-white/20 backdrop-blur-sm">
               <div className="flex items-center space-x-3">
                 <img 
                   src="/src/assets/images/logo.png" 
@@ -155,7 +152,7 @@ const NavBarComponent = () => {
             </div>
 
             {/* Mobile Navigation Links */}
-            <div className="flex-1 px-4 py-6">
+            <div className="flex-1 px-4 py-6 bg-gradient-to-b from-gray-900/90 to-blue-900/90 backdrop-blur-xl">
               <ul className="space-y-4" onClick={() => setOpen(false)}>
                 <li>
                   <NavLink 
@@ -205,19 +202,11 @@ const NavBarComponent = () => {
                     FAQ
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink 
-                    to="/admin" 
-                    className="block px-4 py-3 text-lg font-medium text-yellow-300 hover:bg-yellow-300/20 rounded-lg transition-colors duration-200 border border-yellow-300"
-                  >
-                    Admin
-                  </NavLink>
-                </li>
               </ul>
             </div>
 
             {/* Mobile Auth Buttons */}
-            <div className="p-4 border-t border-white/20">
+            <div className="p-4 border-t border-white/20 bg-gradient-to-t from-purple-900/90 to-blue-900/90 backdrop-blur-xl">
               {isAuthenticated ? (
                 <button
                   onClick={() => {

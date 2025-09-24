@@ -24,6 +24,7 @@ import ProductPage from "./pages/ProductPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AddProductPage from "./pages/Admin/AddProductPage";
+import EditProductPage from "./pages/Admin/EditProductPage";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/add-product" element={<AddProductPage />} />
+          <Route path="/admin/edit-product/:id" element={<EditProductPage />} />
           {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
         </Routes>
         <FooterComponent />

@@ -149,6 +149,37 @@ class ApiService {
       throw error;
     }
   }
+
+  // Update product
+  static async updateProduct(id, productData) {
+    try {
+      const formData = new FormData();
+      
+      // Add all product data to FormData
+      Object.keys(productData).forEach(key => {
+        if (key === 'variants' || key === 'features' || key === 'specifications') {
+          formData.append(key, JSON.stringify(productData[key]));
+        } else {
+          formData.append(key, productData[key]);
+        }
+      });
+
+      const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error updating product:', error);
+      throw error;
+    }
+  }
 }
 
 export default ApiService;
