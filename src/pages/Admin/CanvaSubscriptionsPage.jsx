@@ -47,7 +47,7 @@ const CanvaSubscriptionsPage = () => {
         ...(statusFilter !== 'all' && { status: statusFilter })
       });
 
-      const response = await fetch(`http://localhost:5000/api/canva-subscriptions?${params}`);
+      const response = await fetch(`https://ansaritools.com/api/canva-subscriptions?${params}`);
       const data = await response.json();
 
       if (response.ok) {
@@ -66,7 +66,7 @@ const CanvaSubscriptionsPage = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/canva-subscriptions/stats/overview');
+      const response = await fetch('https://ansaritools.com/api/canva-subscriptions/stats/overview');
       const data = await response.json();
       if (response.ok) {
         setStats(data);
@@ -80,7 +80,7 @@ const CanvaSubscriptionsPage = () => {
     if (!window.confirm('Are you sure you want to delete this subscription?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/canva-subscriptions/${id}`, {
+      const response = await fetch(`https://ansaritools.com/api/canva-subscriptions/${id}`, {
         method: 'DELETE'
       });
 
@@ -109,7 +109,7 @@ const CanvaSubscriptionsPage = () => {
 
   const handleUpdate = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/canva-subscriptions/${id}`, {
+      const response = await fetch(`https://ansaritools.com/api/canva-subscriptions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
