@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { API_BASE_URL } from "../../services/api";
+import logo from "../../assets/images/logo.png";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ export default function LoginPage() {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-6">
               <img 
-                src="/src/assets/images/logo.png" 
+                src={logo} 
                 alt="AnsariTools Logo" 
                 className="h-12 w-auto"
               />
