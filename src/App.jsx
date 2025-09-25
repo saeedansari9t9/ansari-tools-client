@@ -25,6 +25,8 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AddProductPage from "./pages/Admin/AddProductPage";
 import EditProductPage from "./pages/Admin/EditProductPage";
+import CanvaSubscriptionsPage from "./pages/Admin/CanvaSubscriptionsPage";
+import AddCanvaSubscriptionPage from "./pages/Admin/AddCanvaSubscriptionPage";
 
 function App() {
   return (
@@ -49,6 +51,8 @@ function App() {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/add-product" element={<AddProductPage />} />
           <Route path="/admin/edit-product/:id" element={<EditProductPage />} />
+          <Route path="/admin/canva-subscriptions" element={<CanvaSubscriptionsPage />} />
+          <Route path="/admin/add-canva-subscription" element={<AddCanvaSubscriptionPage />} />
           {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
         </Routes>
         <FooterComponent />

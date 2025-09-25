@@ -195,6 +195,59 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Products Management */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Products Management</h3>
+              <Package className="w-6 h-6 text-blue-600" />
+            </div>
+            <p className="text-gray-600 mb-4">Manage your product inventory and listings</p>
+            <div className="flex space-x-3">
+              <Link
+                to="/admin/add-product"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 text-sm"
+              >
+                <Plus className="w-4 h-4" />
+                Add Product
+              </Link>
+              <Link
+                to="/admin"
+                className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm"
+              >
+                <Eye className="w-4 h-4" />
+                View All
+              </Link>
+            </div>
+          </div>
+
+          {/* Canva Subscriptions Management */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Canva Subscriptions</h3>
+              <Users className="w-6 h-6 text-green-600" />
+            </div>
+            <p className="text-gray-600 mb-4">Manage Canva subscription plans and user access</p>
+            <div className="flex space-x-3">
+              <Link
+                to="/admin/add-canva-subscription"
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2 text-sm"
+              >
+                <Plus className="w-4 h-4" />
+                Add Subscription
+              </Link>
+              <Link
+                to="/admin/canva-subscriptions"
+                className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2 text-sm"
+              >
+                <Eye className="w-4 h-4" />
+                View All
+              </Link>
+            </div>
+          </div>
+        </div>
+
         {/* Actions Bar */}
         <div className="bg-white rounded-lg shadow mb-6 p-6">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
