@@ -28,7 +28,7 @@ const Header = () => {
       <div className="container">
         <div className="header-content">
           <div className="logo">
-            <img src="/logo.png" alt="Ansari Tools" />
+            <img src="src\assets\images\logo.png" alt="Ansari Tools" />
             <a href="/index.html">ANSARI TOOLS</a>
           </div>
 
@@ -734,7 +734,7 @@ const Footer = () => (
     <div className="container">
       <div className="footer-content">
         <div className="footer-logo">
-          <img src="/logo.png" alt="AnsariTools Logo" />
+          <img src="../assets/images/logo.png" alt="AnsariTools Logo" />
           <p>
             Premium digital tools at unbeatable prices. Save up to 90% on your
             favorite software subscriptions.
