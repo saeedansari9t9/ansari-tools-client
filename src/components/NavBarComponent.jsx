@@ -36,7 +36,7 @@ const NavBarComponent = () => {
           {/* Logo */}
           <div className="flex items-center space-x-3" onClick={() => setOpen(false)}>
             <img 
-              src="/src/assets/images/logo.png" 
+              src="/logo.png" 
               alt="Ansari Tools" 
               className="h-10 w-auto"
             />
@@ -136,7 +136,7 @@ const NavBarComponent = () => {
             <div className="flex items-center justify-between p-4 border-b border-white/20 backdrop-blur-sm">
               <div className="flex items-center space-x-3">
                 <img 
-                  src="/src/assets/images/logo.png" 
+                  src="/logo.png" 
                   alt="Ansari Tools" 
                   className="h-8 w-auto"
                 />
