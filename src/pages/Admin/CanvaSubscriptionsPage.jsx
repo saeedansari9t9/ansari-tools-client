@@ -349,32 +349,32 @@ const CanvaSubscriptionsPage = () => {
                           <div className="flex space-x-2">
                             <button
                               onClick={() => handleUpdate(subscription._id)}
-                              className="text-green-600 hover:text-green-900"
+                              className="text-green-600 hover:text-green-700"
                             >
-                              <CheckCircle className="w-4 h-4" />
+                              <CheckCircle className="w-6 h-6" />
                             </button>
                             <button
                               onClick={() => setEditingId(null)}
-                              className="text-gray-600 hover:text-gray-900"
+                              className="text-red-600 hover:text-red-700"
                             >
-                              <XCircle className="w-4 h-4" />
+                              <XCircle className="w-6 h-6" />
                             </button>
                           </div>
                         ) : (
                           <div className="flex space-x-2">
                             <button
                               onClick={() => handleEdit(subscription)}
-                              className="text-blue-600 hover:text-blue-900"
+                              className="text-blue-600 hover:text-blue-700"
                               title="Edit"
                             >
-                              <Edit className="w-4 h-4" />
+                              <Edit className="w-6 h-6" />
                             </button>
                             <button
                               onClick={() => handleDelete(subscription._id)}
-                              className="text-red-600 hover:text-red-900"
+                              className="text-red-600 hover:text-red-700"
                               title="Delete"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-6 h-6" />
                             </button>
                           </div>
                         )}
