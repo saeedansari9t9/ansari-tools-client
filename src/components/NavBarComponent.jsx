@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Menu, X, User, LogOut, LogIn } from "lucide-react";
+import logo from "../assets/images/logo.png";
 
 const NavBarComponent = () => {
   const [open, setOpen] = useState(false);
@@ -36,7 +37,7 @@ const NavBarComponent = () => {
           {/* Logo */}
           <div className="flex items-center space-x-3" onClick={() => setOpen(false)}>
             <img 
-              src="./src/assets/images/logo.png" 
+              src={logo} 
               alt="Ansari Tools" 
               className="h-10 w-auto"
             />
@@ -136,7 +137,7 @@ const NavBarComponent = () => {
             <div className="flex items-center justify-between p-4 border-b border-white/20 backdrop-blur-sm">
               <div className="flex items-center space-x-3">
                 <img 
-                  src="./src/assets/images/logo.png" 
+                  src={logo} 
                   alt="Ansari Tools" 
                   className="h-8 w-auto"
                 />

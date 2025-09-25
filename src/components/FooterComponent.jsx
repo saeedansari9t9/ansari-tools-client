@@ -1,5 +1,6 @@
 import React from "react";
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MessageCircle } from "lucide-react";
+import footerLogo from "../assets/images/footer-logo.png";
 
 const FooterComponent = () => (
   <footer className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
@@ -9,7 +10,7 @@ const FooterComponent = () => (
         <div className="lg:col-span-1">
           <div className="flex items-center space-x-3 mb-6">
             <img 
-              src="/src/assets/images/footer-logo.png" 
+              src={footerLogo} 
               alt="AnsariTools Logo" 
               className="h-10 w-auto"
             />
