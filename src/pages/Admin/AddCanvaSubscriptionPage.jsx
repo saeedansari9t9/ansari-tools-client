@@ -26,7 +26,7 @@ const AddCanvaSubscriptionPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://ansaritools.com/api/canva-subscriptions', {
+      const response = await fetch('https://ansari-tools-server.vercel.app/api/canva-subscriptions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
