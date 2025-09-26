@@ -27,8 +27,8 @@ const CanvaSubscriptionsPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [durationFilter, setDurationFilter] = useState('all'); // 'all', '6 Months', '1 Year'
-  const [sortBy, setSortBy] = useState('daysRemaining'); // 'daysRemaining' or 'date'
-  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
+  const [sortBy, setSortBy] = useState('none'); // 'none', 'daysRemaining' or 'date'
+  const [sortOrder, setSortOrder] = useState('none'); // 'none', 'asc' or 'desc'
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [editingId, setEditingId] = useState(null);
@@ -36,6 +36,11 @@ const CanvaSubscriptionsPage = () => {
 
   // Sort subscriptions based on sortBy and sortOrder
   const sortSubscriptions = useCallback((subs) => {
+    // If no sorting is selected, return original order
+    if (sortBy === 'none' || sortOrder === 'none') {
+      return [...subs];
+    }
+    
     return [...subs].sort((a, b) => {
       let aValue, bValue;
       
@@ -332,6 +337,7 @@ const CanvaSubscriptionsPage = () => {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
+                <option value="none">None</option>
                 <option value="daysRemaining">Remaining Days</option>
                 <option value="date">Sort by Date</option>
               </select>
@@ -340,6 +346,7 @@ const CanvaSubscriptionsPage = () => {
                 onChange={(e) => setSortOrder(e.target.value)}
                 className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
+                <option value="none">None</option>
                 <option value="asc">L to H</option>
                 <option value="desc">H to L</option>
               </select>

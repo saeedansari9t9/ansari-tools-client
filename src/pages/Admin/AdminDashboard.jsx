@@ -11,7 +11,6 @@ import {
   Filter,
   MoreVertical,
   X,
-  Star,
   Calendar,
   Tag
 } from 'lucide-react';
@@ -369,9 +368,6 @@ export default function AdminDashboard() {
                     <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Price
                     </th>
-                    <th className="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Rating
-                    </th>
                     <th className="hidden sm:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Status
                     </th>
@@ -425,16 +421,6 @@ export default function AdminDashboard() {
                               {product.originalPrice}
                             </div>
                           )}
-                        </div>
-                      </td>
-                      <td className="hidden md:table-cell px-3 sm:px-6 py-4">
-                        <div className="flex items-center">
-                          <span className="text-xs sm:text-sm font-medium text-gray-900 mr-1">
-                            {product.rating}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            ({product.reviews})
-                          </span>
                         </div>
                       </td>
                       <td className="hidden sm:table-cell px-3 sm:px-6 py-4">
@@ -554,8 +540,8 @@ export default function AdminDashboard() {
                     </p>
                   </div>
 
-                  {/* Price and Rating */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Price */}
+                  <div className="grid grid-cols-1 gap-4">
                     <div>
                       <h4 className="text-sm font-semibold text-gray-700 mb-2">Price</h4>
                       <div className="text-lg font-bold text-gray-900">
@@ -565,26 +551,6 @@ export default function AdminDashboard() {
                             {viewProduct.originalPrice}
                           </span>
                         )}
-                      </div>
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-700 mb-2">Rating</h4>
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < Math.floor(viewProduct.rating)
-                                  ? 'text-yellow-400 fill-current'
-                                  : 'text-gray-300'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-sm text-gray-600">
-                          {viewProduct.rating} ({viewProduct.reviews} reviews)
-                        </span>
                       </div>
                     </div>
                   </div>

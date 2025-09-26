@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { Menu, X, User, LogOut, LogIn } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
+import { Menu, X, User, LogOut, Settings } from "lucide-react";
 import logo from "../assets/images/logo.png";
 
 const NavBarComponent = () => {
   const [open, setOpen] = useState(false);
   const navRef = useRef(null);
   const toggleRef = useRef(null);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
+  
+  // Check if current user is admin
+  const isAdmin = user && user.email === 'saeedansari9t9@gmail.com';
 
   // Handle click outside to close the sidebar and prevent body scroll
   useEffect(() => {
@@ -100,7 +103,16 @@ const NavBarComponent = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
-            {isAuthenticated ? (
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg"
+              >
+                <Settings className="w-4 h-4" />
+                <span>Admin Panel</span>
+              </Link>
+            )}
+            {isAuthenticated && (
               <button
                 onClick={logout}
                 className="flex items-center space-x-2 px-4 py-2 bg-white/20 text-white rounded-lg font-medium hover:bg-white/30 transition-all duration-200"
@@ -108,14 +120,6 @@ const NavBarComponent = () => {
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
               </button>
-            ) : (
-              <Link 
-                to="/login" 
-                className="flex items-center space-x-2 px-4 py-2 bg-white/20 text-white rounded-lg font-medium hover:bg-white/30 transition-all duration-200"
-              >
-                <LogIn className="w-4 h-4" />
-                <span>Login</span>
-              </Link>
             )}
           </div>
 
@@ -215,9 +219,21 @@ const NavBarComponent = () => {
                   </NavLink>
                 </li>
                 
-                {/* Mobile Auth Button - Moved here after FAQ */}
-                <li className="pt-4">
-                  {isAuthenticated ? (
+                {/* Mobile Auth Buttons */}
+                {isAdmin && (
+                  <li className="pt-4">
+                    <Link
+                      to="/admin"
+                      onClick={() => setOpen(false)}
+                      className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-lg"
+                    >
+                      <Settings className="w-5 h-5" />
+                      <span>Admin Panel</span>
+                    </Link>
+                  </li>
+                )}
+                {isAuthenticated && (
+                  <li className="pt-4">
                     <button
                       onClick={() => {
                         logout();
@@ -228,17 +244,8 @@ const NavBarComponent = () => {
                       <LogOut className="w-5 h-5" />
                       <span>Logout</span>
                     </button>
-                  ) : (
-                    <Link
-                      to="/login"
-                      onClick={() => setOpen(false)}
-                      className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-white/20 text-white rounded-lg font-medium hover:bg-white/30 transition-all duration-200"
-                    >
-                      <LogIn className="w-5 h-5" />
-                      <span>Login</span>
-                    </Link>
-                  )}
-                </li>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

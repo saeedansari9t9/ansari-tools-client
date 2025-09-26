@@ -1,14 +1,5 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-
-const AuthContext = createContext({
-  user: null,
-  loading: true,
-  login: () => {},
-  logout: () => {},
-  isAuthenticated: false
-});
-
-export const useAuth = () => useContext(AuthContext);
+import React, { useState, useEffect } from 'react';
+import { AuthContext } from './AuthContextDefinition';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -19,9 +10,15 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = () => {
       try {
         const token = localStorage.getItem('token');
+        const userData = localStorage.getItem('userData');
+        
         if (token) {
-          // You could verify the token here or fetch user data
-          setUser({ token });
+          if (userData) {
+            const parsedUserData = JSON.parse(userData);
+            setUser({ token, ...parsedUserData });
+          } else {
+            setUser({ token });
+          }
         }
       } catch (error) {
         console.error('Error checking authentication:', error);
@@ -34,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
   
   // Login function
-  const login = (token) => {
+  const login = (token, userData = null) => {
     if (!token) {
       console.error('Login failed: No token provided');
       return;
@@ -42,7 +39,13 @@ export const AuthProvider = ({ children }) => {
     
     try {
       localStorage.setItem('token', token);
-      setUser({ token });
+      if (userData) {
+        localStorage.setItem('userData', JSON.stringify(userData));
+        const userWithData = { token, ...userData };
+        setUser(userWithData);
+      } else {
+        setUser({ token });
+      }
     } catch (error) {
       console.error('Error during login:', error);
     }
@@ -52,6 +55,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     try {
       localStorage.removeItem('token');
+      localStorage.removeItem('userData');
       setUser(null);
       // Redirect to login page or home page after logout if needed
       // window.location.href = '/';

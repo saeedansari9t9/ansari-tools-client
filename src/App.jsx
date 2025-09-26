@@ -10,6 +10,7 @@ import WhatsAppButton from "./components/WhatsAppButton";
 import ScrollToTop from "./components/ScrollToTop";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminGuard from "./components/AdminGuard";
 
 import HomePage from "./pages/HomePage";
 import PricingPage from "./pages/PricingPage";
@@ -43,15 +44,36 @@ function App() {
           <Route path="/why" element={<WhyChoosePage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="/faq" element={<FAQPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          {/* Admin Auth routes - hidden from public access */}
+          <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/admin/only-admin-signup" element={<SignupPage />} />
           
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/add-product" element={<AddProductPage />} />
-          <Route path="/admin/edit-product/:id" element={<EditProductPage />} />
-          <Route path="/admin/canva-subscriptions" element={<CanvaSubscriptionsPage />} />
-          <Route path="/admin/add-canva-subscription" element={<AddCanvaSubscriptionPage />} />
+          {/* Admin Routes - Protected by AdminGuard */}
+          <Route path="/admin" element={
+            <AdminGuard>
+              <AdminDashboard />
+            </AdminGuard>
+          } />
+          <Route path="/admin/add-product" element={
+            <AdminGuard>
+              <AddProductPage />
+            </AdminGuard>
+          } />
+          <Route path="/admin/edit-product/:id" element={
+            <AdminGuard>
+              <EditProductPage />
+            </AdminGuard>
+          } />
+          <Route path="/admin/canva-subscriptions" element={
+            <AdminGuard>
+              <CanvaSubscriptionsPage />
+            </AdminGuard>
+          } />
+          <Route path="/admin/add-canva-subscription" element={
+            <AdminGuard>
+              <AddCanvaSubscriptionPage />
+            </AdminGuard>
+          } />
           {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
         </Routes>
         <FooterComponent />

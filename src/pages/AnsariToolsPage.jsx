@@ -63,12 +63,7 @@ const Header = () => {
               <li>
                 <a href="#faq">FAQ</a>
               </li>
-              <div className="mobile-login-buttons">
-                <a href="/login.html" className="login-btn btn-outline">
-                  Login
-                </a>
-                {/* <a href="/signup.html" class="btn btn-primary">Sign Up</a> */}
-              </div>
+              {/* Login/Signup buttons removed - not accessible to public users */}
             </ul>
           </nav>
         </div>
