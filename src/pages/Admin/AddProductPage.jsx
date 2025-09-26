@@ -196,35 +196,36 @@ export default function AddProductPage() {
         pauseOnHover: true,
         draggable: true,
       });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-3 sm:py-8">
+      <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
           <button
             onClick={() => navigate('/admin')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors text-sm sm:text-base"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             Back to Admin
           </button>
-          <h1 className="text-3xl font-bold text-gray-900">Add New Product</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Add New Product</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-8">
+          <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 lg:p-8">
             {/* Basic Information */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <Package className="w-6 h-6" />
+            <div className="mb-4 sm:mb-8">
+              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-6 flex items-center gap-2">
+                <Package className="w-4 h-4 sm:w-6 sm:h-6" />
                 Basic Information
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Product Name *
                   </label>
                   <input
@@ -233,13 +234,13 @@ export default function AddProductPage() {
                     value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter product name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Category *
                   </label>
                   <select
@@ -247,7 +248,7 @@ export default function AddProductPage() {
                     value={formData.category}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="AI Tools">AI Tools</option>
                     <option value="Design Tools">Design Tools</option>
@@ -261,7 +262,7 @@ export default function AddProductPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Price *
                   </label>
                   <input
@@ -270,13 +271,13 @@ export default function AddProductPage() {
                     value={formData.price}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Rs 1000"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Original Price
                   </label>
                   <input
@@ -284,13 +285,13 @@ export default function AddProductPage() {
                     name="originalPrice"
                     value={formData.originalPrice}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Rs 1500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Duration
                   </label>
                   <input
@@ -298,13 +299,13 @@ export default function AddProductPage() {
                     name="duration"
                     value={formData.duration}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="/month"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Badge
                   </label>
                   <input
@@ -312,13 +313,13 @@ export default function AddProductPage() {
                     name="badge"
                     value={formData.badge}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Most Popular"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Rating
                   </label>
                   <input
@@ -329,12 +330,12 @@ export default function AddProductPage() {
                     min="0"
                     max="5"
                     step="0.1"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Reviews Count
                   </label>
                   <input
@@ -343,13 +344,13 @@ export default function AddProductPage() {
                     value={formData.reviews}
                     onChange={handleInputChange}
                     min="0"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
               </div>
 
-              <div className="mt-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="mt-4 sm:mt-6">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                   Description *
                 </label>
                 <textarea
@@ -357,40 +358,40 @@ export default function AddProductPage() {
                   value={formData.description}
                   onChange={handleInputChange}
                   required
-                  rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  rows={3}
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Enter product description"
                 />
               </div>
             </div>
 
             {/* Image Upload */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <ImageIcon className="w-6 h-6" />
+            <div className="mb-4 sm:mb-8">
+              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-6 flex items-center gap-2">
+                <ImageIcon className="w-4 h-4 sm:w-6 sm:h-6" />
                 Product Image
               </h2>
               
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {imagePreview ? (
                   <div className="relative">
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="w-48 h-48 object-cover rounded-lg border-2 border-gray-200"
+                      className="w-24 h-24 sm:w-48 sm:h-48 object-cover rounded-lg border-2 border-gray-200"
                     />
                     <button
                       type="button"
                       onClick={removeImage}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                      className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                   </div>
                 ) : (
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                    <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 mb-4">Upload product image</p>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-8 text-center">
+                    <Upload className="w-6 h-6 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-2 sm:mb-4" />
+                    <p className="text-xs sm:text-base text-gray-600 mb-2 sm:mb-4">Upload product image</p>
                     <input
                       type="file"
                       accept="image/*,.svg"
@@ -400,7 +401,7 @@ export default function AddProductPage() {
                     />
                     <label
                       htmlFor="image-upload"
-                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+                      className="bg-blue-600 text-white px-3 sm:px-6 py-1.5 sm:py-2.5 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer text-xs sm:text-base"
                     >
                       Choose Image
                     </label>
@@ -630,9 +631,9 @@ export default function AddProductPage() {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                className="bg-blue-600 text-white px-4 sm:px-8 py-2 sm:py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 text-xs sm:text-base"
               >
-                <Save className="w-4 h-4" />
+                <Save className="w-3 h-3 sm:w-4 sm:h-4" />
                 Save Product
               </button>
             </div>
@@ -641,4 +642,4 @@ export default function AddProductPage() {
       </div>
     </div>
   );
-};}
+}

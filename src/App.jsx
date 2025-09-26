@@ -7,7 +7,6 @@ import AnsariToolsPage from './pages/AnsariToolsPage'
 import NavBarComponent from "./components/NavBarComponent";
 import FooterComponent from "./components/FooterComponent";
 import WhatsAppButton from "./components/WhatsAppButton";
-import ChatBotButton from "./components/ChatBotButton";
 import ScrollToTop from "./components/ScrollToTop";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
@@ -57,7 +56,6 @@ function App() {
         </Routes>
         <FooterComponent />
         <WhatsAppButton />
-        <ChatBotButton />
         <ToastContainer
           position="top-right"
           autoClose={3000}

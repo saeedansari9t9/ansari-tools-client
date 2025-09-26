@@ -28,14 +28,55 @@ const CanvaSubscriptionsPage = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [stats, setStats] = useState({});
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
 
   useEffect(() => {
     fetchSubscriptions();
-    fetchStats();
   }, [currentPage, searchTerm, statusFilter]);
+
+  // Calculate stats directly from subscriptions array
+  const stats = {
+    total: subscriptions.length,
+    active: subscriptions.filter(sub => sub.status === 'active').length,
+    sixMonths: subscriptions.filter(sub => sub.duration === '6 Months').length,
+    oneYear: subscriptions.filter(sub => sub.duration === '1 Year').length
+  };
+
+  // Calculate days used and remaining days
+  const calculateDays = (subscription) => {
+    const startDate = new Date(subscription.date);
+    const currentDate = new Date();
+    const daysUsed = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
+    
+    // Calculate total days based on duration
+    let totalDays;
+    if (subscription.duration === '6 Months') {
+      totalDays = 180; // 6 months = 180 days
+    } else if (subscription.duration === '1 Year') {
+      totalDays = 365; // 1 year = 365 days
+    } else {
+      totalDays = 0;
+    }
+    
+    const remainingDays = Math.max(0, totalDays - daysUsed);
+    
+    return { daysUsed, remainingDays, totalDays };
+  };
+
+  // Format days to "X months Y days" format
+  const formatDays = (days) => {
+    const months = Math.floor(days / 30);
+    const remainingDays = days % 30;
+    
+    if (months > 0 && remainingDays > 0) {
+      return `${months} month${months > 1 ? 's' : ''} ${remainingDays} day${remainingDays > 1 ? 's' : ''}`;
+    } else if (months > 0) {
+      return `${months} month${months > 1 ? 's' : ''}`;
+    } else {
+      return `${remainingDays} day${remainingDays > 1 ? 's' : ''}`;
+    }
+  };
 
   const fetchSubscriptions = async () => {
     try {
@@ -64,17 +105,6 @@ const CanvaSubscriptionsPage = () => {
     }
   };
 
-  const fetchStats = async () => {
-    try {
-      const response = await fetch('https://ansari-tools-server.vercel.app/api/canva-subscriptions/stats/overview');
-      const data = await response.json();
-      if (response.ok) {
-        setStats(data);
-      }
-    } catch (error) {
-      console.error('Error fetching stats:', error);
-    }
-  };
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this subscription?')) return;
@@ -87,7 +117,6 @@ const CanvaSubscriptionsPage = () => {
       if (response.ok) {
         toast.success('Subscription deleted successfully');
         fetchSubscriptions();
-        fetchStats();
       } else {
         toast.error('Error deleting subscription');
       }
@@ -121,7 +150,6 @@ const CanvaSubscriptionsPage = () => {
         toast.success('Subscription updated successfully');
         setEditingId(null);
         fetchSubscriptions();
-        fetchStats();
       } else {
         const data = await response.json();
         toast.error(data.message || 'Error updating subscription');
@@ -159,11 +187,11 @@ const CanvaSubscriptionsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-3 sm:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate('/admin')}
@@ -172,13 +200,13 @@ const CanvaSubscriptionsPage = () => {
                 <ArrowLeft className="w-6 h-6 text-gray-600" />
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Canva Subscriptions</h1>
-                <p className="text-gray-600 mt-1">Manage all Canva subscriptions</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Canva Subscriptions</h1>
+                <p className="text-gray-600 mt-1 text-sm sm:text-base">Manage all Canva subscriptions</p>
               </div>
             </div>
             <button
               onClick={() => navigate('/admin/add-canva-subscription')}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 text-sm sm:text-base"
             >
               <Plus className="w-4 h-4" />
               <span>Add Subscription</span>
@@ -186,61 +214,61 @@ const CanvaSubscriptionsPage = () => {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
+            <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-3 sm:p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-blue-600">Total</p>
-                  <p className="text-2xl font-bold text-blue-900">{stats.total || 0}</p>
+                  <p className="text-xs sm:text-sm font-medium text-blue-600">Total</p>
+                  <p className="text-lg sm:text-2xl font-bold text-blue-900">{stats.total || 0}</p>
                 </div>
-                <BarChart3 className="w-8 h-8 text-blue-500" />
+                <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
               </div>
             </div>
-            <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4">
+            <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-3 sm:p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-green-600">Active</p>
-                  <p className="text-2xl font-bold text-green-900">{stats.active || 0}</p>
+                  <p className="text-xs sm:text-sm font-medium text-green-600">Active</p>
+                  <p className="text-lg sm:text-2xl font-bold text-green-900">{stats.active || 0}</p>
                 </div>
-                <CheckCircle className="w-8 h-8 text-green-500" />
+                <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
               </div>
             </div>
-            <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-4">
+            <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-3 sm:p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-yellow-600">6 Months</p>
-                  <p className="text-2xl font-bold text-yellow-900">{stats.sixMonths || 0}</p>
+                  <p className="text-xs sm:text-sm font-medium text-yellow-600">6 Months</p>
+                  <p className="text-lg sm:text-2xl font-bold text-yellow-900">{stats.sixMonths || 0}</p>
                 </div>
-                <Clock className="w-8 h-8 text-yellow-500" />
+                <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500" />
               </div>
             </div>
-            <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4">
+            <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-3 sm:p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-purple-600">1 Year</p>
-                  <p className="text-2xl font-bold text-purple-900">{stats.oneYear || 0}</p>
+                  <p className="text-xs sm:text-sm font-medium text-purple-600">1 Year</p>
+                  <p className="text-lg sm:text-2xl font-bold text-purple-900">{stats.oneYear || 0}</p>
                 </div>
-                <Users className="w-8 h-8 text-purple-500" />
+                <Users className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500" />
               </div>
             </div>
           </div>
 
           {/* Search and Filter */}
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div className="flex-1 relative">
-              <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search by email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -267,17 +295,19 @@ const CanvaSubscriptionsPage = () => {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Used</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {subscriptions.map((subscription) => (
                     <tr key={subscription._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                         {editingId === subscription._id ? (
                           <input
                             type="email"
@@ -292,7 +322,7 @@ const CanvaSubscriptionsPage = () => {
                           </div>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap sm:table-cell">
                         {editingId === subscription._id ? (
                           <select
                             value={editForm.duration}
@@ -309,7 +339,7 @@ const CanvaSubscriptionsPage = () => {
                           </div>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap md:table-cell">
                         {editingId === subscription._id ? (
                           <input
                             type="date"
@@ -326,7 +356,29 @@ const CanvaSubscriptionsPage = () => {
                           </div>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <Clock className="w-4 h-4 text-orange-400 mr-2" />
+                          <span className="text-sm text-gray-900">
+                            {formatDays(calculateDays(subscription).daysUsed)}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 text-green-400 mr-2" />
+                          <span className={`text-sm font-medium ${
+                            calculateDays(subscription).remainingDays <= 7 
+                              ? 'text-red-600' 
+                              : calculateDays(subscription).remainingDays <= 30 
+                                ? 'text-yellow-600' 
+                                : 'text-green-600'
+                          }`}>
+                            {formatDays(calculateDays(subscription).remainingDays)}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                         {editingId === subscription._id ? (
                           <select
                             value={editForm.status}
@@ -361,20 +413,20 @@ const CanvaSubscriptionsPage = () => {
                             </button>
                           </div>
                         ) : (
-                          <div className="flex space-x-2">
+                          <div className="flex space-x-1 sm:space-x-2">
                             <button
                               onClick={() => handleEdit(subscription)}
-                              className="text-blue-600 hover:text-blue-700"
+                              className="text-blue-600 hover:text-blue-700 p-1 sm:p-0"
                               title="Edit"
                             >
-                              <Edit className="w-6 h-6" />
+                              <Edit className="w-4 h-4 sm:w-6 sm:h-6" />
                             </button>
                             <button
                               onClick={() => handleDelete(subscription._id)}
-                              className="text-red-600 hover:text-red-700"
+                              className="text-red-600 hover:text-red-700 p-1 sm:p-0"
                               title="Delete"
                             >
-                              <Trash2 className="w-6 h-6" />
+                              <Trash2 className="w-4 h-4 sm:w-6 sm:h-6" />
                             </button>
                           </div>
                         )}

@@ -64,6 +64,8 @@ export default function ProductsComponent() {
     rating: "all"
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 20;
 
   // Fetch products from API
   const { products: apiProducts, loading, error } = useProducts();
@@ -972,6 +974,16 @@ export default function ProductsComponent() {
     return filtered;
   }, [searchTerm, sortBy, filterBy, products]);
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredAndSortedProducts.length / productsPerPage);
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const endIndex = startIndex + productsPerPage;
+  const currentProducts = filteredAndSortedProducts.slice(startIndex, endIndex);
+
+  // Reset to first page when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterBy, sortBy]);
 
   // Loading state
   if (loading) {
@@ -1233,9 +1245,9 @@ export default function ProductsComponent() {
 
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredAndSortedProducts.length > 0 ? (
-            filteredAndSortedProducts.map((product) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+          {currentProducts.length > 0 ? (
+            currentProducts.map((product) => (
             <div
               key={product.id}
               className={`bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group cursor-pointer ${
@@ -1249,34 +1261,34 @@ export default function ProductsComponent() {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-contain bg-white p-6 group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                  className="w-full h-full object-contain bg-white p-2 sm:p-4 lg:p-3 group-hover:scale-105 transition-transform duration-300 cursor-pointer"
                 />
               {/* Badge */}
-                <div className="absolute top-3 left-3">
-                  <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 lg:top-2.5 lg:left-2.5">
+                  <span className="bg-blue-600 text-white text-xs font-semibold px-1 py-0.5 sm:px-1.5 sm:py-0.5 lg:px-2 lg:py-1 rounded-full">
                 {product.badge}
                   </span>
               </div>
                 {/* Quick View Button */}
-                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 lg:top-2.5 lg:right-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Link 
                     to={`/product/${product.id}`}
-                    className="bg-white/90 hover:bg-white text-gray-700 p-2 rounded-full shadow-md transition-colors duration-200 flex items-center justify-center"
+                    className="bg-white/90 hover:bg-white text-gray-700 p-1 sm:p-1.5 lg:p-2 rounded-full shadow-md transition-colors duration-200 flex items-center justify-center"
                   >
-                    <Eye className="w-4 h-4" />
+                    <Eye className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-4 lg:h-4" />
                   </Link>
                   </div>
               </Link>
 
               {/* Product Info */}
-              <div className="p-4">
+              <div className="p-2 sm:p-3 lg:p-2.5">
                   {/* Rating */}
-                <div className="flex items-center gap-1 mb-2">
+                <div className="flex items-center gap-1 mb-1 sm:mb-1.5 lg:mb-1">
                     <div className="flex text-yellow-400">
                       {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'fill-current' : 'text-gray-300'}`} 
+                        className={`w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3 ${i < Math.floor(product.rating) ? 'fill-current' : 'text-gray-300'}`} 
                       />
                       ))}
                     </div>
@@ -1287,22 +1299,22 @@ export default function ProductsComponent() {
 
                 {/* Product Name */}
                 <Link to={`/product/${product.id}`}>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1 hover:text-blue-600 transition-colors cursor-pointer">
+                  <h3 className="text-sm sm:text-base lg:text-sm font-semibold text-gray-900 mb-1 sm:mb-1.5 lg:mb-1 line-clamp-1 hover:text-blue-600 transition-colors cursor-pointer">
                     {product.name}
                   </h3>
                 </Link>
 
                   {/* Description */}
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
+                <p className="text-xs sm:text-sm lg:text-xs text-gray-600 mb-1.5 sm:mb-2 lg:mb-1.5 line-clamp-2 leading-relaxed">
                     {product.description}
                   </p>
 
                 {/* Price */}
-                <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-xl font-bold text-gray-900">
+                <div className="flex items-baseline gap-1 sm:gap-1.5 lg:gap-1 mb-1.5 sm:mb-2 lg:mb-1.5">
+                  <span className="text-sm sm:text-base lg:text-sm font-bold text-gray-900">
                         {product.price}
                       </span>
-                      <span className="text-sm text-gray-500 line-through">
+                      <span className="text-xs text-gray-500 line-through">
                         {product.originalPrice}
                       </span>
                   <span className="text-xs text-gray-500">
@@ -1311,13 +1323,14 @@ export default function ProductsComponent() {
                   </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-2">
+                <div className="flex gap-1 sm:gap-1.5 lg:gap-1">
                   <button
                     onClick={() => handleGetStarted(product.name)}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium text-sm transition-colors duration-200 flex items-center justify-center gap-2"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-1 sm:py-1.5 lg:py-1 px-2 sm:px-3 lg:px-2 rounded-lg font-medium text-xs transition-colors duration-200 flex items-center justify-center gap-1"
                   >
-                    <ShoppingCart className="w-4 h-4" />
-                    Buy Now
+                    <ShoppingCart className="w-2.5 h-2.5 sm:w-3 sm:h-3 lg:w-3 lg:h-3" />
+                    <span className="hidden sm:inline lg:hidden">Buy Now</span>
+                    <span className="sm:hidden lg:inline">Buy</span>
                   </button>
                 </div>
               </div>
@@ -1349,31 +1362,75 @@ export default function ProductsComponent() {
           )}
         </div>
 
-        {/* Bottom CTA Section */}
-        <div className="text-center mt-20">
-          <div className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-12 shadow-2xl max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Ready to Transform Your Workflow?
-            </h2>
-            <p className="text-gray-600 mb-8 text-lg">
-              Join thousands of professionals who trust our premium AI tools
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
-                onClick={() => handleGetStarted("All Tools Bundle")}
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center mt-16 mb-8">
+            <div className="flex items-center gap-3">
+              {/* Previous Button */}
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="group relative px-4 py-3 rounded-lg bg-white border-2 border-gray-200 hover:border-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 hover:shadow-lg hover:scale-105 disabled:hover:scale-100 flex items-center justify-center min-w-[50px]"
               >
-                Get All Tools Bundle
+                <svg className="w-5 h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                </svg>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
               </button>
-              <button 
-                onClick={() => handleGetStarted("Plans Comparison")}
-                className="px-8 py-4 border-2 border-gray-300 text-gray-700 font-bold rounded-2xl hover:border-gray-400 transition-all duration-300 cursor-pointer"
+
+              {/* Page Numbers */}
+              <div className="flex items-center gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                  // Show first page, last page, current page, and pages around current page
+                  const shouldShow = 
+                    page === 1 || 
+                    page === totalPages || 
+                    (page >= currentPage - 1 && page <= currentPage + 1);
+                  
+                  if (!shouldShow) {
+                    // Show ellipsis for gaps
+                    if (page === 2 && currentPage > 3) {
+                      return <span key={`ellipsis-${page}`} className="px-3 py-2 text-gray-400 font-medium">⋯</span>;
+                    }
+                    if (page === totalPages - 1 && currentPage < totalPages - 2) {
+                      return <span key={`ellipsis-${page}`} className="px-3 py-2 text-gray-400 font-medium">⋯</span>;
+                    }
+                    return null;
+                  }
+
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`relative px-4 py-3 rounded-lg font-semibold text-sm transition-all duration-300 hover:scale-110 ${
+                          currentPage === page
+                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-200'
+                            : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-200'
+                        }`}
+                      >
+                        {page}
+                        {currentPage === page && (
+                          <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 opacity-20 animate-pulse"></div>
+                        )}
+                      </button>
+                    );
+                })}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="group relative px-4 py-3 rounded-lg bg-white border-2 border-gray-200 hover:border-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 hover:shadow-lg hover:scale-105 disabled:hover:scale-100 flex items-center justify-center min-w-[50px]"
               >
-                Compare Plans
+                <svg className="w-5 h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
               </button>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <style jsx>{`
