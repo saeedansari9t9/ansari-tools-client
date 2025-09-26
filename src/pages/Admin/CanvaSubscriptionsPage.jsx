@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -23,17 +23,62 @@ import { toast } from 'react-toastify';
 const CanvaSubscriptionsPage = () => {
   const navigate = useNavigate();
   const [subscriptions, setSubscriptions] = useState([]);
+  const [allSubscriptions, setAllSubscriptions] = useState([]); // Store original data
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [durationFilter, setDurationFilter] = useState('all'); // 'all', '6 Months', '1 Year'
+  const [sortBy, setSortBy] = useState('daysRemaining'); // 'daysRemaining' or 'date'
+  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
 
+  // Sort subscriptions based on sortBy and sortOrder
+  const sortSubscriptions = useCallback((subs) => {
+    return [...subs].sort((a, b) => {
+      let aValue, bValue;
+      
+      if (sortBy === 'daysRemaining') {
+        aValue = calculateDays(a).remainingDays;
+        bValue = calculateDays(b).remainingDays;
+      } else if (sortBy === 'date') {
+        aValue = new Date(a.date).getTime();
+        bValue = new Date(b.date).getTime();
+      }
+      
+      if (sortOrder === 'asc') {
+        return aValue - bValue;
+      } else {
+        return bValue - aValue;
+      }
+    });
+  }, [sortBy, sortOrder]);
+
+  // Apply sorting and filtering
   useEffect(() => {
-    fetchSubscriptions();
-  }, [currentPage, searchTerm, statusFilter]);
+    if (allSubscriptions.length > 0) {
+      let filteredSubs = allSubscriptions;
+      
+      // Apply search filter
+      if (searchTerm) {
+        filteredSubs = filteredSubs.filter(sub => 
+          sub.email.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+      
+      // Apply duration filter
+      if (durationFilter !== 'all') {
+        filteredSubs = filteredSubs.filter(sub => 
+          sub.duration === durationFilter
+        );
+      }
+      
+      // Apply sorting
+      const sortedSubs = sortSubscriptions(filteredSubs);
+      setSubscriptions(sortedSubs);
+    }
+  }, [allSubscriptions, searchTerm, durationFilter, sortBy, sortOrder, sortSubscriptions]);
 
   // Calculate stats directly from subscriptions array
   const stats = {
@@ -78,21 +123,20 @@ const CanvaSubscriptionsPage = () => {
     }
   };
 
-  const fetchSubscriptions = async () => {
+  const fetchSubscriptions = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
         page: currentPage,
         limit: 10,
-        ...(searchTerm && { search: searchTerm }),
-        ...(statusFilter !== 'all' && { status: statusFilter })
+        ...(searchTerm && { search: searchTerm })
       });
 
       const response = await fetch(`https://ansari-tools-server.vercel.app/api/canva-subscriptions?${params}`);
       const data = await response.json();
 
       if (response.ok) {
-        setSubscriptions(data.subscriptions);
+        setAllSubscriptions(data.subscriptions);
         setTotalPages(data.totalPages);
       } else {
         toast.error('Error fetching subscriptions');
@@ -103,7 +147,11 @@ const CanvaSubscriptionsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm]);
+
+  useEffect(() => {
+    fetchSubscriptions();
+  }, [fetchSubscriptions]);
 
 
   const handleDelete = async (id) => {
@@ -204,13 +252,6 @@ const CanvaSubscriptionsPage = () => {
                 <p className="text-gray-600 mt-1 text-sm sm:text-base">Manage all Canva subscriptions</p>
               </div>
             </div>
-            <button
-              onClick={() => navigate('/admin/add-canva-subscription')}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 text-sm sm:text-base"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Add Subscription</span>
-            </button>
           </div>
 
           {/* Stats Cards */}
@@ -253,8 +294,19 @@ const CanvaSubscriptionsPage = () => {
             </div>
           </div>
 
-          {/* Search and Filter */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          {/* Add Subscription Button */}
+          <div className="mb-6">
+            <button
+              onClick={() => navigate('/admin/add-canva-subscription')}
+              className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 text-sm sm:text-base"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Subscription</span>
+            </button>
+          </div>
+
+          {/* Search, Filter and Sort */}
+          <div className="flex flex-col gap-3">
             <div className="flex-1 relative">
               <Search className="w-4 h-4 sm:w-5 sm:h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
@@ -265,16 +317,33 @@ const CanvaSubscriptionsPage = () => {
                 className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="expired">Expired</option>
-            </select>
+            <div className="flex flex-row gap-2">
+              <select
+                value={durationFilter}
+                onChange={(e) => setDurationFilter(e.target.value)}
+                className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="all">All</option>
+                <option value="6 Months">6 M</option>
+                <option value="1 Year">1 Y</option>
+              </select>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="daysRemaining">Remaining Days</option>
+                <option value="date">Sort by Date</option>
+              </select>
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="asc">L to H</option>
+                <option value="desc">H to L</option>
+              </select>
+            </div>
           </div>
         </div>
 

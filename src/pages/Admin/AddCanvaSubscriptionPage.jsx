@@ -57,7 +57,7 @@ const AddCanvaSubscriptionPage = () => {
         <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6">
           <div className="flex items-center space-x-3 sm:space-x-4 mb-6">
             <button
-              onClick={() => navigate('/admin')}
+              onClick={() => navigate('/admin/canva-subscriptions')}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
@@ -160,7 +160,7 @@ const AddCanvaSubscriptionPage = () => {
             <div className="flex flex-row items-center justify-end gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gray-200">
               <button
                 type="button"
-                onClick={() => navigate('/admin')}
+                onClick={() => navigate('/admin/canva-subscriptions')}
                 className="flex-1 sm:flex-none px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors duration-200"
               >
                 Cancel
