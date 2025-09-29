@@ -18,8 +18,6 @@ import ToolsPage from "./pages/ToolsPage";
 import WhyChoosePage from "./pages/WhyChoosePage";
 import TestimonialsPage from "./pages/TestimonialsPage";
 import FAQPage from "./pages/FAQPage";
-import LoginPage from "./pages/Auth/LoginPage";
-import SignupPage from "./pages/Auth/SignupPage";
 import ProductPage from "./pages/ProductPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -27,6 +25,11 @@ import AddProductPage from "./pages/Admin/AddProductPage";
 import EditProductPage from "./pages/Admin/EditProductPage";
 import CanvaSubscriptionsPage from "./pages/Admin/CanvaSubscriptionsPage";
 import AddCanvaSubscriptionPage from "./pages/Admin/AddCanvaSubscriptionPage";
+import AddAdminPage from "./pages/Admin/AddAdminPage";
+import AdminLoginPage from "./pages/Admin/AdminLoginPage";
+import EditProfilePage from "./pages/Admin/EditProfilePage";
+import ChangePasswordPage from "./pages/Admin/ChangePasswordPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -45,8 +48,7 @@ function App() {
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="/faq" element={<FAQPage />} />
           {/* Admin Auth routes - hidden from public access */}
-          <Route path="/admin/login" element={<LoginPage />} />
-          <Route path="/admin/only-admin-signup" element={<SignupPage />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
           
           {/* Admin Routes - Protected by AdminGuard */}
           <Route path="/admin" element={
@@ -73,6 +75,26 @@ function App() {
             <AdminGuard>
               <AddCanvaSubscriptionPage />
             </AdminGuard>
+          } />
+          <Route path="/admin/add-admin" element={
+            <AdminGuard>
+              <AddAdminPage />
+            </AdminGuard>
+          } />
+          <Route path="/admin/edit-profile" element={
+            <AdminGuard>
+              <EditProfilePage />
+            </AdminGuard>
+          } />
+          <Route path="/admin/change-password" element={
+            <AdminGuard>
+              <ChangePasswordPage />
+            </AdminGuard>
+          } />
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <ProfilePage />
+            </PrivateRoute>
           } />
           {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
         </Routes>

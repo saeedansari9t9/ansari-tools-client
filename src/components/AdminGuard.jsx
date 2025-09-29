@@ -1,37 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 
 const AdminGuard = ({ children }) => {
   const navigate = useNavigate();
-  const { isAuthenticated, user, loading } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState(false);
-
-  const ADMIN_EMAIL = 'saeedansari9t9@gmail.com';
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAdminAccess = () => {
-      // Wait for auth context to finish loading
-      if (loading) {
-        return;
-      }
-      
-      if (!isAuthenticated) {
-        navigate('/admin/login');
-        return;
-      }
+    const checkAdminAccess = async () => {
+      try {
+        // Check for admin token in localStorage
+        const adminToken = localStorage.getItem('adminToken');
+        const adminData = localStorage.getItem('adminData');
 
-      // Check if user email matches admin email
-      if (user && user.email === ADMIN_EMAIL) {
-        setIsAuthorized(true);
-      } else {
-        navigate('/admin/login');
-        return;
+        if (!adminToken || !adminData) {
+          navigate('/');
+          return;
+        }
+
+        // Verify token with backend
+        const response = await fetch('http://localhost:5000/api/admins/verify', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${adminToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          setIsAuthorized(true);
+        } else {
+          // Token is invalid, clear storage and redirect
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminData');
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('Admin verification error:', error);
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminData');
+        navigate('/');
+      } finally {
+        setLoading(false);
       }
     };
 
     checkAdminAccess();
-  }, [isAuthenticated, user, loading, navigate]);
+  }, [navigate]);
 
   if (loading) {
     return (

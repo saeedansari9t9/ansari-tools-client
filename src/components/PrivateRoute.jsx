@@ -1,66 +1,29 @@
-// import React from 'react';
-// import { Navigate } from 'react-router-dom';
-// import { useAuth } from '../context/AuthContext';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
-// const PrivateRoute = ({ children }) => {
-//   const { isAuthenticated, loading } = useAuth();
+const PrivateRoute = ({ children }) => {
+  const { isAuthenticated, loading } = useAuth();
 
-//   // Show loading state while checking authentication
-//   if (loading) {
-//     return <div className="flex justify-center items-center h-screen">Loading...</div>;
-//   }
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
-//   // Redirect to login if not authenticated
-//   if (!isAuthenticated) {
-//     return <Navigate to="/login" />;
-//   }
+  // Redirect to home page if not authenticated
+  if (!isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
-//   // Render children if authenticated
-//   return children;
-// };
+  // Render children if authenticated
+  return children;
+};
 
-// export default PrivateRoute;
-
-
-// src/pages/LoginPage.jsx
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../services/api";
-
-export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(`${API_BASE_URL}/users/login`, { email, password });
-      localStorage.setItem("token", response.data.token);  // Save token to local storage
-      navigate("/dashboard");  // Redirect to dashboard or home page
-    } catch (err) {
-      setError(err.response ? err.response.data.message : "Server error");
-    }
-  };
-
-  return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      {error && <p>{error}</p>}
-      <button type="submit">Login</button>
-    </form>
-  );
-}
+export default PrivateRoute;

@@ -19,7 +19,29 @@ import { useProducts } from '../../hooks/useProducts';
 import ApiService from '../../services/api';
 
 export default function AdminDashboard() {
-  const { products, error, refetch } = useProducts();
+  const { products, loading, error, refetch } = useProducts();
+  
+  // Debug loading state
+  console.log('AdminDashboard - Loading:', loading);
+  console.log('AdminDashboard - Products:', products.length);
+  
+  // Force loading state for testing
+  const [forceLoading, setForceLoading] = useState(true);
+  const [showSkeleton, setShowSkeleton] = useState(true);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setForceLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSkeleton(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -47,6 +69,37 @@ export default function AdminDashboard() {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, filterCategory]);
+
+  // Skeleton component for loading state
+  const ProductSkeleton = () => (
+    <tr className="animate-pulse border-b border-gray-200 last:border-b-0">
+      <td className="px-3 sm:px-6 py-4">
+        <div className="h-4 w-4 bg-gray-200 rounded"></div>
+      </td>
+      <td className="px-3 sm:px-6 py-4">
+        <div className="flex items-center">
+          <div className="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-md mr-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-32"></div>
+        </div>
+      </td>
+      <td className="px-3 sm:px-6 py-4">
+        <div className="h-4 bg-gray-200 rounded w-24"></div>
+      </td>
+      <td className="px-3 sm:px-6 py-4">
+        <div className="h-4 bg-gray-200 rounded w-20"></div>
+      </td>
+      <td className="px-3 sm:px-6 py-4">
+        <div className="h-4 bg-gray-200 rounded w-16"></div>
+      </td>
+      <td className="px-3 sm:px-6 py-4 text-right text-sm font-medium">
+        <div className="flex items-center justify-end space-x-2">
+          <div className="h-8 w-8 bg-gray-200 rounded-full"></div>
+          <div className="h-8 w-8 bg-gray-200 rounded-full"></div>
+          <div className="h-8 w-8 bg-gray-200 rounded-full"></div>
+        </div>
+      </td>
+    </tr>
+  );
 
   const handleDeleteProduct = async (productId) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
@@ -407,7 +460,13 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {paginatedProducts.map((product) => (
+                  {loading || forceLoading || showSkeleton ? (
+                    // Show skeleton loading state
+                    Array.from({ length: itemsPerPage }).map((_, index) => (
+                      <ProductSkeleton key={index} />
+                    ))
+                  ) : paginatedProducts.length > 0 ? (
+                    paginatedProducts.map((product) => (
                     <tr key={product._id} className="hover:bg-gray-50">
                       <td className="px-3 sm:px-6 py-4">
                         <input
@@ -488,7 +547,20 @@ export default function AdminDashboard() {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
+                        <div className="flex flex-col items-center justify-center">
+                          <div className="w-16 h-16 text-gray-300 mb-4">
+                            <Package className="w-full h-full" />
+                          </div>
+                          <p className="text-lg font-semibold mb-2">No Products Found</p>
+                          <p className="text-sm">Get started by adding your first product.</p>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

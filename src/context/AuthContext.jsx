@@ -2,26 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { AuthContext } from './AuthContextDefinition';
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Check if user is logged in on initial load
+  // Check if admin is logged in on initial load
   useEffect(() => {
     const checkAuth = () => {
       try {
-        const token = localStorage.getItem('token');
-        const userData = localStorage.getItem('userData');
+        const adminToken = localStorage.getItem('adminToken');
+        const adminData = localStorage.getItem('adminData');
         
-        if (token) {
-          if (userData) {
-            const parsedUserData = JSON.parse(userData);
-            setUser({ token, ...parsedUserData });
+        if (adminToken) {
+          if (adminData) {
+            const parsedAdminData = JSON.parse(adminData);
+            setAdmin({ token: adminToken, ...parsedAdminData });
           } else {
-            setUser({ token });
+            setAdmin({ token: adminToken });
           }
         }
       } catch (error) {
-        console.error('Error checking authentication:', error);
+        console.error('Error checking admin authentication:', error);
       } finally {
         setLoading(false);
       }
@@ -30,45 +30,44 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
   
-  // Login function
-  const login = (token, userData = null) => {
+  // Login function for admin
+  const login = (token, adminData = null) => {
     if (!token) {
-      console.error('Login failed: No token provided');
+      console.error('Admin login failed: No token provided');
       return;
     }
     
     try {
-      localStorage.setItem('token', token);
-      if (userData) {
-        localStorage.setItem('userData', JSON.stringify(userData));
-        const userWithData = { token, ...userData };
-        setUser(userWithData);
+      localStorage.setItem('adminToken', token);
+      if (adminData) {
+        localStorage.setItem('adminData', JSON.stringify(adminData));
+        const adminWithData = { token, ...adminData };
+        setAdmin(adminWithData);
       } else {
-        setUser({ token });
+        setAdmin({ token });
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error during admin login:', error);
     }
   };
   
   // Logout function
   const logout = () => {
     try {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userData');
-      setUser(null);
-      // Redirect to login page or home page after logout if needed
-      // window.location.href = '/';
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminData');
+      setAdmin(null);
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error('Error during admin logout:', error);
     }
   };
   
-  // Check if user is authenticated
-  const isAuthenticated = user && user.token ? true : false;
+  // Check if admin is authenticated
+  const isAuthenticated = admin && admin.token ? true : false;
   
   const value = {
-    user,
+    user: admin, // Keep 'user' for backward compatibility
+    admin,
     loading,
     login,
     logout,

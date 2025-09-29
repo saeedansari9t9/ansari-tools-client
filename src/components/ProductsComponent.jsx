@@ -33,8 +33,40 @@ export default function ProductsComponent() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 20;
 
+  // Skeleton component for loading state
+  const ProductSkeleton = () => (
+    <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-gray-100">
+      <div className="animate-pulse">
+        {/* Image skeleton */}
+        <div className="w-full h-48 bg-gray-200 rounded-lg mb-4"></div>
+        
+        {/* Title skeleton */}
+        <div className="h-6 bg-gray-200 rounded mb-3"></div>
+        
+        {/* Description skeleton */}
+        <div className="space-y-2 mb-4">
+          <div className="h-4 bg-gray-200 rounded"></div>
+          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+        </div>
+        
+        {/* Features skeleton */}
+        <div className="space-y-2 mb-4">
+          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+        
+        {/* Price skeleton */}
+        <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+        
+        {/* Button skeleton */}
+        <div className="h-12 bg-gray-200 rounded-lg"></div>
+      </div>
+    </div>
+  );
+
   // Fetch products from API
-  const { products: apiProducts, error } = useProducts();
+  const { products: apiProducts, loading, error } = useProducts();
 
   // WhatsApp redirect function
   const handleGetStarted = (productName) => {
@@ -336,7 +368,12 @@ export default function ProductsComponent() {
 
         {/* Products Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
-          {currentProducts.length > 0 ? (
+          {loading ? (
+            // Show skeleton loading state
+            Array.from({ length: 10 }).map((_, index) => (
+              <ProductSkeleton key={index} />
+            ))
+          ) : currentProducts.length > 0 ? (
             currentProducts.map((product) => (
             <div
               key={product.id}
