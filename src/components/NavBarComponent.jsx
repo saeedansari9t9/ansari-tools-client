@@ -218,13 +218,13 @@ const NavBarComponent = () => {
       )}
       <nav 
         ref={navRef} 
-        className={`lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] z-50 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 backdrop-blur-2xl transform transition-all duration-300 ease-in-out ${
+        className={`lg:hidden fixed top-0 right-0 h-screen w-80 max-w-[85vw] z-50 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 backdrop-blur-2xl transform transition-all duration-300 ease-in-out ${
           open ? 'translate-x-0 opacity-100 visible' : 'translate-x-full opacity-0 invisible'
         }`}
       >
           <div className="flex flex-col h-full bg-gradient-to-br from-gray-900/95 via-blue-900/95 to-purple-900/95 backdrop-blur-2xl">
             {/* Mobile Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/20 backdrop-blur-sm">
+            <div className="flex items-center justify-between p-4 border-b border-white/20 backdrop-blur-sm flex-shrink-0">
               <div className="flex items-center space-x-3">
                 <img 
                   src={logo} 
@@ -243,7 +243,7 @@ const NavBarComponent = () => {
             </div>
 
             {/* Mobile Navigation Links */}
-            <div className="flex-1 px-4 py-6 bg-gradient-to-b from-gray-900/90 to-blue-900/90 backdrop-blur-xl">
+            <div className="flex-1 px-4 py-6 bg-gradient-to-b from-gray-900/90 to-blue-900/90 backdrop-blur-xl overflow-y-auto min-h-0">
               <ul className="space-y-4" onClick={() => setOpen(false)}>
                 <li>
                   <NavLink 
