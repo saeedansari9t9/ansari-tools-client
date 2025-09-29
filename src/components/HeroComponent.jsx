@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles, Zap, Crown } from "lucide-react";
 
 const HeroComponent = () => (
-  <section className="relative min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 overflow-hidden">
+  <section className="relative min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 overflow-hidden" itemScope itemType="https://schema.org/WebPage">
     {/* Background Elements */}
     <div className="absolute inset-0">
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
@@ -20,7 +20,7 @@ const HeroComponent = () => (
         </div>
 
         {/* Main Heading */}
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight" itemProp="headline">
           Premium Digital Tools
           <span className="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
             At Unbeatable Prices
@@ -28,7 +28,7 @@ const HeroComponent = () => (
         </h1>
 
         {/* Description */}
-        <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
+        <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed" itemProp="description">
           Access premium AI tools like ChatGPT, Canva Pro, SEMrush, Moz,
           Ubersuggest, Leonardo AI and more at affordable subscription plans.
         </p>

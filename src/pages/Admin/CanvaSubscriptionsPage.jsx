@@ -60,7 +60,7 @@ const CanvaSubscriptionsPage = () => {
     });
   }, [sortBy, sortOrder]);
 
-  // Apply sorting and filtering
+  // Apply sorting, filtering, and pagination
   useEffect(() => {
     if (allSubscriptions.length > 0) {
       let filteredSubs = allSubscriptions;
@@ -81,16 +81,30 @@ const CanvaSubscriptionsPage = () => {
       
       // Apply sorting
       const sortedSubs = sortSubscriptions(filteredSubs);
-      setSubscriptions(sortedSubs);
+      
+      // Update total pages based on filtered results
+      setTotalPages(Math.ceil(sortedSubs.length / 10));
+      
+      // Apply pagination (show 10 items per page)
+      const startIndex = (currentPage - 1) * 10;
+      const endIndex = startIndex + 10;
+      const paginatedSubs = sortedSubs.slice(startIndex, endIndex);
+      
+      setSubscriptions(paginatedSubs);
     }
-  }, [allSubscriptions, searchTerm, durationFilter, sortBy, sortOrder, sortSubscriptions]);
+  }, [allSubscriptions, searchTerm, durationFilter, sortBy, sortOrder, sortSubscriptions, currentPage]);
 
-  // Calculate stats directly from subscriptions array
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, durationFilter, sortBy, sortOrder]);
+
+  // Calculate stats directly from allSubscriptions array (complete data)
   const stats = {
-    total: subscriptions.length,
-    active: subscriptions.filter(sub => sub.status === 'active').length,
-    sixMonths: subscriptions.filter(sub => sub.duration === '6 Months').length,
-    oneYear: subscriptions.filter(sub => sub.duration === '1 Year').length
+    total: allSubscriptions.length,
+    active: allSubscriptions.filter(sub => sub.status === 'active').length,
+    sixMonths: allSubscriptions.filter(sub => sub.duration === '6 Months').length,
+    oneYear: allSubscriptions.filter(sub => sub.duration === '1 Year').length
   };
 
   // Calculate days used and remaining days
@@ -131,18 +145,12 @@ const CanvaSubscriptionsPage = () => {
   const fetchSubscriptions = useCallback(async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams({
-        page: currentPage,
-        limit: 10,
-        ...(searchTerm && { search: searchTerm })
-      });
-
-      const response = await fetch(`https://ansari-tools-server.vercel.app/api/canva-subscriptions?${params}`);
+      // Fetch ALL subscriptions without pagination for client-side filtering and stats
+      const response = await fetch(`https://ansari-tools-server.vercel.app/api/canva-subscriptions?limit=1000`);
       const data = await response.json();
 
       if (response.ok) {
         setAllSubscriptions(data.subscriptions);
-        setTotalPages(data.totalPages);
       } else {
         toast.error('Error fetching subscriptions');
       }
@@ -152,7 +160,7 @@ const CanvaSubscriptionsPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, searchTerm]);
+  }, []);
 
   useEffect(() => {
     fetchSubscriptions();
