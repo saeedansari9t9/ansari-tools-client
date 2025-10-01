@@ -26,18 +26,18 @@ const PricingComponent = () => {
   ];
 
   return (
-  <section id="pricing" className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+  <section id="pricing" className="py-20" style={{ background: 'linear-gradient(to bottom right, var(--color-light), var(--color-mid-light))' }}>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="text-center mb-16">
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 shadow-lg">
+        <div className="inline-flex items-center gap-2 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 shadow-lg" style={{ background: 'linear-gradient(to right, var(--color-mid-dark), var(--color-dark))' }}>
           <Crown className="w-4 h-4" />
           Pricing Plans
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-6">
+        <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: 'var(--color-dark)' }}>
           Choose Your Perfect Plan
         </h2>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <p className="text-xl max-w-3xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
           Select the plan that best fits your needs and start saving on premium tools today
         </p>
       </div>

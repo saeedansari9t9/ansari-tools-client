@@ -1,10 +1,85 @@
 @import "tailwindcss";
 
-/* Prevent horizontal scroll */
-body {
-  overflow-x: hidden;
+/* Custom Color Theme */
+:root {
+  --color-light: #ddebed;   /* Light Aqua */
+  --color-mid-light: #93B1B5; /* Soft Greyish Aqua */
+  --color-mid-dark: #4F7C82;  /* Muted Teal */
+  --color-dark: #0B2E33;     /* Deep Teal */
 }
 
+/* Prevent horizontal scroll and mobile keyboard issues */
 html {
   overflow-x: hidden;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+#root {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile keyboard fixes */
+@media screen and (max-width: 768px) {
+  html, body {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  #root {
+    height: 100vh;
+    height: -webkit-fill-available;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+    transform: translateZ(0);
+  }
+  
+  /* Fix for iOS Safari */
+  @supports (-webkit-touch-callout: none) {
+    html, body {
+      height: -webkit-fill-available;
+    }
+    
+    #root {
+      height: -webkit-fill-available;
+    }
+  }
+}
+
+/* Sidebar open state - prevent all scrolling */
+.sidebar-open {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.sidebar-open body {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
 }

@@ -21,10 +21,6 @@ import ApiService from '../../services/api';
 export default function AdminDashboard() {
   const { products, loading, error, refetch } = useProducts();
   
-  // Debug loading state
-  console.log('AdminDashboard - Loading:', loading);
-  console.log('AdminDashboard - Products:', products.length);
-  
   // Force loading state for testing
   const [forceLoading, setForceLoading] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(true);

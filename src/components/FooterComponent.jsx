@@ -3,7 +3,7 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MessageCircle } fr
 import footerLogo from "../assets/images/footer-logo.png";
 
 const FooterComponent = () => (
-  <footer className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
+  <footer className="text-white" style={{ backgroundColor: 'var(--color-dark)' }}>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Logo and Description */}
@@ -14,36 +14,40 @@ const FooterComponent = () => (
               alt="AnsariTools Logo" 
               className="h-10 w-auto"
             />
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
               ANSARI TOOLS
             </span>
           </div>
-          <p className="text-gray-300 leading-relaxed mb-6">
+          <p className="leading-relaxed mb-6" style={{ color: 'var(--color-light)' }}>
             Premium digital tools at unbeatable prices. Save up to 90% on your
             favorite software subscriptions.
           </p>
           <div className="flex space-x-4">
             <a 
               href="#" 
-              className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors duration-200"
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+              style={{ backgroundColor: 'var(--color-mid-light)' }}
             >
               <Facebook className="w-5 h-5" />
             </a>
             <a 
               href="#" 
-              className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors duration-200"
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+              style={{ backgroundColor: 'var(--color-mid-light)' }}
             >
               <Twitter className="w-5 h-5" />
             </a>
             <a 
               href="https://www.instagram.com/lexorasolution/" 
-              className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors duration-200"
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+              style={{ backgroundColor: 'var(--color-mid-light)' }}
             >
               <Instagram className="w-5 h-5" />
             </a>
             <a 
               href="#" 
-              className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors duration-200"
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+              style={{ backgroundColor: 'var(--color-mid-light)' }}
             >
               <Linkedin className="w-5 h-5" />
             </a>
@@ -57,7 +61,8 @@ const FooterComponent = () => (
             <li>
               <a 
                 href="/" 
-                className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
+                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                style={{ color: 'var(--color-light)' }}
               >
                 Home
               </a>
@@ -65,7 +70,8 @@ const FooterComponent = () => (
             <li>
               <a 
                 href="/pricing" 
-                className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
+                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                style={{ color: 'var(--color-light)' }}
               >
                 Pricing
               </a>
@@ -73,7 +79,8 @@ const FooterComponent = () => (
             <li>
               <a 
                 href="/tools" 
-                className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
+                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                style={{ color: 'var(--color-light)' }}
               >
                 Tools
               </a>
@@ -81,7 +88,8 @@ const FooterComponent = () => (
             <li>
               <a 
                 href="/testimonials" 
-                className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
+                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                style={{ color: 'var(--color-light)' }}
               >
                 Testimonials
               </a>
@@ -89,7 +97,8 @@ const FooterComponent = () => (
             <li>
               <a 
                 href="/faq" 
-                className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
+                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                style={{ color: 'var(--color-light)' }}
               >
                 FAQ
               </a>

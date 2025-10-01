@@ -16,7 +16,6 @@ export const useProducts = (category = null) => {
         // Removed artificial delay - using force loading instead
         
         const data = await ApiService.getProducts(category);
-        console.log('API Response:', data);
         setProducts(data);
       } catch (err) {
         setError(err.message);

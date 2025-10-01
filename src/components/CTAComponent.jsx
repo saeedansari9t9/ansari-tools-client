@@ -2,27 +2,27 @@ import React from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const CTAComponent = () => (
-  <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative overflow-hidden">
+  <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(to right, var(--color-dark), var(--color-mid-dark))' }}>
     {/* Background Elements */}
     <div className="absolute inset-0">
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl" style={{ backgroundColor: 'var(--color-light)' }}></div>
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl" style={{ backgroundColor: 'var(--color-mid-light)' }}></div>
     </div>
 
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-full text-sm font-medium mb-8 shadow-lg">
+      <div className="inline-flex items-center gap-2 backdrop-blur-sm text-white px-6 py-2 rounded-full text-sm font-medium mb-8 shadow-lg" style={{ backgroundColor: 'var(--color-mid-light)' }}>
         <Sparkles className="w-4 h-4" />
         Limited Time Offer
       </div>
       
       <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
         Ready to Access Premium Tools
-        <span className="block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+        <span className="block bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
           at Affordable Prices?
         </span>
       </h2>
       
-      <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
+      <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed" style={{ color: 'var(--color-light)' }}>
         Join thousands of professionals who trust our premium AI tools and save up to 90% on subscriptions
       </p>
       
