@@ -1,103 +1,109 @@
 import React from "react";
 import { DollarSign, ShieldCheck, Headphones, RefreshCcw, Zap, Shield } from "lucide-react";
 
-const Item = ({ icon, title, desc, color }) => (
-  <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200">
-    <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 ${color}`}>
+const Item = ({ icon, title, desc, color, iconStyle }) => (
+  <div className="group bg-white rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200">
+    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 ${color}`} style={iconStyle}>
       {icon}
     </div>
-    <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors duration-200">
+    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 group-hover:opacity-80 transition-colors duration-200">
       {title}
     </h3>
-    <p className="text-gray-600 leading-relaxed">
+    <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
       {desc}
     </p>
   </div>
 );
 
 const WhyChooseUsComponent = () => (
-  <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section className="py-12 sm:py-16 lg:py-20" style={{ backgroundColor: 'var(--color-light)' }}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="text-center mb-16">
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 shadow-lg">
-          <Shield className="w-4 h-4" />
+      <div className="text-center mb-8 sm:mb-12">
+        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+          <Shield className="w-3 h-3 sm:w-4 sm:h-4" />
           Why Choose Us
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-6">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--color-dark)' }}>
           Why Choose AnsariTools
         </h2>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
           Discover what makes us the preferred choice for premium digital tools
         </p>
       </div>
 
       {/* Features Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
         <Item 
-          color="bg-gradient-to-r from-green-500 to-emerald-600" 
-          icon={<DollarSign className="w-8 h-8 text-white" />} 
+          color="text-white"
+          iconStyle={{ backgroundColor: 'var(--color-mid-light)' }}
+          icon={<DollarSign className="w-6 h-6 text-white" />} 
           title="Cost Savings" 
           desc="Save up to 90% compared to individual subscriptions for each tool" 
         />
         <Item 
-          color="bg-gradient-to-r from-blue-500 to-blue-600" 
-          icon={<ShieldCheck className="w-8 h-8 text-white" />} 
+          color="text-white"
+          iconStyle={{ backgroundColor: 'var(--color-mid-dark)' }}
+          icon={<ShieldCheck className="w-6 h-6 text-white" />} 
           title="100% Legal" 
           desc="All accounts are legally purchased with proper licensing" 
         />
         <Item 
-          color="bg-gradient-to-r from-purple-500 to-purple-600" 
-          icon={<Headphones className="w-8 h-8 text-white" />} 
+          color="text-white"
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
+          icon={<Headphones className="w-6 h-6 text-white" />} 
           title="24/7 Support" 
           desc="Get help anytime with our dedicated customer support team" 
         />
         <Item 
-          color="bg-gradient-to-r from-yellow-500 to-orange-500" 
-          icon={<RefreshCcw className="w-8 h-8 text-white" />} 
+          color="text-white"
+          iconStyle={{ backgroundColor: 'var(--color-mid-light)' }}
+          icon={<RefreshCcw className="w-6 h-6 text-white" />} 
           title="Regular Updates" 
           desc="We continuously add new tools to our collection" 
         />
         <Item 
-          color="bg-gradient-to-r from-red-500 to-red-600" 
-          icon={<Zap className="w-8 h-8 text-white" />} 
+          color="text-white"
+          iconStyle={{ backgroundColor: 'var(--color-mid-dark)' }}
+          icon={<Zap className="w-6 h-6 text-white" />} 
           title="Reliable Access" 
           desc="99.9% uptime guarantee for all tools and services" 
         />
         <Item 
-          color="bg-gradient-to-r from-cyan-500 to-blue-500" 
-          icon={<Shield className="w-8 h-8 text-white" />} 
+          color="text-white"
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
+          icon={<Shield className="w-6 h-6 text-white" />} 
           title="Privacy Focused" 
           desc="Your data remains private and secure with our service" 
         />
       </div>
 
       {/* Stats Counter */}
-      <div className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-12 shadow-2xl">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+      <div className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-2xl p-6 sm:p-8 shadow-xl">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
           <div className="group">
-            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300" style={{ color: 'var(--color-dark)' }}>
               10,000+
             </h3>
-            <p className="text-gray-600 text-lg font-medium">Happy Customers</p>
+            <p className="text-gray-600 text-sm sm:text-base font-medium">Happy Customers</p>
           </div>
           <div className="group">
-            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300" style={{ color: 'var(--color-mid-dark)' }}>
               50+
             </h3>
-            <p className="text-gray-600 text-lg font-medium">Premium Tools</p>
+            <p className="text-gray-600 text-sm sm:text-base font-medium">Premium Tools</p>
           </div>
           <div className="group">
-            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300" style={{ color: 'var(--color-dark)' }}>
               99.9%
             </h3>
-            <p className="text-gray-600 text-lg font-medium">Customer Satisfaction</p>
+            <p className="text-gray-600 text-sm sm:text-base font-medium">Customer Satisfaction</p>
           </div>
           <div className="group">
-            <h3 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300" style={{ color: 'var(--color-mid-dark)' }}>
               24/7
             </h3>
-            <p className="text-gray-600 text-lg font-medium">Customer Support</p>
+            <p className="text-gray-600 text-sm sm:text-base font-medium">Customer Support</p>
           </div>
         </div>
       </div>

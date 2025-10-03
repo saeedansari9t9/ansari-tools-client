@@ -10,24 +10,24 @@ const Stars = () => (
 );
 
 const TestimonialsComponent = () => (
-  <section id="testimonials" className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="testimonials" className="py-12 sm:py-16 lg:py-20" style={{ backgroundColor: 'var(--color-light)' }}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="text-center mb-16">
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 shadow-lg">
-          <Quote className="w-4 h-4" />
+      <div className="text-center mb-8 sm:mb-12">
+        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+          <Quote className="w-3 h-3 sm:w-4 sm:h-4" />
           Testimonials
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-6">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--color-dark)' }}>
           What Our Customers Say
         </h2>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
           Hear from our satisfied customers who have transformed their workflows with our premium tools
         </p>
       </div>
 
       {/* Testimonials Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {[
           {
             text: `"AnsariTools has been a game-changer for my business. Access to all these premium tools at such an affordable price has helped me scale my content creation and SEO efforts."`,
@@ -79,7 +79,7 @@ const TestimonialsComponent = () => (
           <p className="text-gray-600 mb-6">
             Start your journey with premium tools today and see the difference
           </p>
-          <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200">
+          <button className=" text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200" style={{ backgroundColor: 'var(--color-dark)' }}>
             Get Started Now
           </button>
         </div>

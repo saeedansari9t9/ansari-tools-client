@@ -220,64 +220,78 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-        {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
-          <p className="text-sm sm:text-base text-gray-600">Manage your products and inventory</p>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-white rounded-lg shadow p-3 sm:p-6">
-            <div className="flex items-center">
-              <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
-                <Package className="w-4 h-4 sm:w-6 sm:h-6 text-blue-600" />
+        {/* Header and Stats Container */}
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
+          {/* Header */}
+          <div className="mb-3 sm:mb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                <Package className="w-4 h-4 text-white" />
               </div>
-              <div className="ml-2 sm:ml-4">
-                <p className="text-xs sm:text-sm font-medium text-gray-600">Total Products</p>
-                <p className="text-lg sm:text-2xl font-bold text-gray-900">{products.length}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-3 sm:p-6">
-            <div className="flex items-center">
-              <div className="p-1.5 sm:p-2 bg-green-100 rounded-lg">
-                <Eye className="w-4 h-4 sm:w-6 sm:h-6 text-green-600" />
-              </div>
-              <div className="ml-2 sm:ml-4">
-                <p className="text-xs sm:text-sm font-medium text-gray-600">Active Products</p>
-                <p className="text-lg sm:text-2xl font-bold text-gray-900">
-                  {products.filter(p => p.isActive).length}
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                  Admin Dashboard
+                </h1>
+                <p className="text-xs text-gray-600">
+                  Manage your products and inventory
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-3 sm:p-6">
-            <div className="flex items-center">
-              <div className="p-1.5 sm:p-2 bg-purple-100 rounded-lg">
-                <Filter className="w-4 h-4 sm:w-6 sm:h-6 text-purple-600" />
-              </div>
-              <div className="ml-2 sm:ml-4">
-                <p className="text-xs sm:text-sm font-medium text-gray-600">Categories</p>
-                <p className="text-lg sm:text-2xl font-bold text-gray-900">
-                  {new Set(products.map(p => p.category)).size}
-                </p>
+          {/* Stats Cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+            <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <Package className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-xs font-medium text-gray-600">Total Products</p>
+                  <p className="text-sm sm:text-base font-bold text-gray-900">{products.length}</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-3 sm:p-6">
-            <div className="flex items-center">
-              <div className="p-1.5 sm:p-2 bg-orange-100 rounded-lg">
-                <Users className="w-4 h-4 sm:w-6 sm:h-6 text-orange-600" />
+            <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <Eye className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-xs font-medium text-gray-600">Active Products</p>
+                  <p className="text-sm sm:text-base font-bold text-gray-900">
+                    {products.filter(p => p.isActive).length}
+                  </p>
+                </div>
               </div>
-              <div className="ml-2 sm:ml-4">
-                <p className="text-xs sm:text-sm font-medium text-gray-600">With Variants</p>
-                <p className="text-lg sm:text-2xl font-bold text-gray-900">
-                  {products.filter(p => p.hasVariants).length}
-                </p>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
+              <div className="flex items-center">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <Filter className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-xs font-medium text-gray-600">Categories</p>
+                  <p className="text-sm sm:text-base font-bold text-gray-900">
+                    {new Set(products.map(p => p.category)).size}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
+              <div className="flex items-center">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" />
+                </div>
+                <div className="ml-3">
+                  <p className="text-xs font-medium text-gray-600">With Variants</p>
+                  <p className="text-sm sm:text-base font-bold text-gray-900">
+                    {products.filter(p => p.hasVariants).length}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -324,37 +338,40 @@ export default function AdminDashboard() {
                 />
               </div>
 
-              {/* Category Filter */}
-              <select
-                value={filterCategory}
-                onChange={(e) => setFilterCategory(e.target.value)}
-                className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Categories</option>
-                <option value="AI Tools">AI Tools</option>
-                <option value="Design Tools">Design Tools</option>
-                <option value="SEO Tools">SEO Tools</option>
-                <option value="Video Tools">Video Tools</option>
-                <option value="Writing Tools">Writing Tools</option>
-                <option value="Productivity">Productivity</option>
-                <option value="Education">Education</option>
-                <option value="Security">Security</option>
-              </select>
+              {/* Dropdowns Row */}
+              <div className="flex gap-3 w-full">
+                {/* Category Filter */}
+                <select
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                  className="w-1/2 px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="all">All Categories</option>
+                  <option value="AI Tools">AI Tools</option>
+                  <option value="Design Tools">Design Tools</option>
+                  <option value="SEO Tools">SEO Tools</option>
+                  <option value="Video Tools">Video Tools</option>
+                  <option value="Writing Tools">Writing Tools</option>
+                  <option value="Productivity">Productivity</option>
+                  <option value="Education">Education</option>
+                  <option value="Security">Security</option>
+                </select>
 
-              {/* Items per page */}
-              <select
-                value={itemsPerPage}
-                onChange={(e) => {
-                  setItemsPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value={5}>5 per page</option>
-                <option value={10}>10 per page</option>
-                <option value={20}>20 per page</option>
-                <option value={50}>50 per page</option>
-              </select>
+                {/* Items per page */}
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="w-1/2 px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value={5}>5 per page</option>
+                  <option value={10}>10 per page</option>
+                  <option value={20}>20 per page</option>
+                  <option value={50}>50 per page</option>
+                </select>
+              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">

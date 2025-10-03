@@ -33,18 +33,18 @@ const FAQComponent = () => {
   ];
 
   return (
-    <section id="faq" className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <section id="faq" className="py-12 sm:py-16 lg:py-20" style={{ backgroundColor: 'var(--color-light)' }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 shadow-lg">
-            <HelpCircle className="w-4 h-4" />
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+            <HelpCircle className="w-3 h-3 sm:w-4 sm:h-4" />
             FAQ
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--color-dark)' }}>
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
             Find answers to common questions about our premium tools and services
           </p>
         </div>
@@ -66,9 +66,9 @@ const FAQComponent = () => {
                 </h3>
                 <div className="flex-shrink-0">
                   {openIndex === i ? (
-                    <Minus className="w-6 h-6 text-blue-600" strokeWidth={3} />
+                    <Minus className="w-6 h-6" strokeWidth={3} />
                   ) : (
-                    <Plus className="w-6 h-6 text-blue-600" strokeWidth={4} />
+                    <Plus className="w-6 h-6" strokeWidth={4} />
                   )}
                 </div>
               </button>
@@ -99,7 +99,7 @@ const FAQComponent = () => {
               Our support team is here to help you 24/7
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200">
+              <button className=" text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200" style={{ backgroundColor: 'var(--color-dark)' }}>
                 Contact Support
               </button>
               <button className="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-xl font-semibold hover:border-gray-400 transition-all duration-200">

@@ -55,12 +55,12 @@ const AddCanvaSubscriptionPage = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6">
-          <div className="flex items-center space-x-3 sm:space-x-4 mb-6">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             <button
               onClick={() => navigate('/admin/canva-subscriptions')}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
+              <ArrowLeft className="w-6 h-6 sm:w-6 sm:h-6 text-gray-600" />
             </button>
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Add Canva Subscription</h1>
@@ -88,9 +88,6 @@ const AddCanvaSubscriptionPage = () => {
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="user@example.com"
                 />
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Enter the user's email address for the Canva subscription
-                </p>
               </div>
 
               {/* Duration Field */}
@@ -109,9 +106,6 @@ const AddCanvaSubscriptionPage = () => {
                   <option value="6 Months">6 Months</option>
                   <option value="1 Year">1 Year</option>
                 </select>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Select the subscription duration
-                </p>
               </div>
 
               {/* Date Field */}
@@ -128,9 +122,6 @@ const AddCanvaSubscriptionPage = () => {
                   required
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 />
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Set the subscription start date (defaults to today)
-                </p>
               </div>
 
               {/* Status Field */}
@@ -150,9 +141,6 @@ const AddCanvaSubscriptionPage = () => {
                   <option value="inactive">Inactive</option>
                   <option value="expired">Expired</option>
                 </select>
-                <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Set the subscription status (defaults to active)
-                </p>
               </div>
             </div>
 

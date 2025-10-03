@@ -4,64 +4,64 @@ import footerLogo from "../assets/images/footer-logo.png";
 
 const FooterComponent = () => (
   <footer className="text-white" style={{ backgroundColor: 'var(--color-dark)' }}>
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {/* Logo and Description */}
         <div className="lg:col-span-1">
-          <div className="flex items-center space-x-3 mb-6">
+          <div className="flex items-center space-x-2 mb-4">
             <img 
               src={footerLogo} 
               alt="AnsariTools Logo" 
-              className="h-10 w-auto"
+              className="h-8 w-auto"
             />
-            <span className="text-2xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+            <span className="text-lg sm:text-xl font-bold text-white">
               ANSARI TOOLS
             </span>
           </div>
-          <p className="leading-relaxed mb-6" style={{ color: 'var(--color-light)' }}>
+          <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-light)' }}>
             Premium digital tools at unbeatable prices. Save up to 90% on your
             favorite software subscriptions.
           </p>
-          <div className="flex space-x-4">
+          <div className="flex space-x-3">
             <a 
               href="#" 
-              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+              className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
               style={{ backgroundColor: 'var(--color-mid-light)' }}
             >
-              <Facebook className="w-5 h-5" />
+              <Facebook className="w-4 h-4" />
             </a>
             <a 
               href="#" 
-              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+              className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
               style={{ backgroundColor: 'var(--color-mid-light)' }}
             >
-              <Twitter className="w-5 h-5" />
+              <Twitter className="w-4 h-4" />
             </a>
             <a 
               href="https://www.instagram.com/lexorasolution/" 
-              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+              className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
               style={{ backgroundColor: 'var(--color-mid-light)' }}
             >
-              <Instagram className="w-5 h-5" />
+              <Instagram className="w-4 h-4" />
             </a>
             <a 
               href="#" 
-              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+              className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
               style={{ backgroundColor: 'var(--color-mid-light)' }}
             >
-              <Linkedin className="w-5 h-5" />
+              <Linkedin className="w-4 h-4" />
             </a>
           </div>
         </div>
 
-        {/* Site Map */}
+        {/* Available Pages */}
         <div>
-          <h4 className="text-lg font-bold mb-6 text-white">SITE MAP</h4>
-          <ul className="space-y-3">
+          <h4 className="text-base font-bold mb-4 text-white">PAGES</h4>
+          <ul className="space-y-2">
             <li>
               <a 
                 href="/" 
-                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                className="text-sm transition-colors duration-200 hover:opacity-80"
                 style={{ color: 'var(--color-light)' }}
               >
                 Home
@@ -70,7 +70,7 @@ const FooterComponent = () => (
             <li>
               <a 
                 href="/pricing" 
-                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                className="text-sm transition-colors duration-200 hover:opacity-80"
                 style={{ color: 'var(--color-light)' }}
               >
                 Pricing
@@ -79,7 +79,7 @@ const FooterComponent = () => (
             <li>
               <a 
                 href="/tools" 
-                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                className="text-sm transition-colors duration-200 hover:opacity-80"
                 style={{ color: 'var(--color-light)' }}
               >
                 Tools
@@ -87,8 +87,17 @@ const FooterComponent = () => (
             </li>
             <li>
               <a 
+                href="/why" 
+                className="text-sm transition-colors duration-200 hover:opacity-80"
+                style={{ color: 'var(--color-light)' }}
+              >
+                Why Choose Us
+              </a>
+            </li>
+            <li>
+              <a 
                 href="/testimonials" 
-                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                className="text-sm transition-colors duration-200 hover:opacity-80"
                 style={{ color: 'var(--color-light)' }}
               >
                 Testimonials
@@ -97,7 +106,7 @@ const FooterComponent = () => (
             <li>
               <a 
                 href="/faq" 
-                className="transition-colors duration-200 flex items-center gap-2 hover:opacity-80"
+                className="text-sm transition-colors duration-200 hover:opacity-80"
                 style={{ color: 'var(--color-light)' }}
               >
                 FAQ
@@ -106,65 +115,25 @@ const FooterComponent = () => (
           </ul>
         </div>
 
-        {/* Legal */}
+        {/* Contact */}
         <div>
-          <h4 className="text-lg font-bold mb-6 text-white">LEGAL</h4>
+          <h4 className="text-base font-bold mb-4 text-white">CONTACT</h4>
           <ul className="space-y-3">
             <li>
               <a 
-                href="#" 
-                className="text-gray-300 hover:text-white transition-colors duration-200"
-              >
-                Terms of Service
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#" 
-                className="text-gray-300 hover:text-white transition-colors duration-200"
-              >
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#" 
-                className="text-gray-300 hover:text-white transition-colors duration-200"
-              >
-                Refund Policy
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        {/* Contact */}
-        <div>
-          <h4 className="text-lg font-bold mb-6 text-white">CONTACT US</h4>
-          <ul className="space-y-4">
-            <li>
-              <a 
                 href="mailto:ansaritools3@gmail.com" 
-                className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-3"
+                className="text-sm text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
               >
-                <Mail className="w-5 h-5" />
+                <Mail className="w-4 h-4" />
                 ansaritools3@gmail.com
               </a>
             </li>
             <li>
               <a 
-                href="#" 
-                className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-3"
-              >
-                <MessageCircle className="w-5 h-5" />
-                Live Chat
-              </a>
-            </li>
-            <li>
-              <a 
                 href="tel:+923102204842" 
-                className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-3"
+                className="text-sm text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
               >
-                <Phone className="w-5 h-5" />
+                <Phone className="w-4 h-4" />
                 +92 310 220 4842
               </a>
             </li>
@@ -173,18 +142,11 @@ const FooterComponent = () => (
       </div>
 
       {/* Bottom Section */}
-      <div className="border-t border-white/20 mt-12 pt-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-300 text-sm">
+      <div className="border-t border-white/20 mt-6 sm:mt-8 pt-4 sm:pt-6">
+        <div className="text-center">
+          <p className="text-gray-300 text-xs sm:text-sm">
             © {new Date().getFullYear()} Ansari Tools. All rights reserved.
           </p>
-          <div className="flex items-center gap-6 text-sm text-gray-300">
-            <span>Made with ❤️ in Pakistan</span>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>All systems operational</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>

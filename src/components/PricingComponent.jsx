@@ -26,52 +26,52 @@ const PricingComponent = () => {
   ];
 
   return (
-  <section id="pricing" className="py-20" style={{ background: 'linear-gradient(to bottom right, var(--color-light), var(--color-mid-light))' }}>
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="pricing" className="py-12 sm:py-16 lg:py-20" style={{ backgroundColor: 'var(--color-light)' }}>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="text-center mb-16">
-        <div className="inline-flex items-center gap-2 text-white px-6 py-2 rounded-full text-sm font-medium mb-6 shadow-lg" style={{ background: 'linear-gradient(to right, var(--color-mid-dark), var(--color-dark))' }}>
-          <Crown className="w-4 h-4" />
+      <div className="text-center mb-8 sm:mb-12">
+        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+          <Crown className="w-3 h-3 sm:w-4 sm:h-4" />
           Pricing Plans
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: 'var(--color-dark)' }}>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--color-dark)' }}>
           Choose Your Perfect Plan
         </h2>
-        <p className="text-xl max-w-3xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
+        <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
           Select the plan that best fits your needs and start saving on premium tools today
         </p>
       </div>
 
       {/* Pricing Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
         {/* Student Plan */}
-        <div className="group bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-green-200">
-          <div className="p-8">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-2xl mb-4">
-                <Star className="w-8 h-8" />
+        <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-gray-200">
+          <div className="p-4 sm:p-6">
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-12 h-12 text-white rounded-xl mb-3" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+                <Star className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Student Plan</h3>
-              <div className="text-4xl font-bold text-gray-900 mb-2">1199 PKR</div>
-              <p className="text-gray-600">per month</p>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Student Plan</h3>
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">1199 PKR</div>
+              <p className="text-sm text-gray-600">per month</p>
             </div>
             
-            <div className="space-y-4 mb-6">
-              {(showAllStudent ? studentTools : studentTools.slice(0, 10))
+            <div className="space-y-3 mb-4">
+              {(showAllStudent ? studentTools : studentTools.slice(0, 8))
                 .map((tool) => (
-                <div key={tool} className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-white" />
+                <div key={tool} className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+                    <Check className="w-2.5 h-2.5 text-white" />
                   </div>
-                  <span className="text-gray-700 font-medium">{tool}</span>
+                  <span className="text-sm text-gray-700 font-medium">{tool}</span>
                 </div>
               ))}
             </div>
             
-            {studentTools.length > 10 && (
+            {studentTools.length > 8 && (
               <button
                 onClick={() => setShowAllStudent(!showAllStudent)}
-                className="w-full mb-6 flex items-center justify-center gap-2 text-green-600 hover:text-green-700 font-medium transition-colors duration-200"
+                className="w-full mb-4 flex items-center justify-center gap-2 text-sm font-medium transition-colors duration-200" style={{ color: 'var(--color-mid-dark)' }}
               >
                 {showAllStudent ? (
                   <>
@@ -81,13 +81,13 @@ const PricingComponent = () => {
                 ) : (
                   <>
                     <ChevronDown className="w-4 h-4" />
-                    See More ({studentTools.length - 10} more tools)
+                    See More ({studentTools.length - 8} more tools)
                   </>
                 )}
               </button>
             )}
             
-            <button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+            <button className="w-full text-white py-3 px-4 rounded-xl font-bold text-sm hover:shadow-lg transition-all duration-300 transform hover:scale-105" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
               Get Started
             </button>
           </div>
@@ -95,38 +95,38 @@ const PricingComponent = () => {
 
         {/* Agency Plan - Featured */}
         <div className="relative">
-          <div className="group bg-white rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300 overflow-hidden border-2 border-blue-200">
+          <div className="group bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-2" style={{ borderColor: 'var(--color-mid-dark)' }}>
             {/* Popular Badge - Top positioned, half inside half outside */}
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg  z-30">
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg z-30" style={{ backgroundColor: 'var(--color-dark)' }}>
               Most Popular
             </div>
             
-            <div className="p-8">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl mb-4">
-                <Crown className="w-8 h-8" />
+            <div className="p-4 sm:p-6">
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-12 h-12 text-white rounded-xl mb-3" style={{ backgroundColor: 'var(--color-dark)' }}>
+                <Crown className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Agency Plan</h3>
-              <div className="text-4xl font-bold text-gray-900 mb-2">2399 PKR</div>
-              <p className="text-gray-600">per month</p>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Agency Plan</h3>
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">2399 PKR</div>
+              <p className="text-sm text-gray-600">per month</p>
             </div>
             
-            <div className="space-y-4 mb-6">
-              {(showAllAgency ? agencyTools : agencyTools.slice(0, 10))
+            <div className="space-y-3 mb-4">
+              {(showAllAgency ? agencyTools : agencyTools.slice(0, 8))
                 .map((tool, i) => (
-                <div key={tool + i} className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-white" />
+                <div key={tool + i} className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--color-dark)' }}>
+                    <Check className="w-2.5 h-2.5 text-white" />
                   </div>
-                  <span className="text-gray-700 font-medium">{tool}</span>
+                  <span className="text-sm text-gray-700 font-medium">{tool}</span>
                 </div>
               ))}
             </div>
             
-            {agencyTools.length > 10 && (
+            {agencyTools.length > 8 && (
               <button
                 onClick={() => setShowAllAgency(!showAllAgency)}
-                className="w-full mb-6 flex items-center justify-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
+                className="w-full mb-4 flex items-center justify-center gap-2 text-sm font-medium transition-colors duration-200" style={{ color: 'var(--color-dark)' }}
               >
                 {showAllAgency ? (
                   <>
@@ -136,13 +136,13 @@ const PricingComponent = () => {
                 ) : (
                   <>
                     <ChevronDown className="w-4 h-4" />
-                    See More ({agencyTools.length - 10} more tools)
+                    See More ({agencyTools.length - 8} more tools)
                   </>
                 )}
               </button>
             )}
             
-            <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+            <button className="w-full text-white py-3 px-4 rounded-xl font-bold text-sm hover:shadow-lg transition-all duration-300 transform hover:scale-105" style={{ backgroundColor: 'var(--color-dark)' }}>
               Get Started
             </button>
             </div>
@@ -150,33 +150,33 @@ const PricingComponent = () => {
         </div>
 
         {/* Blogging Plan */}
-        <div className="group bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-purple-200">
-          <div className="p-8">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-2xl mb-4">
-                <Zap className="w-8 h-8" />
+        <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-gray-200">
+          <div className="p-4 sm:p-6">
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-12 h-12 text-white rounded-xl mb-3" style={{ backgroundColor: 'var(--color-mid-light)' }}>
+                <Zap className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Blogging Plan</h3>
-              <div className="text-4xl font-bold text-gray-900 mb-2">1799 PKR</div>
-              <p className="text-gray-600">per month</p>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Blogging Plan</h3>
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">1799 PKR</div>
+              <p className="text-sm text-gray-600">per month</p>
             </div>
             
-            <div className="space-y-4 mb-6">
-              {(showAllBlogging ? bloggingTools : bloggingTools.slice(0, 10))
+            <div className="space-y-3 mb-4">
+              {(showAllBlogging ? bloggingTools : bloggingTools.slice(0, 8))
                 .map((tool) => (
-                <div key={tool} className="flex items-center gap-3">
-                  <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-white" />
+                <div key={tool} className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--color-mid-light)' }}>
+                    <Check className="w-2.5 h-2.5 text-white" />
                   </div>
-                  <span className="text-gray-700 font-medium">{tool}</span>
+                  <span className="text-sm text-gray-700 font-medium">{tool}</span>
                 </div>
               ))}
             </div>
             
-            {bloggingTools.length > 10 && (
+            {bloggingTools.length > 8 && (
               <button
                 onClick={() => setShowAllBlogging(!showAllBlogging)}
-                className="w-full mb-6 flex items-center justify-center gap-2 text-purple-600 hover:text-purple-700 font-medium transition-colors duration-200"
+                className="w-full mb-4 flex items-center justify-center gap-2 text-sm font-medium transition-colors duration-200" style={{ color: 'var(--color-mid-light)' }}
               >
                 {showAllBlogging ? (
                   <>
@@ -186,13 +186,13 @@ const PricingComponent = () => {
                 ) : (
                   <>
                     <ChevronDown className="w-4 h-4" />
-                    See More ({bloggingTools.length - 10} more tools)
+                    See More ({bloggingTools.length - 8} more tools)
                   </>
                 )}
               </button>
             )}
             
-            <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 px-6 rounded-2xl font-bold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+            <button className="w-full text-white py-3 px-4 rounded-xl font-bold text-sm hover:shadow-lg transition-all duration-300 transform hover:scale-105" style={{ backgroundColor: 'var(--color-mid-light)' }}>
               Get Started
             </button>
           </div>
@@ -200,15 +200,15 @@ const PricingComponent = () => {
       </div>
 
       {/* Bottom CTA */}
-      <div className="text-center mt-16">
-        <div className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-3xl p-8 shadow-2xl max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+      <div className="text-center mt-8 sm:mt-12">
+        <div className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-2xl p-4 sm:p-6 shadow-xl max-w-3xl mx-auto">
+          <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
             Need a Custom Plan?
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-sm sm:text-base text-gray-600 mb-4">
             Contact us for enterprise solutions and custom integrations
           </p>
-          <button className="bg-gradient-to-r from-gray-800 to-gray-900 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200">
+          <button className="text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-200" style={{ backgroundColor: 'var(--color-dark)' }}>
             Contact Sales Team
           </button>
         </div>

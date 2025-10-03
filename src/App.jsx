@@ -30,6 +30,7 @@ import AdminLoginPage from "./pages/Admin/AdminLoginPage";
 import EditProfilePage from "./pages/Admin/EditProfilePage";
 import ChangePasswordPage from "./pages/Admin/ChangePasswordPage";
 import ProfilePage from "./pages/ProfilePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -97,6 +98,9 @@ function App() {
             </PrivateRoute>
           } />
           {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
+          
+          {/* 404 Page - Catch all unmatched routes */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <FooterComponent />
         <WhatsAppButton />

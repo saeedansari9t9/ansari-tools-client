@@ -1,6 +1,13 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 const WhatsAppButton = () => {
+  const location = useLocation();
+  
+  // Don't show WhatsApp button on admin pages
+  if (location.pathname.startsWith('/admin')) {
+    return null;
+  }
   const phoneNumber = "+923102204842";
   const message = "Hello! I'm interested in your premium tools. Can you help me?";
   
