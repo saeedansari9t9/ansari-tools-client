@@ -1,5 +1,5 @@
 // import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ShoppingCart, Star, Check, ArrowRight, Menu, X, Search, User, Heart, Zap, Palette, PenTool, BarChart3, Bot, Globe, Shield, Users, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,7 +30,6 @@ import AdminLoginPage from "./pages/Admin/AdminLoginPage";
 import EditProfilePage from "./pages/Admin/EditProfilePage";
 import ChangePasswordPage from "./pages/Admin/ChangePasswordPage";
 import ProfilePage from "./pages/ProfilePage";
-import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -97,10 +96,9 @@ function App() {
               <ProfilePage />
             </PrivateRoute>
           } />
+          {/* Catch-all route - redirect any non-existent page to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
           {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
-          
-          {/* 404 Page - Catch all unmatched routes */}
-          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <FooterComponent />
         <WhatsAppButton />
