@@ -58,7 +58,7 @@ const AdminLoginPage = () => {
     setLoading(true);
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/admins/login`, {
+      const response = await fetch('https://ansari-tools-server.vercel.app/api/admins/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
