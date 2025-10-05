@@ -79,7 +79,7 @@ const ChangePasswordPage = () => {
     setLoading(true);
     try {
       const adminToken = localStorage.getItem('adminToken');
-      const response = await fetch(`https://ansari-tools-server.vercel.app/api/admins/${user.id}/change-password`, {
+      const response = await fetch(`http://localhost:5000/api/admins/${user.id}/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -146,7 +146,7 @@ const CanvaSubscriptionsPage = () => {
     try {
       setLoading(true);
       // Fetch ALL subscriptions without pagination for client-side filtering and stats
-      const response = await fetch(`https://ansari-tools-server.vercel.app/api/canva-subscriptions?limit=1000`);
+      const response = await fetch(`http://localhost:5000/api/canva-subscriptions?limit=1000`);
       const data = await response.json();
 
       if (response.ok) {
@@ -171,7 +171,7 @@ const CanvaSubscriptionsPage = () => {
     if (!window.confirm('Are you sure you want to delete this subscription?')) return;
 
     try {
-      const response = await fetch(`https://ansari-tools-server.vercel.app/api/canva-subscriptions/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/canva-subscriptions/${id}`, {
         method: 'DELETE'
       });
 
@@ -199,7 +199,7 @@ const CanvaSubscriptionsPage = () => {
 
   const handleUpdate = async (id) => {
     try {
-      const response = await fetch(`https://ansari-tools-server.vercel.app/api/canva-subscriptions/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/canva-subscriptions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
