@@ -168,7 +168,11 @@ const CanvaSubscriptionsPage = () => {
 
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this subscription?')) return;
+    // Find the subscription to get the email
+    const subscription = allSubscriptions.find(sub => sub._id === id);
+    const email = subscription ? subscription.email : 'Unknown';
+    
+    if (!window.confirm(`Are you sure you want to delete subscription for ${email}?`)) return;
 
     try {
       const response = await fetch(`https://ansari-tools-server.vercel.app/api/canva-subscriptions/${id}`, {
@@ -176,7 +180,7 @@ const CanvaSubscriptionsPage = () => {
       });
 
       if (response.ok) {
-        toast.success('Subscription deleted successfully');
+        toast.success(`${email} deleted!`);
         fetchSubscriptions();
       } else {
         toast.error('Error deleting subscription');

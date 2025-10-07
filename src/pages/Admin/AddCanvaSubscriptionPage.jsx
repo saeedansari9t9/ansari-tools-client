@@ -37,7 +37,7 @@ const AddCanvaSubscriptionPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success('Canva subscription added successfully!');
+        toast.success(`${formData.email} added!`);
         navigate('/admin/canva-subscriptions');
       } else {
         toast.error(data.message || 'Error adding subscription');

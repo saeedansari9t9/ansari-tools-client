@@ -13,8 +13,8 @@ const HomePage = () => (
     <PricingComponent />
     <ToolsCategoriesComponent />
     <WhyChooseUsComponent />
-    <CTAComponent />
-    <TestimonialsComponent />
+    {/* <CTAComponent /> */}
+    {/* <TestimonialsComponent /> */}
     <FAQComponent />
   </>
 );

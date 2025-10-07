@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Menu, X, User, LogOut, Settings, ChevronDown, UserPlus, Shield, Lock, Home, Package, DollarSign, Wrench, Star, HelpCircle } from "lucide-react";
-// import logo from "../assets/images/logo.png";
+import logo from "../assets/images/logo.png";
 
 const NavBarComponent = () => {
   const navigate = useNavigate();
@@ -74,17 +74,17 @@ const NavBarComponent = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3" onClick={() => setOpen(false)}>
-            {/* <img 
+            <img 
               src={logo} 
               alt="Ansari Tools" 
-              className="h-10 w-auto"
-            /> */}
-            <Link 
+              className="h-12 w-auto"
+            />
+            {/* <Link 
               to="/" 
               className="text-2xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent"
             >
               ANSARI TOOLS
-            </Link>
+            </Link> */}
           </div>
 
           {/* Desktop Navigation */}

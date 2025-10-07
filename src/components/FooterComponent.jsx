@@ -1,6 +1,6 @@
 import React from "react";
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MessageCircle } from "lucide-react";
-import footerLogo from "../assets/images/footer-logo.png";
+import footerLogo from "../assets/images/logo.png";
 
 const FooterComponent = () => (
   <footer className="text-white" style={{ backgroundColor: 'var(--color-dark)' }}>
@@ -12,11 +12,11 @@ const FooterComponent = () => (
             <img 
               src={footerLogo} 
               alt="AnsariTools Logo" 
-              className="h-8 w-auto"
+              className="h-12 w-auto"
             />
-            <span className="text-lg sm:text-xl font-bold text-white">
+            {/* <span className="text-lg sm:text-xl font-bold text-white">
               ANSARI TOOLS
-            </span>
+            </span> */}
           </div>
           <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-light)' }}>
             Premium digital tools at unbeatable prices. Save up to 90% on your
