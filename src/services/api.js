@@ -40,10 +40,17 @@ class ApiService {
     if (!response.ok) {
       let detail = '';
       try {
-        const data = await response.json();
-        detail = data?.message || JSON.stringify(data);
-      } catch (_) {
-        try { detail = await response.text(); } catch (_) {}
+        const raw = await response.text();
+        if (raw) {
+          try {
+            const data = JSON.parse(raw);
+            detail = data?.message || JSON.stringify(data);
+          } catch {
+            detail = raw;
+          }
+        }
+      } catch {
+        // ignore parsing errors
       }
       throw new Error(`Sales save failed (${response.status}): ${detail}`);
     }
