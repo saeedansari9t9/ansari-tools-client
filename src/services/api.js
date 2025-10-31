@@ -1,5 +1,15 @@
 // services/api.js
-export const API_BASE_URL = 'https://ansari-tools-server.vercel.app/api';
+const inferBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envUrl) return envUrl;
+  if (typeof window !== 'undefined') {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocal) return 'http://localhost:5000/api';
+  }
+  return 'https://ansari-tools-server.vercel.app/api';
+};
+
+export const API_BASE_URL = inferBaseUrl();
 
 class ApiService {
   // Products API
@@ -18,6 +28,45 @@ class ApiService {
       console.error('Error fetching products:', error);
       throw error;
     }
+  }
+
+  // Sales API
+  static async createOrUpdateSale({ date, items }) {
+    const response = await fetch(`${API_BASE_URL}/sales`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date, items }),
+    });
+    if (!response.ok) {
+      let detail = '';
+      try {
+        const data = await response.json();
+        detail = data?.message || JSON.stringify(data);
+      } catch (_) {
+        try { detail = await response.text(); } catch (_) {}
+      }
+      throw new Error(`Sales save failed (${response.status}): ${detail}`);
+    }
+    return await response.json();
+  }
+
+  static async getTodaySalesSummary() {
+    const response = await fetch(`${API_BASE_URL}/sales/today`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
+  }
+
+  static async getSalesByDate(date) {
+    const response = await fetch(`${API_BASE_URL}/sales/by-date?date=${encodeURIComponent(date)}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
+  }
+
+  static async getMonthlySummary({ year, month }) {
+    const params = new URLSearchParams({ year: String(year), month: String(month) });
+    const response = await fetch(`${API_BASE_URL}/sales/monthly?${params.toString()}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
   }
 
   static async getProduct(id) {

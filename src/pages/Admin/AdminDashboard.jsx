@@ -12,7 +12,8 @@ import {
   MoreVertical,
   X,
   Calendar,
-  Tag
+  Tag,
+  BarChart3
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useProducts } from '../../hooks/useProducts';
@@ -321,6 +322,40 @@ export default function AdminDashboard() {
             </Link>
           </div>
         </div>
+
+        {/* Sales Section - similar styling to Canva block */}
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Sales</h3>
+            <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600" />
+          </div>
+          <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Add new sales and view daily summaries</p>
+          <div className="flex gap-3 justify-start">
+            <Link
+              to="/admin/sales/add"
+              className="flex-1 bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm"
+            >
+              <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+              Add Sale
+            </Link>
+            <Link
+              to="/admin/sales"
+              className="flex-1 bg-gray-100 text-gray-700 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm"
+            >
+              <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+              View Sales
+            </Link>
+          </div>
+        </div>
+
+        {/* Sales Management Quick Links */}
+        {/* <div className="bg-white rounded-lg shadow mb-4 sm:mb-6 p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link to="/admin/sales" className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm text-center">Today Sales</Link>
+            <Link to="/admin/sales/add" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm text-center">Add Sale</Link>
+            <Link to="/admin/sales/monthly" className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm text-center">Monthly Summary</Link>
+          </div>
+        </div> */}
 
         {/* Actions Bar */}
         <div className="bg-white rounded-lg shadow mb-4 sm:mb-6 p-4 sm:p-6">

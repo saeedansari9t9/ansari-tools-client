@@ -29,6 +29,9 @@ import AddAdminPage from "./pages/Admin/AddAdminPage";
 import AdminLoginPage from "./pages/Admin/AdminLoginPage";
 import EditProfilePage from "./pages/Admin/EditProfilePage";
 import ChangePasswordPage from "./pages/Admin/ChangePasswordPage";
+import AddSalePage from "./pages/Admin/AddSalePage";
+import SalesDashboardPage from "./pages/Admin/SalesDashboardPage";
+import MonthlySalesSummaryPage from "./pages/Admin/MonthlySalesSummaryPage";
 import ProfilePage from "./pages/ProfilePage";
 
 function App() {
@@ -89,6 +92,21 @@ function App() {
           <Route path="/admin/change-password" element={
             <AdminGuard>
               <ChangePasswordPage />
+            </AdminGuard>
+          } />
+          <Route path="/admin/sales/add" element={
+            <AdminGuard>
+              <AddSalePage />
+            </AdminGuard>
+          } />
+          <Route path="/admin/sales" element={
+            <AdminGuard>
+              <SalesDashboardPage />
+            </AdminGuard>
+          } />
+          <Route path="/admin/sales/monthly" element={
+            <AdminGuard>
+              <MonthlySalesSummaryPage />
             </AdminGuard>
           } />
           <Route path="/profile" element={

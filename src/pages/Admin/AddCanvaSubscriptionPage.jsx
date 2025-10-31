@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Calendar, Mail, Clock, CheckCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from '../../services/api';
 
 const AddCanvaSubscriptionPage = () => {
   const navigate = useNavigate();
@@ -9,7 +10,8 @@ const AddCanvaSubscriptionPage = () => {
     email: '',
     duration: '6 Months',
     date: new Date().toISOString().split('T')[0], // Today's date as default
-    status: 'active'
+    status: 'active',
+    sendEmail: true
   });
   const [loading, setLoading] = useState(false);
 
@@ -21,12 +23,16 @@ const AddCanvaSubscriptionPage = () => {
     }));
   };
 
+  const handleToggle = () => {
+    setFormData(prev => ({ ...prev, sendEmail: !prev.sendEmail }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await fetch('https://ansari-tools-server.vercel.app/api/canva-subscriptions', {
+      const response = await fetch(`${API_BASE_URL}/canva-subscriptions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -142,6 +148,28 @@ const AddCanvaSubscriptionPage = () => {
                   <option value="expired">Expired</option>
                 </select>
               </div>
+
+          {/* Send Email Toggle */}
+          <div className="lg:col-span-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <Mail className="w-4 h-4 inline mr-2" />
+              Send Email to User
+            </label>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleToggle}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${formData.sendEmail ? 'bg-green-500' : 'bg-gray-300'}`}
+                aria-pressed={formData.sendEmail}
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${formData.sendEmail ? 'translate-x-5' : 'translate-x-1'}`}
+                />
+              </button>
+              <span className="text-sm text-gray-700">{formData.sendEmail ? 'On (default)' : 'Off'}</span>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">If turned off, subscription will be created without sending an email.</p>
+          </div>
             </div>
 
             {/* Form Actions */}
