@@ -31,31 +31,35 @@ class ApiService {
   }
 
   // Sales API
-  static async createOrUpdateSale({ date, items }) {
-    const response = await fetch(`${API_BASE_URL}/sales`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date, items }),
-    });
-    if (!response.ok) {
-      let detail = '';
-      try {
-        const raw = await response.text();
-        if (raw) {
-          try {
-            const data = JSON.parse(raw);
-            detail = data?.message || JSON.stringify(data);
-          } catch {
-            detail = raw;
-          }
+  // Sales API
+static async createOrUpdateSale(data) {
+  const response = await fetch(`${API_BASE_URL}/sales`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data), // ✅ send full flat data object
+  });
+
+  if (!response.ok) {
+    let detail = '';
+    try {
+      const raw = await response.text();
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          detail = parsed?.message || JSON.stringify(parsed);
+        } catch {
+          detail = raw;
         }
-      } catch {
-        // ignore parsing errors
       }
-      throw new Error(`Sales save failed (${response.status}): ${detail}`);
+    } catch {
+      // ignore
     }
-    return await response.json();
+    throw new Error(`Sales save failed (${response.status}): ${detail}`);
   }
+
+  return await response.json();
+}
+
 
   static async getTodaySalesSummary() {
     const response = await fetch(`${API_BASE_URL}/sales/today`);

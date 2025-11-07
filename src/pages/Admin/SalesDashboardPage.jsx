@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ApiService from "../../services/api";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, RefreshCw } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Plus, RefreshCw } from "lucide-react";
 
 export default function SalesDashboardPage() {
   const navigate = useNavigate();
@@ -180,7 +180,7 @@ export default function SalesDashboardPage() {
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="border border-gray-300 rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-blue-400 text-sm transition"
+            className="border border-gray-300 rounded-md text-center py-2 w-full focus:ring-2 focus:ring-blue-400 text-sm transition"
           />
         </div>
         <div>
@@ -201,6 +201,13 @@ export default function SalesDashboardPage() {
           </select>
         </div>
         <div className="flex items-end">
+        <Link
+              to="/admin/sales/add"
+              className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 mr-2 py-2 rounded-md w-full sm:w-auto text-sm font-medium transition"
+            >
+              <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+              Add Sale
+            </Link>
           <button
             onClick={() => loadForDate(selectedDate)}
             className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md w-full sm:w-auto text-sm font-medium transition"

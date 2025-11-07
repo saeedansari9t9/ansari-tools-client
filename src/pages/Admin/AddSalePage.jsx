@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, PlusCircle, Trash2 } from 'lucide-react';
+import { ArrowLeft, PlusCircle, Save, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import ApiService from '../../services/api';
 
@@ -12,6 +12,8 @@ export default function AddSalePage() {
     { productName: '', sellingPrice: 0, costPrice: 0 },
   ]);
 
+  const [loading, setLoading] = useState(false);
+  
   const productOptions = [
     'Canva Pro 6 Month',
     'Canva Pro 1 Year',
@@ -46,37 +48,36 @@ export default function AddSalePage() {
     );
   };
 
-  const addRow = () => {
-    setItems((prev) => [
-      ...prev,
-      { productName: '', sellingPrice: 0, costPrice: 0 },
-    ]);
-  };
-
-  const removeRow = (index) => {
-    setItems((prev) => prev.filter((_, i) => i !== index));
-  };
-
   const handleSave = async () => {
     try {
       if (!date) return toast.error('Please select a date');
-      const cleaned = items
-        .filter((it) => (it.productName || '').trim() !== '')
-        .map((it) => ({
-          productName: it.productName.trim(),
-          sellingPrice: Number(it.sellingPrice),
-          costPrice: Number(it.costPrice),
-        }));
+  
+      const cleaned = items.filter(it => it.productName.trim() !== '');
       if (cleaned.length === 0) return toast.error('Add at least one product');
-
-      await ApiService.createOrUpdateSale({ date, items: cleaned });
+  
+      const sale = cleaned[0];
+      const payload = {
+        date,
+        productName: sale.productName,
+        sellingPrice: Number(sale.sellingPrice),
+        costPrice: Number(sale.costPrice),
+        profit: Number(sale.sellingPrice) - Number(sale.costPrice),
+      };
+  
+      console.log('🟢 Payload being sent to API:', payload);
+  
+      setLoading(true); // ✅ start spinner
+      await ApiService.createOrUpdateSale(payload);
       toast.success('Sale saved successfully');
       navigate('/admin/sales');
     } catch (e) {
-      console.error(e);
       toast.error(e?.message || 'Failed to save sale');
+    } finally {
+      setLoading(false); // ✅ stop spinner even on error
     }
   };
+  
+  
 
   return (
     <div className="max-w-5xl mx-auto p-4 sm:p-6">
@@ -111,7 +112,7 @@ export default function AddSalePage() {
         <table className="min-w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-4 py-2 text-left text-gray-700 font-medium">
+              <th className="px-25 py-2 text-left text-gray-700 font-medium">
                 Product
               </th>
               <th className="px-4 py-2 text-left text-gray-700 font-medium">
@@ -122,9 +123,6 @@ export default function AddSalePage() {
               </th>
               <th className="px-4 py-2 text-left text-gray-700 font-medium">
                 Profit
-              </th>
-              <th className="px-4 py-2 text-right text-gray-700 font-medium">
-                Action
               </th>
             </tr>
           </thead>
@@ -181,14 +179,6 @@ export default function AddSalePage() {
                   <td className="px-4 py-2 text-gray-800 font-medium">
                     {profit.toFixed(2)}
                   </td>
-                  <td className="px-4 py-2 text-right">
-                    <button
-                      onClick={() => removeRow(idx)}
-                      className="text-red-500 hover:text-red-600 transition"
-                    >
-                      <Trash2 className="w-4 h-4 inline-block" />
-                    </button>
-                  </td>
                 </tr>
               );
             })}
@@ -196,15 +186,8 @@ export default function AddSalePage() {
         </table>
       </div>
 
-      {/* Add Row + Totals */}
+      {/*Total Calculations */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-3">
-        <button
-          onClick={addRow}
-          className="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-4 py-2 rounded-md transition text-sm font-medium"
-        >
-          <PlusCircle className="w-4 h-4" />
-          Add Product
-        </button>
         <div className="text-sm text-gray-700">
           <span className="mr-4">
             Total Sales:{' '}
@@ -223,11 +206,27 @@ export default function AddSalePage() {
 
       {/* Save Button */}
       <div className="mt-6">
-        <button
+      <button
           onClick={handleSave}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-md shadow-sm transition w-full sm:w-auto"
+          disabled={loading}
+          className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-md font-medium text-white shadow-sm transition w-full sm:w-auto
+            ${
+              loading
+                ? 'bg-blue-400 cursor-not-allowed opacity-80'
+                : 'bg-blue-600 hover:bg-blue-700'
+            }`}
         >
-          Save Sale
+          {loading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Saving...</span>
+            </>
+          ) : (
+            <>
+              <Save className="w-4 h-4" />
+              <span>Save Sale</span>
+            </>
+          )}
         </button>
       </div>
     </div>
