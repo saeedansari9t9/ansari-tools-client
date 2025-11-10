@@ -31,7 +31,6 @@ class ApiService {
   }
 
   // Sales API
-  // Sales API
 static async createOrUpdateSale(data) {
   const response = await fetch(`${API_BASE_URL}/sales`, {
     method: 'POST',
@@ -168,6 +167,29 @@ static async createOrUpdateSale(data) {
       throw error;
     }
   }
+
+  // Expenses API
+  static async addExpense({ title, amount, date, note }) {
+    const response = await fetch(`${API_BASE_URL}/expenses`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, amount, date, note }),
+    });
+  
+    if (!response.ok) {
+      let detail = "";
+      try {
+        const data = await response.json();
+        detail = data?.message || JSON.stringify(data);
+      } catch {
+        detail = await response.text();
+      }
+      throw new Error(`Failed to save expense (${response.status}): ${detail}`);
+    }
+  
+    return await response.json();
+  }
+  
 
   // Auth API
   static async login(email, password) {

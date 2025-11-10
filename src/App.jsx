@@ -1,9 +1,34 @@
 // import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ShoppingCart, Star, Check, ArrowRight, Menu, X, Search, User, Heart, Zap, Palette, PenTool, BarChart3, Bot, Globe, Shield, Users, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import AnsariToolsPage from './pages/AnsariToolsPage'
+import {
+  ShoppingCart,
+  Star,
+  Check,
+  ArrowRight,
+  Menu,
+  X,
+  Search,
+  User,
+  Heart,
+  Zap,
+  Palette,
+  PenTool,
+  BarChart3,
+  Bot,
+  Globe,
+  Shield,
+  Users,
+  Phone,
+  Mail,
+  MapPin,
+  Facebook,
+  Twitter,
+  Instagram,
+  Youtube,
+} from "lucide-react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AnsariToolsPage from "./pages/AnsariToolsPage";
 import NavBarComponent from "./components/NavBarComponent";
 import FooterComponent from "./components/FooterComponent";
 import WhatsAppButton from "./components/WhatsAppButton";
@@ -33,6 +58,8 @@ import AddSalePage from "./pages/Admin/AddSalePage";
 import SalesDashboardPage from "./pages/Admin/SalesDashboardPage";
 import MonthlySalesSummaryPage from "./pages/Admin/MonthlySalesSummaryPage";
 import ProfilePage from "./pages/ProfilePage";
+import AddExpensesPage from "./pages/Admin/AddExpensesPage";
+
 
 function App() {
   return (
@@ -52,68 +79,112 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
           {/* Admin Auth routes - hidden from public access */}
           <Route path="/admin/login" element={<AdminLoginPage />} />
-          
+
           {/* Admin Routes - Protected by AdminGuard */}
-          <Route path="/admin" element={
-            <AdminGuard>
-              <AdminDashboard />
-            </AdminGuard>
-          } />
-          <Route path="/admin/add-product" element={
-            <AdminGuard>
-              <AddProductPage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/edit-product/:id" element={
-            <AdminGuard>
-              <EditProductPage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/canva-subscriptions" element={
-            <AdminGuard>
-              <CanvaSubscriptionsPage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/add-canva-subscription" element={
-            <AdminGuard>
-              <AddCanvaSubscriptionPage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/add-admin" element={
-            <AdminGuard>
-              <AddAdminPage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/edit-profile" element={
-            <AdminGuard>
-              <EditProfilePage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/change-password" element={
-            <AdminGuard>
-              <ChangePasswordPage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/sales/add" element={
-            <AdminGuard>
-              <AddSalePage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/sales" element={
-            <AdminGuard>
-              <SalesDashboardPage />
-            </AdminGuard>
-          } />
-          <Route path="/admin/sales/monthly" element={
-            <AdminGuard>
-              <MonthlySalesSummaryPage />
-            </AdminGuard>
-          } />
-          <Route path="/profile" element={
-            <PrivateRoute>
-              <ProfilePage />
-            </PrivateRoute>
-          } />
+          <Route
+            path="/admin"
+            element={
+              <AdminGuard>
+                <AdminDashboard />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/add-product"
+            element={
+              <AdminGuard>
+                <AddProductPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/edit-product/:id"
+            element={
+              <AdminGuard>
+                <EditProductPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/canva-subscriptions"
+            element={
+              <AdminGuard>
+                <CanvaSubscriptionsPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/add-canva-subscription"
+            element={
+              <AdminGuard>
+                <AddCanvaSubscriptionPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/add-admin"
+            element={
+              <AdminGuard>
+                <AddAdminPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/edit-profile"
+            element={
+              <AdminGuard>
+                <EditProfilePage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/change-password"
+            element={
+              <AdminGuard>
+                <ChangePasswordPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/sales/add"
+            element={
+              <AdminGuard>
+                <AddSalePage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/sales"
+            element={
+              <AdminGuard>
+                <SalesDashboardPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/sales/monthly"
+            element={
+              <AdminGuard>
+                <MonthlySalesSummaryPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/admin/expenses"
+            element={
+              <AdminGuard>
+                <AddExpensesPage />
+              </AdminGuard>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
           {/* Catch-all route - redirect any non-existent page to home */}
           <Route path="*" element={<Navigate to="/" replace />} />
           {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
@@ -133,7 +204,7 @@ function App() {
         />
       </BrowserRouter>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
