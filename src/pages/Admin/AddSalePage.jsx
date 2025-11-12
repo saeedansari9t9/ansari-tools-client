@@ -17,7 +17,10 @@ export default function AddSalePage() {
   const productOptions = [
     'Canva Pro 6 Month',
     'Canva Pro 1 Year',
+    'CapCut Pro',
     'ChatGPT Semi Private',
+    'Cousera Plus',
+    'Grammarly',
     'Semrush',
     'Moz',
     'Ubersuggest',
@@ -25,6 +28,9 @@ export default function AddSalePage() {
     'Turnitin Instructor',
     'Envato Elements',
     'Placeit',
+    'Student Plan',
+    'Blogging Plan',
+    'Agency Plan',
     'Storyblocks',
   ];
 
