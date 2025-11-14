@@ -30,10 +30,19 @@ export default function AddExpensesPage() {
   const [filterMonth, setFilterMonth] = useState("");
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [filteredTotal, setFilteredTotal] = useState(0);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // 🧮 Filter Expenses Function
   useEffect(() => {
     let filtered = [...expenses];
+
+    // 🔍 Search by title
+    if (searchTerm) {
+      filtered = filtered.filter((e) =>
+        e.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
 
     if (filterCategory) {
       filtered = filtered.filter(
@@ -53,7 +62,7 @@ export default function AddExpensesPage() {
     setFilteredExpenses(filtered);
     const totalAmt = filtered.reduce((sum, e) => sum + e.amount, 0);
     setFilteredTotal(totalAmt);
-  }, [expenses, filterCategory, filterDate, filterMonth]);
+  }, [expenses, searchTerm, filterCategory, filterDate, filterMonth]);
 
   // Fetch all expenses
   useEffect(() => {
@@ -271,71 +280,125 @@ export default function AddExpensesPage() {
         </div>
       </form>
 
-      {/* 🔍 Filters Section */}
-      <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4 mb-6">
-        <h2 className="text-lg font-semibold mb-3 text-gray-800">Filters</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* Filter by Category */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Category
-            </label>
-            <select
-              value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">All Categories</option>
-              <option value="Food & Drinks">Food & Drinks</option>
-              <option value="Travel">Travel</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Dining Out">Dining Out</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Balance & Packages">Balance & Packages</option>
-              <option value="Extra Purchasing">Extra Purchasing</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          {/* Filter by Date */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Date
-            </label>
-            <input
-              type="date"
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Filter by Month */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Month
-            </label>
-            <input
-              type="month"
-              value={filterMonth}
-              onChange={(e) => setFilterMonth(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+      <div className="flex items-center justify-between mb-4">
+        {/* 🔍 Search Input */}
+        <div className="flex-1 max-w-md">
+          <input
+            type="text"
+            placeholder="Search expenses..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 text-sm shadow-sm"
+          />
         </div>
 
-        {/* Reset Filters Button */}
-        <div className="text-right mt-3">
+        {/* ⚙️ Filter Icon Button */}
+        <div className="relative inline-block ml-3">
           <button
-            onClick={() => {
-              setFilterCategory("");
-              setFilterDate("");
-              setFilterMonth("");
-            }}
-            className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 text-sm font-medium"
+            onClick={() => setShowFilterModal(!showFilterModal)}
+            className="p-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700"
           >
-            Reset Filters
+            {/* HeroIcons or FontAwesome icon optional — using SVG here */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 6h9m-15 6h15m-12 6h12"
+              />
+            </svg>
           </button>
+
+          {/* Popup Here */}
+          {showFilterModal && (
+            <div className="absolute right-1/10 top-0 w-72 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 animate-fadeIn">
+              {/* Header */}
+              <div className="flex justify-between items-center mb-3">
+                <h2 className="text-md font-semibold text-gray-800">Filters</h2>
+                <button
+                  onClick={() => setShowFilterModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-xl"
+                >
+                  &times;
+                </button>
+              </div>
+
+              {/* Category */}
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category
+                </label>
+                <select
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                >
+                  <option value="">All Categories</option>
+                  <option value="Food & Drinks">Food & Drinks</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Dining Out">Dining Out</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Balance & Packages">Balance & Packages</option>
+                  <option value="Extra Purchasing">Extra Purchasing</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              {/* Date */}
+              <div className="mb-3">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Date
+                </label>
+                <input
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                />
+              </div>
+
+              {/* Month */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Month
+                </label>
+                <input
+                  type="month"
+                  value={filterMonth}
+                  onChange={(e) => setFilterMonth(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-between">
+                <button
+                  onClick={() => {
+                    setFilterCategory("");
+                    setFilterDate("");
+                    setFilterMonth("");
+                  }}
+                  className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 text-sm"
+                >
+                  Reset
+                </button>
+
+                <button
+                  onClick={() => setShowFilterModal(false)}
+                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm"
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

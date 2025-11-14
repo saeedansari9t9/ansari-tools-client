@@ -36,6 +36,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminGuard from "./components/AdminGuard";
+import "./index.css";
 
 import HomePage from "./pages/HomePage";
 import PricingPage from "./pages/PricingPage";
