@@ -158,127 +158,129 @@ export default function AddExpensesPage() {
 
       {/* Add Expense Form */}
       <form
-        onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow-md border border-gray-100 p-3 sm:p-6 mb-6 space-y-4"
+  onSubmit={handleSubmit}
+  className="bg-white rounded-lg shadow-md border border-gray-100 p-3 mb-4 space-y-3"
+>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+
+    {/* Title */}
+    <div>
+      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
+        <FileText className="w-3.5 h-3.5 inline mr-1 text-gray-500" />
+        Title *
+      </label>
+      <input
+        type="text"
+        name="title"
+        value={form.title}
+        onChange={handleChange}
+        className="w-full px-2 py-1.5 border border-gray-300 rounded-md text-[12px] focus:ring-1 focus:ring-blue-500"
+        placeholder="Dinner with friends"
+        required
+      />
+    </div>
+
+    {/* Category */}
+    <div>
+      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
+        Category *
+      </label>
+      <select
+        name="category"
+        value={form.category}
+        onChange={handleChange}
+        className="w-full px-2 py-1.5 border border-gray-300 rounded-md text-[12px] focus:ring-1 focus:ring-blue-500"
+        required
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          {/* Title */}
-          <div>
-            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
-              <FileText className="w-4 h-4 inline mr-1 text-gray-500" />
-              Title *
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={form.title}
-              onChange={handleChange}
-              className="w-full px-2 py-1.5 sm:px-3 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
-              placeholder="Dinner with friends"
-              required
-            />
-          </div>
+        <option value="">Select Category</option>
+        <option value="Food & Drinks">Food & Drinks</option>
+        <option value="Travel">Travel</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Dining Out">Dining Out</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Balance & Packages">Balance & Packages</option>
+        <option value="Extra Purchasing">Extra Purchasing</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
 
-          {/* Category */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Category *
-            </label>
-            <select
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              required
-            >
-              <option value="">Select Category</option>
-              <option value="Food & Drinks">Food & Drinks</option>
-              <option value="Travel">Travel</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Dining Out">Dining Out</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Balance & Packages">Balance & Packages</option>
-              <option value="Extra Purchasing">Extra Purchasing</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
+    {/* Amount */}
+    <div>
+      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
+        <DollarSign className="w-3.5 h-3.5 inline mr-1 text-gray-500" />
+        Amount (PKR) *
+      </label>
+      <input
+        type="number"
+        name="amount"
+        min="0"
+        step="0.01"
+        value={form.amount}
+        onChange={handleChange}
+        className="w-full px-2 py-1.5 border border-gray-300 rounded-md text-[12px] focus:ring-1 focus:ring-blue-500"
+        placeholder="2500"
+        required
+      />
+    </div>
 
-          {/* Amount */}
-          <div>
-            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
-              <DollarSign className="w-4 h-4 inline mr-1 text-gray-500" />
-              Amount (PKR) *
-            </label>
-            <input
-              type="number"
-              name="amount"
-              min="0"
-              step="0.01"
-              value={form.amount}
-              onChange={handleChange}
-              className="w-full px-2 py-1.5 sm:px-3 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
-              placeholder="2500"
-              required
-            />
-          </div>
+    {/* Date */}
+    <div>
+      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
+        <Calendar className="w-3.5 h-3.5 inline mr-1 text-gray-500" />
+        Date *
+      </label>
+      <input
+        type="date"
+        name="date"
+        value={form.date}
+        onChange={handleChange}
+        className="w-full px-2 py-1.5 border border-gray-300 rounded-md text-[12px] focus:ring-1 focus:ring-blue-500"
+        required
+      />
+    </div>
 
-          {/* Date */}
-          <div>
-            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
-              <Calendar className="w-4 h-4 inline mr-1 text-gray-500" />
-              Date *
-            </label>
-            <input
-              type="date"
-              name="date"
-              value={form.date}
-              onChange={handleChange}
-              className="w-full px-2 py-1.5 sm:px-3 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
-              required
-            />
-          </div>
+    {/* Note */}
+    <div className="lg:col-span-2">
+      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
+        Note
+      </label>
+      <input
+        type="text"
+        name="note"
+        value={form.note}
+        onChange={handleChange}
+        className="w-full px-2 py-1.5 border border-gray-300 rounded-md text-[12px] focus:ring-1 focus:ring-blue-500"
+        placeholder="BBQ Tonight with friends"
+      />
+    </div>
+  </div>
 
-          {/* Note */}
-          <div className="lg:col-span-2">
-            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
-              Note
-            </label>
-            <input
-              type="text"
-              name="note"
-              value={form.note}
-              onChange={handleChange}
-              className="w-full px-2 py-1.5 sm:px-3 sm:py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition"
-              placeholder="BBQ Tonight with friends"
-            />
-          </div>
-        </div>
+  {/* Button */}
+  <div className="flex justify-end">
+    <button
+      type="submit"
+      disabled={loading}
+      className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-white text-[13px] font-medium transition ${
+        loading
+          ? "bg-blue-400 cursor-not-allowed"
+          : "bg-blue-600 hover:bg-blue-700"
+      }`}
+    >
+      {loading ? (
+        <>
+          <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          Saving...
+        </>
+      ) : (
+        <>
+          <PlusCircle className="w-3.5 h-3.5" />
+          Add
+        </>
+      )}
+    </button>
+  </div>
+</form>
 
-        {/* Button */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={loading}
-            className={`flex items-center justify-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-md text-white font-medium transition-all duration-200 ${
-              loading
-                ? "bg-blue-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {loading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Saving...
-              </>
-            ) : (
-              <>
-                <PlusCircle className="w-4 h-4" />
-                Add Expense
-              </>
-            )}
-          </button>
-        </div>
-      </form>
 
       <div className="flex items-center justify-between mb-4">
         {/* 🔍 Search Input */}
@@ -317,27 +319,49 @@ export default function AddExpensesPage() {
 
           {/* Popup Here */}
           {showFilterModal && (
-            <div className="absolute right-1/10 top-0 w-72 bg-white rounded-xl shadow-xl border border-gray-200 p-4 z-50 animate-fadeIn">
+            <div
+              className="
+      absolute 
+      right-0 
+      top-10 
+      w-52              /* even smaller width */
+      sm:w-60           /* small even on desktop */
+      bg-white 
+      rounded-lg        /* smaller border-radius */
+      shadow-lg 
+      border 
+      border-gray-200 
+      p-2.5             /* very small padding */
+      z-50 
+      animate-fadeIn
+    "
+            >
               {/* Header */}
-              <div className="flex justify-between items-center mb-3">
-                <h2 className="text-md font-semibold text-gray-800">Filters</h2>
+              <div className="flex justify-between items-center mb-1.5">
+                <h2 className="text-xs font-semibold text-gray-800">Filters</h2>
                 <button
                   onClick={() => setShowFilterModal(false)}
-                  className="text-gray-500 hover:text-gray-700 text-xl"
+                  className="text-gray-500 hover:text-gray-700 text-lg leading-none"
                 >
                   &times;
                 </button>
               </div>
 
               {/* Category */}
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="mb-2">
+                <label className="block text-[11px] font-medium text-gray-700 mb-0.5">
                   Category
                 </label>
                 <select
                   value={filterCategory}
                   onChange={(e) => setFilterCategory(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                  className="
+          w-full 
+          border border-gray-300 
+          rounded-md 
+          px-2 py-1.5 
+          text-[11px]
+        "
                 >
                   <option value="">All Categories</option>
                   <option value="Food & Drinks">Food & Drinks</option>
@@ -352,47 +376,71 @@ export default function AddExpensesPage() {
               </div>
 
               {/* Date */}
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="mb-2">
+                <label className="block text-[11px] font-medium text-gray-700 mb-0.5">
                   Date
                 </label>
                 <input
                   type="date"
                   value={filterDate}
                   onChange={(e) => setFilterDate(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                  className="
+          w-full 
+          border border-gray-300 
+          rounded-md 
+          text-center py-1.5 
+          text-[11px]
+        "
                 />
               </div>
 
               {/* Month */}
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="mb-2">
+                <label className="block text-[11px] font-medium text-gray-700 mb-0.5">
                   Month
                 </label>
                 <input
                   type="month"
                   value={filterMonth}
                   onChange={(e) => setFilterMonth(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                  className="
+          w-full 
+          border border-gray-300 
+          rounded-md 
+          py-1.5 
+          text-[11px] text-center
+        "
                 />
               </div>
 
               {/* Buttons */}
-              <div className="flex justify-between">
+              <div className="flex justify-between mt-1">
                 <button
                   onClick={() => {
                     setFilterCategory("");
                     setFilterDate("");
                     setFilterMonth("");
                   }}
-                  className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-md text-gray-700 text-sm"
+                  className="
+          px-2 py-1 
+          bg-gray-200 hover:bg-gray-300 
+          rounded 
+          text-[11px] 
+          text-gray-700
+        "
                 >
                   Reset
                 </button>
 
                 <button
                   onClick={() => setShowFilterModal(false)}
-                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm"
+                  className="
+          px-2 py-1 
+          bg-blue-600 hover:bg-blue-700 
+          text-white 
+          rounded 
+          text-[11px]
+        "
                 >
                   Apply
                 </button>
