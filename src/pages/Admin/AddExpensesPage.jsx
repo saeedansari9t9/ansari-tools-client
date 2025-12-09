@@ -21,7 +21,7 @@ export default function AddExpensesPage() {
     amount: "",
     date: today,
     note: "",
-    category: "other",
+    category: "",
   });
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
@@ -32,15 +32,20 @@ export default function AddExpensesPage() {
   const [filteredTotal, setFilteredTotal] = useState(0);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
 
   // 🧮 Filter Expenses Function
   useEffect(() => {
     let filtered = [...expenses];
 
-    // 🔍 Search by title
+    // 🔍 Search by title, category, and notes
     if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter((e) =>
-        e.title.toLowerCase().includes(searchTerm.toLowerCase())
+        e.title.toLowerCase().includes(searchLower) ||
+        e.category.toLowerCase().includes(searchLower) ||
+        (e.note && e.note.toLowerCase().includes(searchLower))
       );
     }
 
@@ -59,10 +64,23 @@ export default function AddExpensesPage() {
       filtered = filtered.filter((e) => new Date(e.date).getMonth() === month);
     }
 
-    setFilteredExpenses(filtered);
+    // Calculate total
     const totalAmt = filtered.reduce((sum, e) => sum + e.amount, 0);
     setFilteredTotal(totalAmt);
-  }, [expenses, searchTerm, filterCategory, filterDate, filterMonth]);
+
+    // Apply pagination
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedExpenses = filtered.slice(startIndex, endIndex);
+
+    setFilteredExpenses(paginatedExpenses);
+    
+    // Reset to page 1 if current page is beyond total pages
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(1);
+    }
+  }, [expenses, searchTerm, filterCategory, filterDate, filterMonth, currentPage, itemsPerPage]);
 
   // Fetch all expenses
   useEffect(() => {
@@ -90,8 +108,8 @@ export default function AddExpensesPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (!form.title || !form.amount || !form.date) {
-        return toast.error("Title, amount & date are required");
+      if (!form.title || !form.amount || !form.date || !form.category) {
+        return toast.error("Title, amount, date & category are required");
       }
 
       setLoading(true);
@@ -110,7 +128,7 @@ export default function AddExpensesPage() {
       if (!res.ok) throw new Error("Failed to save expense");
 
       toast.success("Expense added successfully");
-      setForm({ title: "", amount: "", date: today, note: "" });
+      setForm({ title: "", amount: "", date: today, note: "", category: "" });
       fetchExpenses();
     } catch (error) {
       toast.error(error.message);
@@ -287,9 +305,12 @@ export default function AddExpensesPage() {
         <div className="flex-1 max-w-md">
           <input
             type="text"
-            placeholder="Search expenses..."
+            placeholder="Search by title, category, or notes..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 text-sm shadow-sm"
           />
         </div>
@@ -420,6 +441,7 @@ export default function AddExpensesPage() {
                     setFilterCategory("");
                     setFilterDate("");
                     setFilterMonth("");
+                    setCurrentPage(1);
                   }}
                   className="
           px-2 py-1 
@@ -433,7 +455,10 @@ export default function AddExpensesPage() {
                 </button>
 
                 <button
-                  onClick={() => setShowFilterModal(false)}
+                  onClick={() => {
+                    setShowFilterModal(false);
+                    setCurrentPage(1);
+                  }}
                   className="
           px-2 py-1 
           bg-blue-600 hover:bg-blue-700 
@@ -520,6 +545,61 @@ export default function AddExpensesPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination */}
+      {(() => {
+        const totalFiltered = expenses.filter((e) => {
+          let match = true;
+          if (searchTerm) {
+            const searchLower = searchTerm.toLowerCase();
+            match = match && (
+              e.title.toLowerCase().includes(searchLower) ||
+              e.category.toLowerCase().includes(searchLower) ||
+              (e.note && e.note.toLowerCase().includes(searchLower))
+            );
+          }
+          if (filterCategory) {
+            match = match && e.category.toLowerCase() === filterCategory.toLowerCase();
+          }
+          if (filterDate) {
+            match = match && e.date.slice(0, 10) === filterDate;
+          }
+          if (filterMonth) {
+            const month = new Date(filterMonth).getMonth();
+            match = match && new Date(e.date).getMonth() === month;
+          }
+          return match;
+        });
+        const totalPages = Math.ceil(totalFiltered.length / itemsPerPage);
+        
+        if (totalPages > 1) {
+          return (
+            <div className="mt-4 bg-white rounded-xl shadow-md border border-gray-100 px-4 py-3 flex items-center justify-between">
+              <div className="text-sm text-gray-700">
+                Page <span className="font-medium">{currentPage}</span> of{' '}
+                <span className="font-medium">{totalPages}</span>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          );
+        }
+        return null;
+      })()}
 
       {/* ✅ Footer Totals Section */}
       <div className="mt-4 w-full bg-white border border-gray-100 shadow-sm rounded-xl overflow-hidden">

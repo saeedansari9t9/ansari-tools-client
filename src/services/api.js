@@ -79,6 +79,30 @@ static async createOrUpdateSale(data) {
     return await response.json();
   }
 
+  static async updateSale(id, data) {
+    const response = await fetch(`${API_BASE_URL}/sales/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Failed to update sale' }));
+      throw new Error(error.message || 'Failed to update sale');
+    }
+    return await response.json();
+  }
+
+  static async deleteSale(id) {
+    const response = await fetch(`${API_BASE_URL}/sales/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Failed to delete sale' }));
+      throw new Error(error.message || 'Failed to delete sale');
+    }
+    return await response.json();
+  }
+
   static async getProduct(id) {
     try {
       const response = await fetch(`${API_BASE_URL}/products/${id}`);

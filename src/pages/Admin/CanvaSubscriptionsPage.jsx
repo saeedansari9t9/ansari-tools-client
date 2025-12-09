@@ -83,11 +83,11 @@ const CanvaSubscriptionsPage = () => {
       const sortedSubs = sortSubscriptions(filteredSubs);
       
       // Update total pages based on filtered results
-      setTotalPages(Math.ceil(sortedSubs.length / 10));
+      setTotalPages(Math.ceil(sortedSubs.length / 20));
       
-      // Apply pagination (show 10 items per page)
-      const startIndex = (currentPage - 1) * 10;
-      const endIndex = startIndex + 10;
+      // Apply pagination (show 20 items per page)
+      const startIndex = (currentPage - 1) * 20;
+      const endIndex = startIndex + 20;
       const paginatedSubs = sortedSubs.slice(startIndex, endIndex);
       
       setSubscriptions(paginatedSubs);
