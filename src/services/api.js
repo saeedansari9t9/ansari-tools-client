@@ -1,198 +1,261 @@
 // services/api.js
-
 const inferBaseUrl = () => {
   const envUrl = import.meta.env.VITE_API_BASE_URL;
   if (envUrl) return envUrl;
-
-  if (typeof window !== "undefined") {
-    const isLocal =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1";
-
-    if (isLocal) return "http://localhost:5000/api";
+  if (typeof window !== 'undefined') {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocal) return 'http://localhost:5000/api';
   }
-
-  return "https://ansari-tools-server.vercel.app/api";
+  return 'https://ansari-tools-server.vercel.app/api';
 };
 
 export const API_BASE_URL = inferBaseUrl();
 
-/**
- * ✅ apiFetch: fetch wrapper
- * - Always sends cookies (admin_token, etc.)
- * - Handles JSON + FormData
- * - Gives better error messages
- */
-const apiFetch = async (url, options = {}) => {
-  const isFormData = options.body instanceof FormData;
+class ApiService {
+  // Products API
+  static async getProducts(category = null) {
+    try {
+      const url = category 
+        ? `${API_BASE_URL}/products?category=${category}`
+        : `${API_BASE_URL}/products`;
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      throw error;
+    }
+  }
 
-  const res = await fetch(url, {
-    credentials: "include", // ✅ IMPORTANT (cookies)
-    ...options,
-    headers: {
-      ...(isFormData ? {} : { "Content-Type": "application/json" }),
-      ...(options.headers || {}),
-    },
+  // Sales API
+static async createOrUpdateSale(data) {
+  const response = await fetch(`${API_BASE_URL}/sales`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data), // ✅ send full flat data object
   });
 
-  // If not OK -> extract best error message
-  if (!res.ok) {
-    let detail = "";
+  if (!response.ok) {
+    let detail = '';
     try {
-      const text = await res.text();
-      if (text) {
+      const raw = await response.text();
+      if (raw) {
         try {
-          const parsed = JSON.parse(text);
+          const parsed = JSON.parse(raw);
           detail = parsed?.message || JSON.stringify(parsed);
         } catch {
-          detail = text;
+          detail = raw;
         }
       }
     } catch {
       // ignore
     }
-
-    throw new Error(`Request failed (${res.status}): ${detail || res.statusText}`);
+    throw new Error(`Sales save failed (${response.status}): ${detail}`);
   }
 
-  // Some endpoints may return empty body
-  const contentType = res.headers.get("content-type") || "";
-  if (contentType.includes("application/json")) return await res.json();
+  return await response.json();
+}
 
-  // Fallback: return text
-  return await res.text();
-};
-
-class ApiService {
-  // ===================== PRODUCTS =====================
-
-  static async getProducts(category = null) {
-    const url = category
-      ? `${API_BASE_URL}/products?category=${encodeURIComponent(category)}`
-      : `${API_BASE_URL}/products`;
-
-    return apiFetch(url);
-  }
-
-  static async getProduct(id) {
-    return apiFetch(`${API_BASE_URL}/products/${id}`);
-  }
-
-  static async createProduct(productData) {
-    return apiFetch(`${API_BASE_URL}/products`, {
-      method: "POST",
-      body: JSON.stringify(productData),
-    });
-  }
-
-  static async updateProduct(id, productData) {
-    return apiFetch(`${API_BASE_URL}/products/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(productData),
-    });
-  }
-
-  static async deleteProduct(id) {
-    return apiFetch(`${API_BASE_URL}/products/${id}`, {
-      method: "DELETE",
-    });
-  }
-
-  static async uploadImage(imageFile) {
-    const formData = new FormData();
-    formData.append("image", imageFile);
-
-    return apiFetch(`${API_BASE_URL}/products/upload-image`, {
-      method: "POST",
-      body: formData, // ✅ FormData auto handled
-    });
-  }
-
-  // ===================== SALES =====================
-
-  static async createOrUpdateSale(data) {
-    return apiFetch(`${API_BASE_URL}/sales`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
 
   static async getTodaySalesSummary() {
-    return apiFetch(`${API_BASE_URL}/sales/today`);
+    const response = await fetch(`${API_BASE_URL}/sales/today`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
   }
 
   static async getSalesByDate(date) {
-    return apiFetch(`${API_BASE_URL}/sales/by-date?date=${encodeURIComponent(date)}`);
+    const response = await fetch(`${API_BASE_URL}/sales/by-date?date=${encodeURIComponent(date)}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
   }
 
   static async getMonthlySummary({ year, month }) {
-    const params = new URLSearchParams({
-      year: String(year),
-      month: String(month),
-    });
-    return apiFetch(`${API_BASE_URL}/sales/monthly?${params.toString()}`);
+    const params = new URLSearchParams({ year: String(year), month: String(month) });
+    const response = await fetch(`${API_BASE_URL}/sales/monthly?${params.toString()}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    return await response.json();
   }
 
   static async updateSale(id, data) {
-    return apiFetch(`${API_BASE_URL}/sales/${id}`, {
-      method: "PUT",
+    const response = await fetch(`${API_BASE_URL}/sales/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Failed to update sale' }));
+      throw new Error(error.message || 'Failed to update sale');
+    }
+    return await response.json();
   }
 
   static async deleteSale(id) {
-    return apiFetch(`${API_BASE_URL}/sales/${id}`, {
-      method: "DELETE",
+    const response = await fetch(`${API_BASE_URL}/sales/${id}`, {
+      method: 'DELETE',
     });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Failed to delete sale' }));
+      throw new Error(error.message || 'Failed to delete sale');
+    }
+    return await response.json();
   }
 
-  // ===================== EXPENSES =====================
+  static async getProduct(id) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/products/${id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching product:', error);
+      throw error;
+    }
+  }
 
+  static async createProduct(productData) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/products`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating product:', error);
+      throw error;
+    }
+  }
+
+  static async updateProduct(id, productData) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error updating product:', error);
+      throw error;
+    }
+  }
+
+  static async deleteProduct(id) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      throw error;
+    }
+  }
+
+  static async uploadImage(imageFile) {
+    try {
+      const formData = new FormData();
+      formData.append('image', imageFile);
+
+      const response = await fetch(`${API_BASE_URL}/products/upload-image`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
+  }
+
+  // Expenses API
   static async addExpense({ title, amount, date, note }) {
-    return apiFetch(`${API_BASE_URL}/expenses`, {
+    const response = await fetch(`${API_BASE_URL}/expenses`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, amount, date, note }),
     });
+  
+    if (!response.ok) {
+      let detail = "";
+      try {
+        const data = await response.json();
+        detail = data?.message || JSON.stringify(data);
+      } catch {
+        detail = await response.text();
+      }
+      throw new Error(`Failed to save expense (${response.status}): ${detail}`);
+    }
+  
+    return await response.json();
   }
+  
 
-  // ===================== AUTH (OLD users routes) =====================
-  // Note: tumhare backend me agar routes /api/admins/login hai,
-  // to yahan endpoints adjust kar sakte ho.
-
+  // Auth API
   static async login(email, password) {
-    return apiFetch(`${API_BASE_URL}/users/login`, {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error logging in:', error);
+      throw error;
+    }
   }
 
   static async signup(email, password) {
-    return apiFetch(`${API_BASE_URL}/users/signup`, {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error signing up:', error);
+      throw error;
+    }
   }
 
-  // ===================== ADMIN AUTH (Recommended) =====================
-  // Agar tum admin cookie-based SSO use kar rahe ho:
-
-  static async adminLogin(email, password) {
-    return apiFetch(`${API_BASE_URL}/admins/login`, {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
-  }
-
-  static async adminVerify() {
-    return apiFetch(`${API_BASE_URL}/admins/verify`);
-  }
-
-  static async adminLogout() {
-    return apiFetch(`${API_BASE_URL}/admins/logout`, {
-      method: "POST",
-    });
-  }
 }
 
 export default ApiService;
-export { apiFetch };
