@@ -19,7 +19,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 import logo from "../assets/images/logo.png";
-import { API } from "../utils/api"; // axios instance
+import { API } from "../services/api"; // axios instance
 
 const NavBarComponent = () => {
   const navigate = useNavigate();
