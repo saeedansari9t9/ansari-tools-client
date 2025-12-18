@@ -1,4 +1,6 @@
 // services/api.js
+import axios from "axios";
+
 const inferBaseUrl = () => {
   const envUrl = import.meta.env.VITE_API_BASE_URL;
   if (envUrl) return envUrl;
@@ -10,6 +12,15 @@ const inferBaseUrl = () => {
 };
 
 export const API_BASE_URL = inferBaseUrl();
+
+// ✅ AXIOS INSTANCE (cookies support)
+export const API = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true, // 🔥 required for cookies on subdomains
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 class ApiService {
   // Products API
