@@ -37,7 +37,7 @@ const NavBarComponent = () => {
 
   const logout = async () => {
     try {
-      await API.post("/admins/logout"); // withCredentials agar instance me set hai to yahan nahi chahiye
+      await API.post("/admins/logout", {}, { withCredentials: true }); // withCredentials agar instance me set hai to yahan nahi chahiye
       localStorage.removeItem("adminToken");
       localStorage.removeItem("adminData");
     } catch (err) {
