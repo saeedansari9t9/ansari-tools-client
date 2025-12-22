@@ -75,7 +75,7 @@ const EditProfilePage = () => {
     try {
       const adminToken = localStorage.getItem('adminToken');
       
-      const response = await fetch(`https://ansari-tools-server.vercel.app/api/admins/${user.id}`, {
+      const response = await fetch(`https://api.ansaritools.com/api/admins/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

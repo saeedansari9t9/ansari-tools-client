@@ -181,7 +181,7 @@ const AddAdminPage = () => {
 
       const adminToken = localStorage.getItem('adminToken');
       
-      const response = await fetch('https://ansari-tools-server.vercel.app/api/admins', {
+      const response = await fetch('https://api.ansaritools.com/api/admins', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

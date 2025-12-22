@@ -19,7 +19,7 @@ const AdminGuard = ({ children }) => {
         }
 
         // Verify token with backend
-        const response = await fetch('https://ansari-tools-server.vercel.app/api/admins/verify', {
+        const response = await fetch('https://api.ansaritools.com/api/admins/verify', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${adminToken}`,

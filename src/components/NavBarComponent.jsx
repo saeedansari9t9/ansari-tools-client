@@ -242,6 +242,14 @@ const NavBarComponent = () => {
                       </div>
 
                       <div className="py-1">
+                      <Link
+                          to="/admin"
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                          onClick={() => setProfileDropdown(false)}
+                        >
+                          <Shield className="w-4 h-4 mr-3" />
+                          Admin Panel
+                        </Link>
                         <Link
                           to="/admin/edit-profile"
                           className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
@@ -258,15 +266,6 @@ const NavBarComponent = () => {
                         >
                           <Lock className="w-4 h-4 mr-3" />
                           Change Password
-                        </Link>
-
-                        <Link
-                          to="/admin"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                          onClick={() => setProfileDropdown(false)}
-                        >
-                          <Shield className="w-4 h-4 mr-3" />
-                          Admin Panel
                         </Link>
 
                         {isMainAdmin && (

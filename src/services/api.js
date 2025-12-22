@@ -8,7 +8,7 @@ const inferBaseUrl = () => {
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isLocal) return 'http://localhost:5000/api';
   }
-  return 'https://ansari-tools-server.vercel.app/api';
+  return 'https://api.ansaritools.com/api';
 };
 
 export const API_BASE_URL = inferBaseUrl();
