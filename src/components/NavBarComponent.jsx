@@ -17,6 +17,7 @@ import {
   Wrench,
   Star,
   HelpCircle,
+  LayoutDashboard,
 } from "lucide-react";
 import logo from "../assets/images/logo.png";
 import { API } from "../services/api"; // axios instance
