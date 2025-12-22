@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import {
   Menu,
@@ -20,10 +20,9 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import logo from "../assets/images/logo.png";
-import { API } from "../services/api"; // axios instance
+import { logoutAll } from "../services/logout";
 
 const NavBarComponent = () => {
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [websiteDropdown, setWebsiteDropdown] = useState(false);
@@ -37,13 +36,8 @@ const NavBarComponent = () => {
   const isMainAdmin = user && user.email === "saeedansari9t9@gmail.com";
 
   const logout = async () => {
-    try {
-      await API.post("/admins/logout", {}, { withCredentials: true }); // withCredentials agar instance me set hai to yahan nahi chahiye
-      localStorage.removeItem("adminToken");
-      localStorage.removeItem("adminData");
-    } catch (err) {
-      console.error("Logout failed", err);
-    }
+    await logoutAll();
+    window.location.href = "/login"; 
   };
   // Handle click outside to close the sidebar and prevent body scroll
   useEffect(() => {
@@ -292,7 +286,6 @@ const NavBarComponent = () => {
                           onClick={async () => {
                             setProfileDropdown(false);
                             await logout();
-                            navigate("/");
                           }}
                           className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                         >
@@ -627,7 +620,6 @@ const NavBarComponent = () => {
                     onClick={async () => {
                       setOpen(false);
                       await logout();
-                      navigate("/");
                     }}
                     className="w-full flex items-center space-x-2 px-6 py-3 text-red-300 rounded-lg font-medium hover:bg-red-500/20 transition-all duration-200"
                   >
