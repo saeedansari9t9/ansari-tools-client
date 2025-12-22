@@ -44,7 +44,7 @@ const NavBarComponent = () => {
     } catch (err) {
       console.error("Logout failed", err);
     }
-  }
+  };
   // Handle click outside to close the sidebar and prevent body scroll
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -243,15 +243,15 @@ const NavBarComponent = () => {
                       </div>
 
                       <div className="py-1">
-                      <a
-  href="https://dash.ansaritools.com/dashboard"
-  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-  onClick={() => setProfileDropdown(false)}
->
-  <LayoutDashboard className="w-4 h-4 mr-3" />
-  Dashboard
-</a>
-                      <Link
+                        <a
+                          href="https://dash.ansaritools.com/dashboard"
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                          onClick={() => setProfileDropdown(false)}
+                        >
+                          <LayoutDashboard className="w-4 h-4 mr-3" />
+                          Dashboard
+                        </a>
+                        <Link
                           to="/admin"
                           className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                           onClick={() => setProfileDropdown(false)}
