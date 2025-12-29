@@ -21,6 +21,7 @@ const AdminGuard = ({ children }) => {
         // Verify token with backend
         const response = await fetch('https://api.ansaritools.com/api/admins/verify', {
           method: 'GET',
+          credentials: "include",
           headers: {
             'Authorization': `Bearer ${adminToken}`,
             'Content-Type': 'application/json',
