@@ -37,7 +37,7 @@ const NavBarComponent = () => {
 
   const logout = async () => {
     await logoutAll();
-    window.location.href = "/login"; 
+    window.location.href = "/login";
   };
   // Handle click outside to close the sidebar and prevent body scroll
   useEffect(() => {
@@ -215,9 +215,8 @@ const NavBarComponent = () => {
                         : user?.email || "Profile"}
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 transition-transform ${
-                        profileDropdown ? "rotate-180" : ""
-                      }`}
+                      className={`w-4 h-4 transition-transform ${profileDropdown ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -319,11 +318,10 @@ const NavBarComponent = () => {
       )}
       <nav
         ref={navRef}
-        className={`lg:hidden fixed top-0 right-0 h-screen w-80 max-w-[85vw] z-50 backdrop-blur-2xl transform transition-all duration-300 ease-in-out ${
-          open
+        className={`lg:hidden fixed top-0 right-0 h-screen w-80 max-w-[85vw] z-50 backdrop-blur-2xl transform transition-all duration-300 ease-in-out ${open
             ? "translate-x-0 opacity-100 visible"
             : "translate-x-full opacity-0 invisible"
-        }`}
+          }`}
         style={{ backgroundColor: "var(--color-dark)" }}
       >
         <div
@@ -466,9 +464,8 @@ const NavBarComponent = () => {
                           <span>Website Pages</span>
                         </div>
                         <ChevronDown
-                          className={`w-5 h-5 transition-transform duration-200 ${
-                            websiteDropdown ? "rotate-180" : ""
-                          }`}
+                          className={`w-5 h-5 transition-transform duration-200 ${websiteDropdown ? "rotate-180" : ""
+                            }`}
                         />
                       </button>
 

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Plus, 
-  Package, 
-  Users, 
-  Eye, 
-  Edit, 
+import {
+  Plus,
+  Package,
+  Users,
+  Eye,
+  Edit,
   Trash2,
   Search,
   Filter,
@@ -21,18 +21,18 @@ import ApiService from '../../services/api';
 
 export default function AdminDashboard() {
   const { products, loading, error, refetch } = useProducts();
-  
+
   // Force loading state for testing
   const [forceLoading, setForceLoading] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(true);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setForceLoading(false);
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSkeleton(false);
@@ -44,14 +44,14 @@ export default function AdminDashboard() {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [viewProduct, setViewProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === 'all' || product.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
@@ -127,7 +127,7 @@ export default function AdminDashboard() {
 
   const handleBulkDelete = async () => {
     if (selectedProducts.length === 0) return;
-    
+
     if (window.confirm(`Are you sure you want to delete ${selectedProducts.length} products?`)) {
       try {
         await Promise.all(selectedProducts.map(id => ApiService.deleteProduct(id)));
@@ -156,8 +156,8 @@ export default function AdminDashboard() {
   };
 
   const toggleProductSelection = (productId) => {
-    setSelectedProducts(prev => 
-      prev.includes(productId) 
+    setSelectedProducts(prev =>
+      prev.includes(productId)
         ? prev.filter(id => id !== productId)
         : [...prev, productId]
     );
@@ -226,7 +226,7 @@ export default function AdminDashboard() {
           {/* Header */}
           <div className="mb-3 sm:mb-4">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg" style={{ backgroundColor: 'var(--color-dark)' }}>
                 <Package className="w-4 h-4 text-white" />
               </div>
               <div>
@@ -489,7 +489,7 @@ export default function AdminDashboard() {
               <Package className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
               <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">No Products Found</h3>
               <p className="text-sm sm:text-base text-gray-600 mb-4">
-                {searchTerm || filterCategory !== 'all' 
+                {searchTerm || filterCategory !== 'all'
                   ? 'Try adjusting your search or filter criteria'
                   : 'Get started by adding your first product'
                 }
@@ -540,87 +540,86 @@ export default function AdminDashboard() {
                     ))
                   ) : paginatedProducts.length > 0 ? (
                     paginatedProducts.map((product) => (
-                    <tr key={product._id} className="hover:bg-gray-50">
-                      <td className="px-3 sm:px-6 py-4">
-                        <input
-                          type="checkbox"
-                          checked={selectedProducts.includes(product._id)}
-                          onChange={() => toggleProductSelection(product._id)}
-                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-3 sm:px-6 py-4">
-                        <div className="flex items-center">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="w-8 h-8 sm:w-12 sm:h-12 object-cover rounded-lg mr-2 sm:mr-4"
+                      <tr key={product._id} className="hover:bg-gray-50">
+                        <td className="px-3 sm:px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={selectedProducts.includes(product._id)}
+                            onChange={() => toggleProductSelection(product._id)}
+                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                           />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs sm:text-sm font-medium text-gray-900 truncate">{product.name}</div>
-                            <div className="text-xs sm:text-sm text-gray-500 truncate">
-                              {product.description}
-                            </div>
-                            {/* Show category on mobile */}
-                            <div className="sm:hidden mt-1">
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                {product.category}
-                              </span>
+                        </td>
+                        <td className="px-3 sm:px-6 py-4">
+                          <div className="flex items-center">
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="w-8 h-8 sm:w-12 sm:h-12 object-cover rounded-lg mr-2 sm:mr-4"
+                            />
+                            <div className="min-w-0 flex-1">
+                              <div className="text-xs sm:text-sm font-medium text-gray-900 truncate">{product.name}</div>
+                              <div className="text-xs sm:text-sm text-gray-500 truncate">
+                                {product.description}
+                              </div>
+                              {/* Show category on mobile */}
+                              <div className="sm:hidden mt-1">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                  {product.category}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="hidden sm:table-cell px-3 sm:px-6 py-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {product.category}
-                        </span>
-                      </td>
-                      <td className="px-3 sm:px-6 py-4 text-xs sm:text-sm text-gray-900">
-                        <div>
-                          <div className="font-medium">{product.price}</div>
-                          {product.originalPrice && (
-                            <div className="text-gray-500 line-through text-xs">
-                              {product.originalPrice}
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="hidden sm:table-cell px-3 sm:px-6 py-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          product.isActive 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}>
-                          {product.isActive ? 'Active' : 'Inactive'}
-                        </span>
-                      </td>
-                      <td className="px-3 sm:px-6 py-4">
-                        <div className="flex items-center gap-1 sm:gap-2">
-                          <button
-                            onClick={() => handleViewProduct(product)}
-                            className="text-blue-600 hover:text-blue-700 transition-colors p-1"
-                            title="View Product"
-                          >
-                            <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-                          </button>
-                          <Link
-                            to={`/admin/edit-product/${product._id}`}
-                            className="text-green-600 hover:text-green-700 transition-colors p-1"
-                            title="Edit Product"
-                          >
-                            <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
-                          </Link>
-                          <button
-                            onClick={() => handleDeleteProduct(product._id)}
-                            className="text-red-600 hover:text-red-700 transition-colors p-1"
-                            title="Delete Product"
-                          >
-                            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                        </td>
+                        <td className="hidden sm:table-cell px-3 sm:px-6 py-4">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            {product.category}
+                          </span>
+                        </td>
+                        <td className="px-3 sm:px-6 py-4 text-xs sm:text-sm text-gray-900">
+                          <div>
+                            <div className="font-medium">{product.price}</div>
+                            {product.originalPrice && (
+                              <div className="text-gray-500 line-through text-xs">
+                                {product.originalPrice}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="hidden sm:table-cell px-3 sm:px-6 py-4">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${product.isActive
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-red-100 text-red-800'
+                            }`}>
+                            {product.isActive ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td className="px-3 sm:px-6 py-4">
+                          <div className="flex items-center gap-1 sm:gap-2">
+                            <button
+                              onClick={() => handleViewProduct(product)}
+                              className="text-blue-600 hover:text-blue-700 transition-colors p-1"
+                              title="View Product"
+                            >
+                              <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                            </button>
+                            <Link
+                              to={`/admin/edit-product/${product._id}`}
+                              className="text-green-600 hover:text-green-700 transition-colors p-1"
+                              title="Edit Product"
+                            >
+                              <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
+                            </Link>
+                            <button
+                              onClick={() => handleDeleteProduct(product._id)}
+                              className="text-red-600 hover:text-red-700 transition-colors p-1"
+                              title="Delete Product"
+                            >
+                              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
                   ) : (
                     <tr>
                       <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
@@ -647,14 +646,14 @@ export default function AdminDashboard() {
               Showing {startIndex + 1} to {Math.min(endIndex, filteredProducts.length)} of {filteredProducts.length} products
             </div>
             <div className="flex items-center gap-2">
-              <button 
+              <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-500 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Previous
               </button>
-              
+
               {/* Page numbers */}
               <div className="flex items-center gap-1">
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -668,24 +667,24 @@ export default function AdminDashboard() {
                   } else {
                     pageNum = currentPage - 2 + i;
                   }
-                  
+
                   return (
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm rounded-lg transition-colors ${
-                        currentPage === pageNum
-                          ? 'bg-blue-600 text-white'
+                      className={`px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm rounded-lg transition-colors ${currentPage === pageNum
+                          ? 'text-white'
                           : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                      }`}
+                        }`}
+                      style={{ backgroundColor: currentPage === pageNum ? 'var(--color-dark)' : 'transparent' }}
                     >
                       {pageNum}
                     </button>
                   );
                 })}
               </div>
-              
-              <button 
+
+              <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
                 className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-500 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -699,11 +698,11 @@ export default function AdminDashboard() {
 
       {/* Product View Modal */}
       {showModal && viewProduct && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
           onClick={closeModal}
         >
-          <div 
+          <div
             className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
@@ -772,21 +771,19 @@ export default function AdminDashboard() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <h4 className="text-sm font-semibold text-gray-700 mb-2">Status</h4>
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                        viewProduct.isActive 
-                          ? 'bg-green-100 text-green-800' 
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${viewProduct.isActive
+                          ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
-                      }`}>
+                        }`}>
                         {viewProduct.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </div>
                     <div>
                       <h4 className="text-sm font-semibold text-gray-700 mb-2">Variants</h4>
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                        viewProduct.hasVariants 
-                          ? 'bg-purple-100 text-purple-800' 
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${viewProduct.hasVariants
+                          ? 'bg-purple-100 text-purple-800'
                           : 'bg-gray-100 text-gray-800'
-                      }`}>
+                        }`}>
                         {viewProduct.hasVariants ? 'Has Variants' : 'No Variants'}
                       </span>
                     </div>

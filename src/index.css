@@ -2,10 +2,14 @@
 
 /* Custom Color Theme */
 :root {
-  --color-light: #ddebed;   /* Light Aqua */
-  --color-mid-light: #93B1B5; /* Soft Greyish Aqua */
-  --color-mid-dark: #4F7C82;  /* Muted Teal */
-  --color-dark: #0B2E33;     /* Deep Teal */
+  --color-light: #FFFFFF;
+  /* Pure White */
+  --color-mid-light: #ECFDF5;
+  /* Minty White */
+  --color-mid-dark: #10B981;
+  /* Bright Emerald (Primary) */
+  --color-dark: #064E3B;
+  /* Deep Forest Green (Text/Contrast) */
 }
 
 /* Prevent horizontal scroll and mobile keyboard issues */
@@ -32,20 +36,24 @@ body {
 
 /* Mobile keyboard fixes */
 @media screen and (max-width: 768px) {
-  html, body {
+
+  html,
+  body {
     position: fixed;
     height: 100%;
     width: 100%;
     overflow: hidden;
   }
-  
+
   #root {
     height: 100vh;
     height: -webkit-fill-available;
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    width: 100%;
   }
-  
+
   /* Prevent zoom on input focus */
   input[type="text"],
   input[type="email"],
@@ -56,13 +64,15 @@ body {
     font-size: 16px !important;
     transform: translateZ(0);
   }
-  
+
   /* Fix for iOS Safari */
   @supports (-webkit-touch-callout: none) {
-    html, body {
+
+    html,
+    body {
       height: -webkit-fill-available;
     }
-    
+
     #root {
       height: -webkit-fill-available;
     }
@@ -83,9 +93,17 @@ body {
   width: 100% !important;
   height: 100% !important;
 }
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fadeIn {

@@ -32,7 +32,7 @@ export default function ProductDetailPage() {
 
   // Fallback product data (remove this after API is working)
   const fallbackProducts = [
-   ];
+  ];
 
   // Use API product or fallback to hardcoded data
   const currentProduct = product || fallbackProducts.find(p => p.id === parseInt(id));
@@ -52,7 +52,7 @@ export default function ProductDetailPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
           <h2 className="text-xl font-semibold text-gray-900">Loading Product...</h2>
         </div>
       </div>
@@ -68,7 +68,8 @@ export default function ProductDetailPage() {
           <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={() => navigate('/product')}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="text-white px-6 py-2 rounded-lg transition-colors hover:opacity-90"
+            style={{ backgroundColor: 'var(--color-mid-dark)' }}
           >
             Back to Products
           </button>
@@ -85,7 +86,8 @@ export default function ProductDetailPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h2>
           <button
             onClick={() => navigate('/product')}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="text-white px-6 py-2 rounded-lg transition-colors hover:opacity-90"
+            style={{ backgroundColor: 'var(--color-mid-dark)' }}
           >
             Back to Products
           </button>
@@ -109,7 +111,7 @@ export default function ProductDetailPage() {
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
           <button
             onClick={() => navigate('/product')}
-            className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+            className="flex items-center gap-1 hover:text-green-600 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Products
@@ -133,14 +135,14 @@ export default function ProductDetailPage() {
             <div className="space-y-6">
               {/* Badge & Rating */}
               <div className="flex items-center justify-between">
-                <span className="bg-blue-600 text-white text-sm font-semibold px-3 py-1 rounded-full">
+                <span className="text-white text-sm font-semibold px-3 py-1 rounded-full" style={{ backgroundColor: 'var(--color-dark)' }}>
                   {currentProduct.badge}
                 </span>
                 <div className="flex items-center gap-2">
                   <button className="p-2 text-gray-400 hover:text-red-500 transition-colors">
                     <Heart className="w-5 h-5" />
                   </button>
-                  <button className="p-2 text-gray-400 hover:text-blue-500 transition-colors">
+                  <button className="p-2 text-gray-400 hover:text-green-500 transition-colors">
                     <Share2 className="w-5 h-5" />
                   </button>
                 </div>
@@ -153,9 +155,9 @@ export default function ProductDetailPage() {
               <div className="flex items-center gap-2">
                 <div className="flex text-yellow-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      className={`w-5 h-5 ${i < Math.floor(currentProduct.rating) ? 'fill-current' : 'text-gray-300'}`} 
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 ${i < Math.floor(currentProduct.rating) ? 'fill-current' : 'text-gray-300'}`}
                     />
                   ))}
                 </div>
@@ -163,8 +165,8 @@ export default function ProductDetailPage() {
                 <span className="text-gray-600">({currentProduct.reviews} reviews)</span>
               </div>
 
-               {/* Description */}
-               <p className="text-gray-600 leading-relaxed">{currentProduct.description}</p>
+              {/* Description */}
+              <p className="text-gray-600 leading-relaxed">{currentProduct.description}</p>
 
               {/* Variant Selector */}
               {currentProduct.hasVariants && (
@@ -175,11 +177,10 @@ export default function ProductDetailPage() {
                       <div
                         key={variant.id}
                         onClick={() => setSelectedVariant(variant)}
-                        className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
-                          selectedVariant?.id === variant.id
-                            ? 'border-blue-500 bg-blue-50'
+                        className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${selectedVariant?.id === variant.id
+                            ? 'border-green-500 bg-green-50'
                             : 'border-gray-200 hover:border-gray-300'
-                        }`}
+                          }`}
                       >
                         <div className="flex justify-between items-start">
                           <div>
@@ -239,7 +240,8 @@ export default function ProductDetailPage() {
                 <div className="flex gap-3">
                   <button
                     onClick={handleGetStarted}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold text-lg transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 text-white py-3 px-6 rounded-lg font-semibold text-lg transition-colors flex items-center justify-center gap-2 hover:opacity-90"
+                    style={{ backgroundColor: 'var(--color-dark)' }}
                   >
                     <ShoppingCart className="w-5 h-5" />
                     Buy Now
@@ -257,11 +259,11 @@ export default function ProductDetailPage() {
                   <span className="text-sm text-gray-600">Secure Payment</span>
                 </div>
                 <div className="text-center">
-                  <Truck className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <Truck className="w-8 h-8 text-green-600 mx-auto mb-2" />
                   <span className="text-sm text-gray-600">Instant Access</span>
                 </div>
                 <div className="text-center">
-                  <RefreshCw className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                  <RefreshCw className="w-8 h-8 text-green-600 mx-auto mb-2" />
                   <span className="text-sm text-gray-600">30-Day Refund</span>
                 </div>
               </div>

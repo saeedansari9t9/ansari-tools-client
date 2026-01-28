@@ -1,5 +1,5 @@
 import React from "react";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MessageCircle } from "lucide-react";
+import { Facebook, Twitter, Instagram, LinkedinIcon, Mail, Phone, MessageCircle } from "lucide-react";
 import footerLogo from "../assets/images/logo.png";
 
 const FooterComponent = () => (
@@ -26,30 +26,30 @@ const FooterComponent = () => (
             <a 
               href="#" 
               className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
-              style={{ backgroundColor: 'var(--color-mid-light)' }}
+              style={{ backgroundColor: 'var(--color-light)' , color: 'var(--color-dark)' }}
             >
               <Facebook className="w-4 h-4" />
             </a>
             <a 
               href="#" 
               className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
-              style={{ backgroundColor: 'var(--color-mid-light)' }}
+              style={{ backgroundColor: 'var(--color-light)' , color: 'var(--color-dark)' }}
             >
               <Twitter className="w-4 h-4" />
             </a>
             <a 
               href="https://www.instagram.com/lexorasolution/" 
               className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
-              style={{ backgroundColor: 'var(--color-mid-light)' }}
+              style={{ backgroundColor: 'var(--color-light)' , color: 'var(--color-dark)' }}
             >
               <Instagram className="w-4 h-4" />
             </a>
             <a 
               href="#" 
               className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
-              style={{ backgroundColor: 'var(--color-mid-light)' }}
+              style={{ backgroundColor: 'var(--color-light)' , color: 'var(--color-dark)' }}
             >
-              <Linkedin className="w-4 h-4" />
+              <LinkedinIcon className="w-4 h-4" />
             </a>
           </div>
         </div>

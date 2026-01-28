@@ -12,14 +12,14 @@ const CategoryCard = ({ color, icon, title, items, iconStyle }) => (
     <ul className="space-y-2 mb-6">
       {items.map((it) => (
         <li key={it} className="text-sm text-gray-600 font-medium flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--color-mid-dark)' }}></div>
+          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--color-dark)' }}></div>
           {it}
         </li>
       ))}
     </ul>
     <a 
       href="#" 
-      className="inline-flex items-center gap-2 text-sm font-semibold hover:opacity-80 transition-colors duration-200 group-hover:gap-3" style={{ color: 'var(--color-mid-dark)' }}
+      className="inline-flex items-center gap-2 text-sm font-semibold hover:opacity-80 transition-colors duration-200 group-hover:gap-3" style={{ color: 'var(--color-dark)' }}
     >
       View All <ArrowRight className="w-4 h-4" strokeWidth={3} />
     </a>
@@ -31,14 +31,14 @@ const ToolsCategoriesComponent = () => (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="text-center mb-8 sm:mb-12">
-        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-dark)' }}>
           <Search className="w-3 h-3 sm:w-4 sm:h-4" />
           Tool Categories
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--color-dark)' }}>
           Premium Tools Categories
         </h2>
-        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
           Explore our comprehensive collection of premium tools organized by category
         </p>
       </div>
@@ -54,14 +54,14 @@ const ToolsCategoriesComponent = () => (
         />
         <CategoryCard
           color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-mid-dark)' }}
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
           title="AI Writing Tools"
           icon={<PenTool className="w-6 h-6 text-white" />}
           items={["ChatGPT Plus","Jasper AI","Copy AI","Rytr","Quillbot Premium"]}
         />
         <CategoryCard
           color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-mid-light)' }}
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
           title="Design Tools"
           icon={<Palette className="w-6 h-6 text-white" strokeWidth={2.5} />}
           items={["Canva Pro","Adobe Creative Cloud","VistaCreate","PicMonkey","Figma Pro"]}
@@ -75,14 +75,14 @@ const ToolsCategoriesComponent = () => (
         />
         <CategoryCard
           color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-mid-dark)' }}
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
           title="AI Audio Tools"
           icon={<Headphones className="w-6 h-6 text-white" strokeWidth={2.5} />}
           items={["ElevenLabs","Descript","Murf AI","Play.ht","Resemble AI"]}
         />
         <CategoryCard
           color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-mid-light)' }}
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
           title="AI Video Tools"
           icon={<Video className="w-6 h-6 text-white" strokeWidth={2.5} />}
           items={["Synthesia","Pictory","InVideo AI","Runway ML","Descript"]}

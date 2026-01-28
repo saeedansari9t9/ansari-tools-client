@@ -37,14 +37,14 @@ const FAQComponent = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-2 text-white px-3 sm:px-4 py-1.5 rounded-full text-xs font-medium mb-3 sm:mb-4 shadow-lg" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+          <div className="inline-flex items-center gap-2 text-white px-3 sm:px-4 py-1.5 rounded-full text-xs font-medium mb-3 sm:mb-4 shadow-lg" style={{ backgroundColor: 'var(--color-dark)' }}>
             <HelpCircle className="w-3 h-3" />
             FAQ
           </div>
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--color-dark)' }}>
             Frequently Asked Questions
           </h2>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
+          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
             Find answers to common questions about our premium tools and services
           </p>
         </div>

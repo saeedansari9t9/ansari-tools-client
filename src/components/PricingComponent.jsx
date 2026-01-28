@@ -30,14 +30,14 @@ const PricingComponent = () => {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="text-center mb-8 sm:mb-12">
-        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-dark)' }}>
           <Crown className="w-3 h-3 sm:w-4 sm:h-4" />
           Pricing Plans
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--color-dark)' }}>
           Choose Your Perfect Plan
         </h2>
-        <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
+        <p className="text-base sm:text-lg max-w-2xl mx-auto">
           Select the plan that best fits your needs and start saving on premium tools today
         </p>
       </div>
@@ -95,7 +95,7 @@ const PricingComponent = () => {
 
         {/* Agency Plan - Featured */}
         <div className="relative">
-          <div className="group bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-2" style={{ borderColor: 'var(--color-mid-dark)' }}>
+          <div className="group bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border-2" style={{ borderColor: 'var(--color-dark)' }}>
             {/* Popular Badge - Top positioned, half inside half outside */}
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg z-30" style={{ backgroundColor: 'var(--color-dark)' }}>
               Most Popular
@@ -153,7 +153,7 @@ const PricingComponent = () => {
         <div className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 border-gray-100 hover:border-gray-200">
           <div className="p-4 sm:p-6">
             <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-12 h-12 text-white rounded-xl mb-3" style={{ backgroundColor: 'var(--color-mid-light)' }}>
+              <div className="inline-flex items-center justify-center w-12 h-12 text-white rounded-xl mb-3" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Blogging Plan</h3>
@@ -165,7 +165,7 @@ const PricingComponent = () => {
               {(showAllBlogging ? bloggingTools : bloggingTools.slice(0, 8))
                 .map((tool) => (
                 <div key={tool} className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--color-mid-light)' }}>
+                  <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
                     <Check className="w-2.5 h-2.5 text-white" />
                   </div>
                   <span className="text-sm text-gray-700 font-medium">{tool}</span>
@@ -176,7 +176,7 @@ const PricingComponent = () => {
             {bloggingTools.length > 8 && (
               <button
                 onClick={() => setShowAllBlogging(!showAllBlogging)}
-                className="w-full mb-4 flex items-center justify-center gap-2 text-sm font-medium transition-colors duration-200" style={{ color: 'var(--color-mid-light)' }}
+                className="w-full mb-4 flex items-center justify-center gap-2 text-sm font-medium transition-colors duration-200" style={{ color: 'var(--color-mid-dark)' }}
               >
                 {showAllBlogging ? (
                   <>
@@ -192,7 +192,7 @@ const PricingComponent = () => {
               </button>
             )}
             
-            <button className="w-full text-white py-3 px-4 rounded-xl font-bold text-sm hover:shadow-lg transition-all duration-300 transform hover:scale-105" style={{ backgroundColor: 'var(--color-mid-light)' }}>
+            <button className="w-full text-white py-3 px-4 rounded-xl font-bold text-sm hover:shadow-lg transition-all duration-300 transform hover:scale-105" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
               Get Started
             </button>
           </div>

@@ -21,7 +21,7 @@ const AdminLoginPage = () => {
       ...formData,
       [name]: value
     });
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors({
@@ -33,30 +33,30 @@ const AdminLoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Clear previous errors
     setErrors({});
-    
+
     // Client-side validation
     let newErrors = {};
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     }
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
     setLoading(true);
-    
+
     try {
       const response = await fetch('https://api.ansaritools.com/api/admins/login', {
         method: 'POST',
@@ -73,10 +73,10 @@ const AdminLoginPage = () => {
         // Store admin token and data
         localStorage.setItem('adminToken', data.token);
         localStorage.setItem('adminData', JSON.stringify(data.admin));
-        
+
         // Update AuthContext
         login(data.token, data.admin);
-        
+
         toast.success('Admin login successful!');
         navigate('/admin');
       } else {
@@ -103,16 +103,16 @@ const AdminLoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: 'linear-gradient(to bottom right, var(--color-mid-light), var(--color-light))' }}>
       <div className="max-w-md w-full">
         {/* Login Card */}
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--color-dark)' }}>
               <Shield className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Admin Login</h1>
+            <h1 className="text-2xl font-bold" style={{ color: 'var(--color-dark)' }}>Admin Login</h1>
             <p className="text-gray-600 mt-2">Access the admin dashboard</p>
           </div>
 
@@ -145,7 +145,7 @@ const AdminLoginPage = () => {
                   placeholder="admin@example.com"
                 />
               </div>
-              
+
             </div>
 
             <div>
@@ -161,11 +161,10 @@ const AdminLoginPage = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:border-transparent ${
-                    errors.password 
-                      ? 'border-red-500 focus:ring-red-500' 
-                      : 'border-gray-300 focus:ring-blue-500'
-                  }`}
+                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:border-transparent ${errors.password
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-emerald-500'
+                    }`}
                   placeholder="Enter your password"
                 />
                 <button
@@ -187,7 +186,8 @@ const AdminLoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full text-white py-3 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              style={{ background: 'linear-gradient(to right, var(--color-mid-dark), var(--color-dark))' }}
             >
               {loading ? (
                 <>
@@ -202,32 +202,6 @@ const AdminLoginPage = () => {
               )}
             </button>
           </form>
-
-          {/* Footer */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have admin access?{' '}
-              <button
-                onClick={() => navigate('/login')}
-                className="text-blue-600 hover:text-blue-700 font-medium"
-              >
-                Regular Login
-              </button>
-            </p>
-          </div>
-        </div>
-
-        {/* Security Notice */}
-        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <div className="flex items-start space-x-3">
-            <Shield className="w-5 h-5 text-yellow-600 mt-0.5" />
-            <div>
-              <h4 className="text-sm font-medium text-yellow-800">Security Notice</h4>
-              <p className="text-sm text-yellow-700 mt-1">
-                This is an admin-only area. Only authorized administrators can access this dashboard.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -20,14 +20,14 @@ const WhyChooseUsComponent = () => (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="text-center mb-8 sm:mb-12">
-        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-mid-dark)' }}>
+        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-dark)' }}>
           <Shield className="w-3 h-3 sm:w-4 sm:h-4" />
           Why Choose Us
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--color-dark)' }}>
           Why Choose AnsariTools
         </h2>
-        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto" style={{ color: 'var(--color-mid-dark)' }}>
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
           Discover what makes us the preferred choice for premium digital tools
         </p>
       </div>
@@ -36,14 +36,14 @@ const WhyChooseUsComponent = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
         <Item 
           color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-mid-light)' }}
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
           icon={<DollarSign className="w-6 h-6 text-white" />} 
           title="Cost Savings" 
           desc="Save up to 90% compared to individual subscriptions for each tool" 
         />
         <Item 
           color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-mid-dark)' }}
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
           icon={<ShieldCheck className="w-6 h-6 text-white" />} 
           title="100% Legal" 
           desc="All accounts are legally purchased with proper licensing" 
@@ -57,14 +57,14 @@ const WhyChooseUsComponent = () => (
         />
         <Item 
           color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-mid-light)' }}
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
           icon={<RefreshCcw className="w-6 h-6 text-white" />} 
           title="Regular Updates" 
           desc="We continuously add new tools to our collection" 
         />
         <Item 
           color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-mid-dark)' }}
+          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
           icon={<Zap className="w-6 h-6 text-white" />} 
           title="Reliable Access" 
           desc="99.9% uptime guarantee for all tools and services" 
@@ -88,7 +88,7 @@ const WhyChooseUsComponent = () => (
             <p className="text-gray-600 text-sm sm:text-base font-medium">Happy Customers</p>
           </div>
           <div className="group">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300" style={{ color: 'var(--color-mid-dark)' }}>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300" style={{ color: 'var(--color-dark)' }}>
               50+
             </h3>
             <p className="text-gray-600 text-sm sm:text-base font-medium">Premium Tools</p>
@@ -100,7 +100,7 @@ const WhyChooseUsComponent = () => (
             <p className="text-gray-600 text-sm sm:text-base font-medium">Customer Satisfaction</p>
           </div>
           <div className="group">
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300" style={{ color: 'var(--color-mid-dark)' }}>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 group-hover:scale-110 transition-transform duration-300" style={{ color: 'var(--color-dark)' }}>
               24/7
             </h3>
             <p className="text-gray-600 text-sm sm:text-base font-medium">Customer Support</p>
