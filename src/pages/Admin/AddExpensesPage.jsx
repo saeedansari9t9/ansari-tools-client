@@ -13,6 +13,19 @@ import {
 import { toast } from "react-toastify";
 import { API_BASE_URL } from "../../services/api";
 
+const EXPENSE_CATEGORIES = [
+  "Food & Drinks",
+  "Saturday Night",
+  "Innovative Network",
+  "Travel",
+  "Shopping",
+  "Dining Out",
+  "Entertainment",
+  "Balance & Packages",
+  "Extra Purchasing",
+  "Other"
+];
+
 export default function AddExpensesPage() {
   const navigate = useNavigate();
   const now = new Date();
@@ -36,6 +49,7 @@ export default function AddExpensesPage() {
 
   // Filter State
   const [filterMode, setFilterMode] = useState("all"); // 'all' | 'monthly' | 'custom'
+  const [categoryFilter, setCategoryFilter] = useState("");
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1); // 1-12
   const [startDate, setStartDate] = useState(
@@ -86,6 +100,11 @@ export default function AddExpensesPage() {
       end.setHours(23, 59, 59, 999);
     }
 
+    // 0. Category Filter
+    if (categoryFilter) {
+      filtered = filtered.filter((e) => e.category === categoryFilter);
+    }
+
     // 1. Date Filter
     filtered = filtered.filter((e) => {
       if (filterMode === "all") return true;
@@ -111,7 +130,7 @@ export default function AddExpensesPage() {
     const total = filtered.reduce((sum, e) => sum + (e.amount || 0), 0);
 
     return { filteredExpenses: filtered, totalFilteredAmount: total };
-  }, [expenses, filterMode, year, month, startDate, endDate, searchTerm]);
+  }, [expenses, filterMode, categoryFilter, year, month, startDate, endDate, searchTerm]);
 
 
   // Pagination Logic
@@ -192,13 +211,7 @@ export default function AddExpensesPage() {
           </h1>
         </div>
 
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-sm flex items-center gap-1.5 text-xs sm:text-sm font-medium transition"
-        >
-          <PlusCircle className="w-4 h-4" />
-          Add New
-        </button>
+
       </div>
 
 
@@ -246,14 +259,11 @@ export default function AddExpensesPage() {
                       required
                     >
                       <option value="">Select Category</option>
-                      <option value="Food & Drinks">Food & Drinks</option>
-                      <option value="Travel">Travel</option>
-                      <option value="Shopping">Shopping</option>
-                      <option value="Dining Out">Dining Out</option>
-                      <option value="Entertainment">Entertainment</option>
-                      <option value="Balance & Packages">Balance & Packages</option>
-                      <option value="Extra Purchasing">Extra Purchasing</option>
-                      <option value="Other">Other</option>
+                      {EXPENSE_CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -364,88 +374,105 @@ export default function AddExpensesPage() {
           </div>
 
           <button
-            disabled={loading}
-            onClick={fetchExpenses}
-            className={`flex items-center gap-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-xs font-medium transition ${loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+            onClick={() => setShowAddModal(true)}
+            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 text-xs font-medium transition"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
+            <PlusCircle className="w-3.5 h-3.5" />
+            Add New
           </button>
         </div>
 
         {/* Row 2: Date Inputs */}
-        {filterMode !== "all" && (
-          <div className="grid grid-cols-2 gap-3">
-            {filterMode === "monthly" ? (
-              <>
-                {/* ... existing monthly inputs ... */}
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Month
-                  </label>
-                  <select
-                    value={month}
-                    onChange={(e) => setMonth(Number(e.target.value))}
-                    className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
-                  >
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <option key={i + 1} value={i + 1}>
-                        {new Date(0, i).toLocaleString("en-US", { month: "long" })}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Year
-                  </label>
-                  <select
-                    value={year}
-                    onChange={(e) => setYear(Number(e.target.value))}
-                    className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
-                  >
-                    {[2025, 2026, 2027].map((y) => (
-                      <option key={y} value={y}>
-                        {y}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* ... existing custom inputs ... */}
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Start
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    End
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                      className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
-                    />
-                  </div>
-                </div>
-              </>
-            )}
+        {/* Categories + Date Filter Row */}
+        <div className={`grid gap-3 ${filterMode === "all" ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-3"}`}>
+          {/* Category Dropdown (Always Visible) */}
+          <div>
+            <label className="block text-xs text-gray-500 mb-1">Category</label>
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
+            >
+              <option value="">All Categories</option>
+              {EXPENSE_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
           </div>
-        )}
+
+          {/* Date Inputs (Conditional) */}
+          {filterMode !== "all" && (
+            <>
+              {filterMode === "monthly" ? (
+                <>
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      Month
+                    </label>
+                    <select
+                      value={month}
+                      onChange={(e) => setMonth(Number(e.target.value))}
+                      className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
+                    >
+                      {Array.from({ length: 12 }).map((_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {new Date(0, i).toLocaleString("en-US", { month: "long" })}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      Year
+                    </label>
+                    <select
+                      value={year}
+                      onChange={(e) => setYear(Number(e.target.value))}
+                      className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
+                    >
+                      {[2025, 2026, 2027].map((y) => (
+                        <option key={y} value={y}>
+                          {y}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      Start
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-500 mb-1">
+                      End
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="border border-gray-300 rounded-lg px-2 py-1.5 w-full focus:ring-1 focus:ring-blue-400 text-xs transition"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </div>
 
       </div>
 
@@ -504,15 +531,15 @@ export default function AddExpensesPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full text-xs sm:text-sm">
+          <table className="min-w-full text-xs sm:text-sm whitespace-nowrap">
             <thead className="bg-gray-50 border-b border-gray-200 text-gray-700 uppercase tracking-wider">
               <tr>
-                <th className="px-4 py-3 text-left font-medium">Title</th>
-                <th className="px-4 py-3 text-left font-medium">Category</th>
-                <th className="px-4 py-3 text-left font-medium">Amount</th>
-                <th className="px-4 py-3 text-left font-medium">Date</th>
-                <th className="px-4 py-3 text-left font-medium">Note</th>
-                <th className="px-4 py-3 text-right font-medium">Action</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 text-left font-medium">Title</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 text-left font-medium">Category</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 text-left font-medium">Amount</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 text-left font-medium">Date</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 text-left font-medium">Note</th>
+                <th className="px-3 py-2 sm:px-4 sm:py-3 text-right font-medium">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -522,24 +549,24 @@ export default function AddExpensesPage() {
                     key={exp._id}
                     className="border-b border-gray-100 hover:bg-gray-50 transition"
                   >
-                    <td className="px-4 py-3 font-medium text-gray-800">{exp.title}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-3 py-2 sm:px-4 sm:py-3 font-medium text-gray-800">{exp.title}</td>
+                    <td className="px-3 py-2 sm:px-4 sm:py-3">
                       <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                         {exp.category}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-semibold text-red-600">
+                    <td className="px-3 py-2 sm:px-4 sm:py-3 font-semibold text-red-600">
                       {exp.amount.toLocaleString()}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-3 py-2 sm:px-4 sm:py-3">
                       {new Date(exp.date).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
                       })}
                     </td>
-                    <td className="px-4 py-3 text-gray-500 truncate max-w-xs">{exp.note || "-"}</td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-3 py-2 sm:px-4 sm:py-3 text-gray-500 truncate max-w-xs">{exp.note || "-"}</td>
+                    <td className="px-3 py-2 sm:px-4 sm:py-3 text-right">
                       <button
                         onClick={() => handleDelete(exp._id)}
                         className="text-gray-400 hover:text-red-600 transition p-1"
