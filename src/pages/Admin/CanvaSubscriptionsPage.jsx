@@ -427,142 +427,173 @@ const CanvaSubscriptionsPage = () => {
                     <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Used</th>
                     <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining</th>
                     <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                    <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purchase Date</th>
+                    <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expiry Date</th>
                     <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     <th className="px-2 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {subscriptions.map((subscription) => (
-                    <tr key={subscription._id} className="hover:bg-gray-50">
-                      <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
-                        {editingId === subscription._id ? (
-                          <input
-                            type="email"
-                            value={editForm.email}
-                            onChange={(e) => setEditForm(prev => ({ ...prev, email: e.target.value }))}
-                            className="w-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          />
-                        ) : (
+                  {subscriptions.map((subscription) => {
+                    // Calculate Expiry Date Logic
+                    const calculateExpiryDate = (startDate, duration) => {
+                      const date = new Date(startDate);
+                      if (duration === '1 Month') date.setMonth(date.getMonth() + 1);
+                      else if (duration === '3 Months') date.setMonth(date.getMonth() + 3);
+                      else if (duration === '6 Months') { date.setMonth(date.getMonth() + 6); }
+                      else if (duration === '1 Year') { date.setFullYear(date.getFullYear() + 1); }
+                      return date;
+                    };
+
+                    const formatDate = (dateString) => {
+                      const date = new Date(dateString);
+                      const day = date.getDate();
+                      const month = date.toLocaleString('default', { month: 'short' });
+                      const year = date.getFullYear();
+                      return `${day}-${month}-${year}`;
+                    };
+
+                    const expiryDate = calculateExpiryDate(subscription.date, subscription.duration);
+
+                    return (
+                      <tr key={subscription._id} className="hover:bg-gray-50">
+                        <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
+                          {editingId === subscription._id ? (
+                            <input
+                              type="email"
+                              value={editForm.email}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, email: e.target.value }))}
+                              className="w-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                          ) : (
+                            <div className="flex items-center">
+                              <Mail className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-1 sm:mr-2" />
+                              <span className="text-xs sm:text-sm font-medium text-gray-900 truncate">{subscription.email}</span>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <Mail className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-1 sm:mr-2" />
-                            <span className="text-xs sm:text-sm font-medium text-gray-900 truncate">{subscription.email}</span>
+                            <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-orange-400 mr-1 sm:mr-2" />
+                            <span className="text-xs sm:text-sm text-gray-900">
+                              {formatDays(calculateDays(subscription).daysUsed)}
+                            </span>
                           </div>
-                        )}
-                      </td>
-                      <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-orange-400 mr-1 sm:mr-2" />
-                          <span className="text-xs sm:text-sm text-gray-900">
-                            {formatDays(calculateDays(subscription).daysUsed)}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-green-400 mr-1 sm:mr-2" />
-                          <span className={`text-xs sm:text-sm font-medium ${calculateDays(subscription).remainingDays <= 7
+                        </td>
+                        <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-green-400 mr-1 sm:mr-2" />
+                            <span className={`text-xs sm:text-sm font-medium ${calculateDays(subscription).remainingDays <= 7
                               ? 'text-red-600'
                               : calculateDays(subscription).remainingDays <= 30
                                 ? 'text-yellow-600'
                                 : 'text-green-600'
-                            }`}>
-                            {formatDays(calculateDays(subscription).remainingDays)}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
-                        {editingId === subscription._id ? (
-                          <select
-                            value={editForm.duration}
-                            onChange={(e) => setEditForm(prev => ({ ...prev, duration: e.target.value }))}
-                            className="w-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          >
-                            <option value="6 Months">6 Months</option>
-                            <option value="1 Year">1 Year</option>
-                            <option value="1 Month">1 Month</option>
-                            <option value="3 Months">3 Months</option>
-                          </select>
-                        ) : (
-                          <div className="flex items-center">
-                            <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-1 sm:mr-2" />
-                            <span className="text-xs sm:text-sm text-gray-900">{subscription.duration}</span>
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
-                        {editingId === subscription._id ? (
-                          <input
-                            type="date"
-                            value={editForm.date}
-                            onChange={(e) => setEditForm(prev => ({ ...prev, date: e.target.value }))}
-                            className="w-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          />
-                        ) : (
-                          <div className="flex items-center">
-                            <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-1 sm:mr-2" />
-                            <span className="text-xs sm:text-sm text-gray-900">
-                              {new Date(subscription.date).toLocaleDateString()}
+                              }`}>
+                              {formatDays(calculateDays(subscription).remainingDays)}
                             </span>
                           </div>
-                        )}
-                      </td>
-                      <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium">
-                        {editingId === subscription._id ? (
-                          <div className="flex space-x-1 sm:space-x-2">
-                            <button
-                              onClick={() => handleUpdate(subscription._id)}
-                              className="text-green-600 hover:text-green-700"
+                        </td>
+                        <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
+                          {editingId === subscription._id ? (
+                            <select
+                              value={editForm.duration}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, duration: e.target.value }))}
+                              className="w-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                              <CheckCircle className="w-6 h-6 ml-2 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                              onClick={() => setEditingId(null)}
-                              className="text-red-600 hover:text-red-700"
-                            >
-                              <XCircle className="w-6 h-6 sm:w-6 sm:h-6" />
-                            </button>
+                              <option value="6 Months">6 Months</option>
+                              <option value="1 Year">1 Year</option>
+                              <option value="1 Month">1 Month</option>
+                              <option value="3 Months">3 Months</option>
+                            </select>
+                          ) : (
+                            <div className="flex items-center">
+                              <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-1 sm:mr-2" />
+                              <span className="text-xs sm:text-sm text-gray-900">{subscription.duration}</span>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
+                          {editingId === subscription._id ? (
+                            <input
+                              type="date"
+                              value={editForm.date}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, date: e.target.value }))}
+                              className="w-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                          ) : (
+                            <div className="flex items-center">
+                              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mr-1 sm:mr-2" />
+                              <span className="text-xs sm:text-sm text-gray-900">
+                                {formatDate(subscription.date)}
+                              </span>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-red-400 mr-1 sm:mr-2" />
+                            <span className="text-xs sm:text-sm text-gray-900">
+                              {formatDate(expiryDate)}
+                            </span>
                           </div>
-                        ) : (
-                          <div className="flex space-x-1">
-                            <button
-                              onClick={() => handleEdit(subscription)}
-                              className="text-blue-600 hover:text-blue-700 p-1"
-                              title="Edit"
+                        </td>
+                        <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium">
+                          {editingId === subscription._id ? (
+                            <div className="flex space-x-1 sm:space-x-2">
+                              <button
+                                onClick={() => handleUpdate(subscription._id)}
+                                className="text-green-600 hover:text-green-700"
+                              >
+                                <CheckCircle className="w-6 h-6 ml-2 sm:w-6 sm:h-6" />
+                              </button>
+                              <button
+                                onClick={() => setEditingId(null)}
+                                className="text-red-600 hover:text-red-700"
+                              >
+                                <XCircle className="w-6 h-6 sm:w-6 sm:h-6" />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="flex space-x-1">
+                              <button
+                                onClick={() => handleEdit(subscription)}
+                                className="text-blue-600 hover:text-blue-700 p-1"
+                                title="Edit"
+                              >
+                                <Edit className="w-5 h-5 sm:w-6 sm:h-6" />
+                              </button>
+                              <button
+                                onClick={() => handleDelete(subscription._id)}
+                                className="text-red-600 hover:text-red-700 p-1"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-5 h-5 sm:w-6 sm:h-6" />
+                              </button>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
+                          {editingId === subscription._id ? (
+                            <select
+                              value={editForm.status}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, status: e.target.value }))}
+                              className="w-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                              <Edit className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                              onClick={() => handleDelete(subscription._id)}
-                              className="text-red-600 hover:text-red-700 p-1"
-                              title="Delete"
-                            >
-                              <Trash2 className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                          </div>
-                        )}
-                      </td>
-                      <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
-                        {editingId === subscription._id ? (
-                          <select
-                            value={editForm.status}
-                            onChange={(e) => setEditForm(prev => ({ ...prev, status: e.target.value }))}
-                            className="w-full px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          >
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="expired">Expired</option>
-                          </select>
-                        ) : (
-                          <span className={`inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(subscription.status)}`}>
-                            {getStatusIcon(subscription.status)}
-                            <span className="ml-1">{subscription.status}</span>
-                          </span>
-                        )}
-                      </td>
+                              <option value="active">Active</option>
+                              <option value="inactive">Inactive</option>
+                              <option value="expired">Expired</option>
+                            </select>
+                          ) : (
+                            <span className={`inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(subscription.status)}`}>
+                              {getStatusIcon(subscription.status)}
+                              <span className="ml-1">{subscription.status}</span>
+                            </span>
+                          )}
+                        </td>
 
-                    </tr>
-                  ))}
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
