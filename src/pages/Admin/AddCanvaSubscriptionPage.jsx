@@ -109,6 +109,8 @@ const AddCanvaSubscriptionPage = () => {
                   required
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 >
+                  <option value="1 Month">1 Month</option>
+                  <option value="3 Months">3 Months</option>
                   <option value="6 Months">6 Months</option>
                   <option value="1 Year">1 Year</option>
                 </select>
@@ -149,27 +151,27 @@ const AddCanvaSubscriptionPage = () => {
                 </select>
               </div>
 
-          {/* Send Email Toggle */}
-          <div className="lg:col-span-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              <Mail className="w-4 h-4 inline mr-2" />
-              Send Email to User
-            </label>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={handleToggle}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${formData.sendEmail ? 'bg-green-500' : 'bg-gray-300'}`}
-                aria-pressed={formData.sendEmail}
-              >
-                <span
-                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${formData.sendEmail ? 'translate-x-5' : 'translate-x-1'}`}
-                />
-              </button>
-              <span className="text-sm text-gray-700">{formData.sendEmail ? 'On (default)' : 'Off'}</span>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">If turned off, subscription will be created without sending an email.</p>
-          </div>
+              {/* Send Email Toggle */}
+              <div className="lg:col-span-2">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <Mail className="w-4 h-4 inline mr-2" />
+                  Send Email to User
+                </label>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleToggle}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${formData.sendEmail ? 'bg-green-500' : 'bg-gray-300'}`}
+                    aria-pressed={formData.sendEmail}
+                  >
+                    <span
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${formData.sendEmail ? 'translate-x-5' : 'translate-x-1'}`}
+                    />
+                  </button>
+                  <span className="text-sm text-gray-700">{formData.sendEmail ? 'On (default)' : 'Off'}</span>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">If turned off, subscription will be created without sending an email.</p>
+              </div>
             </div>
 
             {/* Form Actions */}
@@ -221,11 +223,10 @@ const AddCanvaSubscriptionPage = () => {
             <div className="sm:col-span-2 lg:col-span-1">
               <span className="font-medium text-gray-600">Status:</span>
               <div className="mt-1">
-                <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                  formData.status === 'active' ? 'bg-green-100 text-green-800' :
+                <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${formData.status === 'active' ? 'bg-green-100 text-green-800' :
                   formData.status === 'inactive' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-red-100 text-red-800'
-                }`}>
+                    'bg-red-100 text-red-800'
+                  }`}>
                   {formData.status}
                 </span>
               </div>

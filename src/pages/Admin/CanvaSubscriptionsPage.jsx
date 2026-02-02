@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  Plus, 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  Mail, 
-  Calendar, 
-  Clock, 
+import {
+  ArrowLeft,
+  Plus,
+  Search,
+  Filter,
+  Edit,
+  Trash2,
+  Eye,
+  Mail,
+  Calendar,
+  Clock,
   CheckCircle,
   XCircle,
   AlertCircle,
@@ -40,10 +40,10 @@ const CanvaSubscriptionsPage = () => {
     if (sortBy === 'none' || sortOrder === 'none') {
       return [...subs];
     }
-    
+
     return [...subs].sort((a, b) => {
       let aValue, bValue;
-      
+
       if (sortBy === 'daysRemaining') {
         aValue = calculateDays(a).remainingDays;
         bValue = calculateDays(b).remainingDays;
@@ -51,7 +51,7 @@ const CanvaSubscriptionsPage = () => {
         aValue = new Date(a.date).getTime();
         bValue = new Date(b.date).getTime();
       }
-      
+
       if (sortOrder === 'asc') {
         return aValue - bValue;
       } else {
@@ -64,32 +64,32 @@ const CanvaSubscriptionsPage = () => {
   useEffect(() => {
     if (allSubscriptions.length > 0) {
       let filteredSubs = allSubscriptions;
-      
+
       // Apply search filter
       if (searchTerm) {
-        filteredSubs = filteredSubs.filter(sub => 
+        filteredSubs = filteredSubs.filter(sub =>
           sub.email.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
-      
+
       // Apply duration filter
       if (durationFilter !== 'all') {
-        filteredSubs = filteredSubs.filter(sub => 
+        filteredSubs = filteredSubs.filter(sub =>
           sub.duration === durationFilter
         );
       }
-      
+
       // Apply sorting
       const sortedSubs = sortSubscriptions(filteredSubs);
-      
+
       // Update total pages based on filtered results
       setTotalPages(Math.ceil(sortedSubs.length / 20));
-      
+
       // Apply pagination (show 20 items per page)
       const startIndex = (currentPage - 1) * 20;
       const endIndex = startIndex + 20;
       const paginatedSubs = sortedSubs.slice(startIndex, endIndex);
-      
+
       setSubscriptions(paginatedSubs);
     }
   }, [allSubscriptions, searchTerm, durationFilter, sortBy, sortOrder, sortSubscriptions, currentPage]);
@@ -103,6 +103,8 @@ const CanvaSubscriptionsPage = () => {
   const stats = {
     total: allSubscriptions.length,
     active: allSubscriptions.filter(sub => sub.status === 'active').length,
+    oneMonth: allSubscriptions.filter(sub => sub.duration === '1 Month').length,
+    threeMonths: allSubscriptions.filter(sub => sub.duration === '3 Months').length,
     sixMonths: allSubscriptions.filter(sub => sub.duration === '6 Months').length,
     oneYear: allSubscriptions.filter(sub => sub.duration === '1 Year').length
   };
@@ -112,19 +114,23 @@ const CanvaSubscriptionsPage = () => {
     const startDate = new Date(subscription.date);
     const currentDate = new Date();
     const daysUsed = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
-    
+
     // Calculate total days based on duration
     let totalDays;
-    if (subscription.duration === '6 Months') {
+    if (subscription.duration === '1 Month') {
+      totalDays = 30; // 1 month approx 30 days
+    } else if (subscription.duration === '3 Months') {
+      totalDays = 90; // 3 months approx 90 days
+    } else if (subscription.duration === '6 Months') {
       totalDays = 180; // 6 months = 180 days
     } else if (subscription.duration === '1 Year') {
       totalDays = 365; // 1 year = 365 days
     } else {
       totalDays = 0;
     }
-    
+
     const remainingDays = Math.max(0, totalDays - daysUsed);
-    
+
     return { daysUsed, remainingDays, totalDays };
   };
 
@@ -132,7 +138,7 @@ const CanvaSubscriptionsPage = () => {
   const formatDays = (days) => {
     const months = Math.floor(days / 30);
     const remainingDays = days % 30;
-    
+
     if (months > 0 && remainingDays > 0) {
       return `${months} month${months > 1 ? 's' : ''} ${remainingDays} day${remainingDays > 1 ? 's' : ''}`;
     } else if (months > 0) {
@@ -171,7 +177,7 @@ const CanvaSubscriptionsPage = () => {
     // Find the subscription to get the email
     const subscription = allSubscriptions.find(sub => sub._id === id);
     const email = subscription ? subscription.email : 'Unknown';
-    
+
     if (!window.confirm(`Are you sure you want to delete subscription for ${email}?`)) return;
 
     try {
@@ -272,7 +278,7 @@ const CanvaSubscriptionsPage = () => {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 mb-4">
             <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-2 sm:p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -289,6 +295,24 @@ const CanvaSubscriptionsPage = () => {
                   <p className="text-sm sm:text-2xl font-bold text-green-900">{stats.active || 0}</p>
                 </div>
                 <CheckCircle className="w-4 h-4 sm:w-8 sm:h-8 text-green-500" />
+              </div>
+            </div>
+            <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg p-2 sm:p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-medium text-orange-600">1 Month</p>
+                  <p className="text-sm sm:text-2xl font-bold text-orange-900">{stats.oneMonth || 0}</p>
+                </div>
+                <Clock className="w-4 h-4 sm:w-8 sm:h-8 text-orange-500" />
+              </div>
+            </div>
+            <div className="bg-gradient-to-r from-teal-50 to-teal-100 rounded-lg p-2 sm:p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-medium text-teal-600">3 Months</p>
+                  <p className="text-sm sm:text-2xl font-bold text-teal-900">{stats.threeMonths || 0}</p>
+                </div>
+                <Clock className="w-4 h-4 sm:w-8 sm:h-8 text-teal-500" />
               </div>
             </div>
             <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-2 sm:p-4">
@@ -355,6 +379,8 @@ const CanvaSubscriptionsPage = () => {
                 className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All</option>
+                <option value="1 Month">1 Month</option>
+                <option value="3 Months">3 Months</option>
                 <option value="6 Months">6 Months</option>
                 <option value="1 Year">1 Year</option>
               </select>
@@ -435,13 +461,12 @@ const CanvaSubscriptionsPage = () => {
                       <td className="px-2 sm:px-6 py-2 sm:py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-green-400 mr-1 sm:mr-2" />
-                          <span className={`text-xs sm:text-sm font-medium ${
-                            calculateDays(subscription).remainingDays <= 7 
-                              ? 'text-red-600' 
-                              : calculateDays(subscription).remainingDays <= 30 
-                                ? 'text-yellow-600' 
+                          <span className={`text-xs sm:text-sm font-medium ${calculateDays(subscription).remainingDays <= 7
+                              ? 'text-red-600'
+                              : calculateDays(subscription).remainingDays <= 30
+                                ? 'text-yellow-600'
                                 : 'text-green-600'
-                          }`}>
+                            }`}>
                             {formatDays(calculateDays(subscription).remainingDays)}
                           </span>
                         </div>
@@ -455,6 +480,8 @@ const CanvaSubscriptionsPage = () => {
                           >
                             <option value="6 Months">6 Months</option>
                             <option value="1 Year">1 Year</option>
+                            <option value="1 Month">1 Month</option>
+                            <option value="3 Months">3 Months</option>
                           </select>
                         ) : (
                           <div className="flex items-center">
@@ -494,7 +521,7 @@ const CanvaSubscriptionsPage = () => {
                               className="text-red-600 hover:text-red-700"
                             >
                               <XCircle className="w-6 h-6 sm:w-6 sm:h-6" />
-                            </button> 
+                            </button>
                           </div>
                         ) : (
                           <div className="flex space-x-1">
@@ -533,7 +560,7 @@ const CanvaSubscriptionsPage = () => {
                           </span>
                         )}
                       </td>
-                      
+
                     </tr>
                   ))}
                 </tbody>
