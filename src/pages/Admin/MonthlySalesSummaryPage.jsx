@@ -94,8 +94,9 @@ export default function MonthlySalesSummaryPage() {
     filtered.forEach(sale => {
       const dateKey = new Date(sale.date).toISOString().split('T')[0];
       if (!seriesMap[dateKey]) {
-        seriesMap[dateKey] = { date: dateKey, totalSalesAmount: 0, totalProfit: 0 };
+        seriesMap[dateKey] = { date: dateKey, totalOrders: 0, totalSalesAmount: 0, totalProfit: 0 };
       }
+      seriesMap[dateKey].totalOrders += 1;
       seriesMap[dateKey].totalSalesAmount += (sale.sellingPrice || 0);
       seriesMap[dateKey].totalProfit += (sale.profit || 0);
     });
@@ -196,7 +197,7 @@ export default function MonthlySalesSummaryPage() {
                   onChange={(e) => setYear(Number(e.target.value))}
                   className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-blue-400 text-sm transition"
                 >
-                  {[ 2025, 2026, 2027].map((y) => (
+                  {[2025, 2026, 2027].map((y) => (
                     <option key={y} value={y}>
                       {y}
                     </option>
@@ -347,6 +348,9 @@ export default function MonthlySalesSummaryPage() {
                   Date
                 </th>
                 <th className="px-4 py-2 text-left text-gray-600 font-medium">
+                  Total Orders
+                </th>
+                <th className="px-4 py-2 text-left text-gray-600 font-medium">
                   Total Sales
                 </th>
                 <th className="px-4 py-2 text-left text-gray-600 font-medium">
@@ -372,6 +376,9 @@ export default function MonthlySalesSummaryPage() {
                   >
                     <td className="px-4 py-2 text-gray-800">
                       {new Date(d.date).toLocaleDateString("en-GB", { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' })}
+                    </td>
+                    <td className="px-4 py-2 text-gray-700">
+                      {d.totalOrders}
                     </td>
                     <td className="px-4 py-2 text-gray-700">
                       {Number(d.totalSalesAmount).toFixed(2)}

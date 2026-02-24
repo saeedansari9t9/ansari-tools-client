@@ -13,7 +13,7 @@ export default function AddSalePage() {
   ]);
 
   const [loading, setLoading] = useState(false);
-  
+
   const productOptions = [
     'Canva Pro 6 Month',
     'Canva Pro 1 Year',
@@ -67,36 +67,52 @@ export default function AddSalePage() {
     );
   };
 
+  const addItem = () => {
+    setItems((prev) => [
+      ...prev,
+      { productName: '', sellingPrice: 0, costPrice: 0 },
+    ]);
+  };
+
+  const removeItem = (index) => {
+    if (items.length > 1) {
+      setItems((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      toast.warning('At least one item is required');
+    }
+  };
+
   const handleSave = async () => {
     try {
       if (!date) return toast.error('Please select a date');
-  
+
       const cleaned = items.filter(it => it.productName.trim() !== '');
       if (cleaned.length === 0) return toast.error('Add at least one product');
-  
-      const sale = cleaned[0];
-      const payload = {
-        date,
-        productName: sale.productName,
-        sellingPrice: Number(sale.sellingPrice),
-        costPrice: Number(sale.costPrice),
-        profit: Number(sale.sellingPrice) - Number(sale.costPrice),
-      };
-  
-      console.log('🟢 Payload being sent to API:', payload);
-  
+
       setLoading(true); // ✅ start spinner
-      await ApiService.createOrUpdateSale(payload);
-      toast.success('Sale saved successfully');
+
+      const promises = cleaned.map(sale => {
+        const payload = {
+          date,
+          productName: sale.productName,
+          sellingPrice: Number(sale.sellingPrice),
+          costPrice: Number(sale.costPrice),
+          profit: Number(sale.sellingPrice) - Number(sale.costPrice),
+        };
+        console.log('🟢 Payload being sent to API:', payload);
+        return ApiService.createOrUpdateSale(payload);
+      });
+
+      await Promise.all(promises);
+      toast.success(cleaned.length > 1 ? 'Sales saved successfully' : 'Sale saved successfully');
       navigate('/admin/sales');
     } catch (e) {
-      toast.error(e?.message || 'Failed to save sale');
+      toast.error(e?.message || 'Failed to save sales');
     } finally {
       setLoading(false); // ✅ stop spinner even on error
     }
   };
-  
-  
+
 
   return (
     <div className="max-w-5xl mx-auto p-4 sm:p-6">
@@ -142,6 +158,9 @@ export default function AddSalePage() {
               </th>
               <th className="px-4 py-2 text-left text-gray-700 font-medium">
                 Profit
+              </th>
+              <th className="px-4 py-2 text-center text-gray-700 font-medium w-16">
+                Action
               </th>
             </tr>
           </thead>
@@ -198,11 +217,31 @@ export default function AddSalePage() {
                   <td className="px-4 py-2 text-gray-800 font-medium">
                     {profit.toFixed(2)}
                   </td>
+                  <td className="px-4 py-2 text-center">
+                    <button
+                      onClick={() => removeItem(idx)}
+                      className="text-red-500 hover:text-red-700 p-1 bg-red-50 hover:bg-red-100 rounded-md transition"
+                      title="Remove Item"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+      </div>
+
+      {/* Add More Button */}
+      <div className="mt-3 flex justify-end">
+        <button
+          onClick={addItem}
+          className="flex items-center gap-1.5 text-blue-600 hover:text-blue-800 font-medium text-sm transition px-3 py-1.5 bg-blue-50 hover:bg-blue-100 rounded-md"
+        >
+          <PlusCircle className="w-4 h-4" />
+          Add More Product
+        </button>
       </div>
 
       {/*Total Calculations */}
@@ -225,14 +264,13 @@ export default function AddSalePage() {
 
       {/* Save Button */}
       <div className="mt-6">
-      <button
+        <button
           onClick={handleSave}
           disabled={loading}
           className={`flex items-center justify-center gap-2 px-6 py-2.5 rounded-md font-medium text-white shadow-sm transition w-full sm:w-auto
-            ${
-              loading
-                ? 'bg-blue-400 cursor-not-allowed opacity-80'
-                : 'bg-blue-600 hover:bg-blue-700'
+            ${loading
+              ? 'bg-blue-400 cursor-not-allowed opacity-80'
+              : 'bg-blue-600 hover:bg-blue-700'
             }`}
         >
           {loading ? (
