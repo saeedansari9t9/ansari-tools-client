@@ -19,6 +19,7 @@ export default function AddSalePage() {
     'Canva Pro 1 Year',
     'CapCut Pro',
     'ChatGPT Semi Private',
+    'ChatGPT Private',
     'Grammarly',
     'Quillbot',
     'Gemini Pro Plan',
