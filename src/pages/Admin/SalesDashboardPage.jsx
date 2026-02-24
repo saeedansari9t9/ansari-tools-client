@@ -77,6 +77,8 @@ export default function SalesDashboardPage() {
     'ChatGPT Semi Private',
     'Grammarly',
     'Quillbot',
+    'Gemini Pro Plan',
+    'Gemini Ultra Plan',
     'Turnitin Student',
     'Turnitin Instructor',
     'Envato Elements',

@@ -21,6 +21,8 @@ export default function AddSalePage() {
     'ChatGPT Semi Private',
     'Grammarly',
     'Quillbot',
+    'Gemini Pro Plan',
+    'Gemini Ultra Plan',
     'Turnitin Student',
     'Turnitin Instructor',
     'Envato Elements',
