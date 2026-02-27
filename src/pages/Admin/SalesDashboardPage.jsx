@@ -132,12 +132,13 @@ export default function SalesDashboardPage() {
       productName: item.productName,
       sellingPrice: item.sellingPrice,
       costPrice: item.costPrice,
+      date: item.date ? item.date.split('T')[0] : selectedDate,
     });
   };
 
   const handleUpdate = async (id) => {
     try {
-      if (!editForm.productName || !editForm.sellingPrice || !editForm.costPrice) {
+      if (!editForm.productName || !editForm.sellingPrice || !editForm.costPrice || !editForm.date) {
         toast.error("Please fill all fields");
         return;
       }
@@ -146,7 +147,7 @@ export default function SalesDashboardPage() {
         productName: editForm.productName,
         sellingPrice: Number(editForm.sellingPrice),
         costPrice: Number(editForm.costPrice),
-        date: selectedDate,
+        date: editForm.date,
       });
       toast.success("Sale updated successfully!");
       setEditingId(null);
@@ -737,18 +738,26 @@ export default function SalesDashboardPage() {
                     >
                       <td className="px-4 py-2">
                         {isEditing ? (
-                          <select
-                            value={editForm.productName}
-                            onChange={(e) => setEditForm(prev => ({ ...prev, productName: e.target.value }))}
-                            className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          >
-                            <option value="">Select product</option>
-                            {productOptions.map((p) => (
-                              <option key={p} value={p}>
-                                {p}
-                              </option>
-                            ))}
-                          </select>
+                          <div className="flex flex-col gap-2 min-w-[150px]">
+                            <select
+                              value={editForm.productName}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, productName: e.target.value }))}
+                              className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                              <option value="">Select product</option>
+                              {productOptions.map((p) => (
+                                <option key={p} value={p}>
+                                  {p}
+                                </option>
+                              ))}
+                            </select>
+                            <input
+                              type="date"
+                              value={editForm.date || ''}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, date: e.target.value }))}
+                              className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                          </div>
                         ) : (
                           <span className="text-gray-800">{it.productName}</span>
                         )}
