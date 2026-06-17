@@ -4,6 +4,8 @@ import { Mail, Lock, Shield, Eye, EyeOff, XCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuth';
 
+import { API_BASE_URL } from '../../services/api';
+
 const AdminLoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -58,7 +60,7 @@ const AdminLoginPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://api.ansaritools.com/api/admins/login', {
+      const response = await fetch(`${API_BASE_URL}/admins/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
