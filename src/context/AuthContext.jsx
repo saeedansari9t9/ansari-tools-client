@@ -7,17 +7,34 @@ export const AuthProvider = ({ children }) => {
   
   // Check if admin is logged in on initial load
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       try {
-        const adminToken = localStorage.getItem('adminToken');
         const adminData = localStorage.getItem('adminData');
         
-        if (adminToken) {
-          if (adminData) {
-            const parsedAdminData = JSON.parse(adminData);
-            setAdmin({ token: adminToken, ...parsedAdminData });
-          } else {
-            setAdmin({ token: adminToken });
+        if (adminData) {
+          // Pre-load from localStorage first to keep UI fast
+          const parsedAdminData = JSON.parse(adminData);
+          setAdmin(parsedAdminData);
+
+          // Background verification check with backend
+          try {
+            const response = await fetch('https://api.ansaritools.com/api/admins/verify', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+
+            if (!response.ok) {
+              if (response.status === 401 || response.status === 403) {
+                // Token is genuinely expired/invalid, clear local storage
+                localStorage.removeItem('adminData');
+                setAdmin(null);
+              }
+            }
+          } catch (fetchErr) {
+            console.error('Admin token verify failed due to network error:', fetchErr);
+            // Do NOT log out or delete local storage on network errors (e.g. temporary IP change drops)
           }
         }
       } catch (error) {
@@ -30,21 +47,19 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
   
-  // Login function for admin
-  const login = (token, adminData = null) => {
-    if (!token) {
-      console.error('Admin login failed: No token provided');
-      return;
+  // Login function for admin (backward compatible signature)
+  const login = (firstArg, secondArg = null) => {
+    let adminData = null;
+    if (typeof firstArg === 'object' && firstArg !== null) {
+      adminData = firstArg;
+    } else if (secondArg) {
+      adminData = secondArg;
     }
     
     try {
-      localStorage.setItem('adminToken', token);
       if (adminData) {
         localStorage.setItem('adminData', JSON.stringify(adminData));
-        const adminWithData = { token, ...adminData };
-        setAdmin(adminWithData);
-      } else {
-        setAdmin({ token });
+        setAdmin(adminData);
       }
     } catch (error) {
       console.error('Error during admin login:', error);
@@ -54,7 +69,6 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = () => {
     try {
-      localStorage.removeItem('adminToken');
       localStorage.removeItem('adminData');
       setAdmin(null);
     } catch (error) {
@@ -63,7 +77,7 @@ export const AuthProvider = ({ children }) => {
   };
   
   // Check if admin is authenticated
-  const isAuthenticated = admin && admin.token ? true : false;
+  const isAuthenticated = admin ? true : false;
   
   const value = {
     user: admin, // Keep 'user' for backward compatibility

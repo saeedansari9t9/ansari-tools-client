@@ -72,12 +72,11 @@ const AdminLoginPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Store admin token and data
-        localStorage.setItem('adminToken', data.token);
+        // Store admin data (token is stored in HttpOnly cookie set by server)
         localStorage.setItem('adminData', JSON.stringify(data.admin));
 
         // Update AuthContext
-        login(data.token, data.admin);
+        login(data.admin);
 
         toast.success('Admin login successful!');
         navigate('/admin');

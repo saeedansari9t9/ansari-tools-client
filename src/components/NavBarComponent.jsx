@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import {
   Menu,
@@ -19,10 +19,11 @@ import {
   HelpCircle,
   LayoutDashboard,
 } from "lucide-react";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/Ansari Tools Logo.png";
 import { logoutAll } from "../services/logout";
 
 const NavBarComponent = () => {
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [websiteDropdown, setWebsiteDropdown] = useState(false);
@@ -87,6 +88,11 @@ const NavBarComponent = () => {
       document.body.classList.remove("sidebar-open");
     };
   }, [open, profileDropdown, websiteDropdown]);
+
+  // Hide main website navbar on admin dashboard pages
+  if (location.pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <>

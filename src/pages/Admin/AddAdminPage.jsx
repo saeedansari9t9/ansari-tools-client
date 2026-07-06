@@ -179,13 +179,10 @@ const AddAdminPage = () => {
         isAdmin: true
       });
 
-      const adminToken = localStorage.getItem('adminToken');
-      
       const response = await fetch('https://api.ansaritools.com/api/admins', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${adminToken}`,
         },
         body: JSON.stringify({
           firstName: formData.firstName,

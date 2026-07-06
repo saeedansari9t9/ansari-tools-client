@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import CustomLoader from './CustomLoader';
 
 const AdminGuard = ({ children }) => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAdminAccess = async () => {
       try {
-        // Check for admin token in localStorage
-        const adminToken = localStorage.getItem('adminToken');
+        // Check for adminData in localStorage
         const adminData = localStorage.getItem('adminData');
 
-        if (!adminToken || !adminData) {
+        if (!adminData) {
           navigate('/');
           return;
         }
 
-        // Verify token with backend
+        // Verify token with backend (cookies automatically attached via fetch wrapper)
         const response = await fetch('https://api.ansaritools.com/api/admins/verify', {
           method: 'GET',
-          credentials: "include",
           headers: {
-            'Authorization': `Bearer ${adminToken}`,
             'Content-Type': 'application/json',
           },
         });
@@ -31,15 +31,15 @@ const AdminGuard = ({ children }) => {
         if (response.ok) {
           setIsAuthorized(true);
         } else {
-          // Token is invalid, clear storage and redirect
-          localStorage.removeItem('adminToken');
-          localStorage.removeItem('adminData');
+          // Only log out if it's an authentic verification failure (401/403)
+          if (response.status === 401 || response.status === 403) {
+            logout();
+          }
           navigate('/');
         }
       } catch (error) {
-        console.error('Admin verification error:', error);
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('adminData');
+        console.error('Admin verification error (likely network/IP change):', error);
+        // Do NOT logout or clear credentials on network glitches. Just redirect to safety.
         navigate('/');
       } finally {
         setLoading(false);
@@ -50,14 +50,7 @@ const AdminGuard = ({ children }) => {
   }, [navigate]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Verifying admin access...</p>
-        </div>
-      </div>
-    );
+    return <CustomLoader />;
   }
 
   if (!isAuthorized) {

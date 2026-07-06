@@ -73,13 +73,10 @@ const EditProfilePage = () => {
     setLoading(true);
     
     try {
-      const adminToken = localStorage.getItem('adminToken');
-      
       const response = await fetch(`https://api.ansaritools.com/api/admins/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${adminToken}`,
         },
         body: JSON.stringify({
           firstName: formData.firstName.trim(),
@@ -100,7 +97,7 @@ const EditProfilePage = () => {
         };
         
         localStorage.setItem('adminData', JSON.stringify(updatedAdmin));
-        login(adminToken, updatedAdmin);
+        login(updatedAdmin);
         
         toast.success('Profile updated successfully!');
         navigate('/admin');

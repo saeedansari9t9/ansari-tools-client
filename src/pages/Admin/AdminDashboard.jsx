@@ -13,7 +13,8 @@ import {
   X,
   Calendar,
   Tag,
-  BarChart3
+  BarChart3,
+  CreditCard
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useProducts } from '../../hooks/useProducts';
@@ -219,159 +220,167 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-        {/* Header and Stats Container */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
-          {/* Header */}
-          <div className="mb-3 sm:mb-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg" style={{ backgroundColor: 'var(--color-dark)' }}>
-                <Package className="w-4 h-4 text-white" />
+    <div className="w-full">
+      <div className="max-w-7xl mx-auto space-y-6">
+      {/* Header and Stats Container */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-6">
+        {/* Header */}
+        <div className="mb-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 rounded-xl" style={{ backgroundColor: 'var(--color-dark)' }}>
+              <Package className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                Products Catalog
+              </h1>
+              <p className="text-xs text-gray-500">
+                Manage your digital products, categories, and active inventory
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-3 sm:p-4">
+            <div className="flex items-center">
+              <div className="p-2.5 bg-blue-50 border border-blue-100 rounded-xl text-blue-600">
+                <Package className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-                  Admin Dashboard
-                </h1>
-                <p className="text-xs text-gray-600">
-                  Manage your products and inventory
+              <div className="ml-3">
+                <p className="text-xs font-semibold text-slate-500">Total Products</p>
+                <p className="text-lg sm:text-2xl font-bold text-slate-900">{products.length}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-3 sm:p-4">
+            <div className="flex items-center">
+              <div className="p-2.5 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-600">
+                <Eye className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+              <div className="ml-3">
+                <p className="text-xs font-semibold text-slate-500">Active Products</p>
+                <p className="text-lg sm:text-2xl font-bold text-slate-900">
+                  {products.filter(p => p.isActive).length}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-            <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
-              <div className="flex items-center">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Package className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-xs font-medium text-gray-600">Total Products</p>
-                  <p className="text-sm sm:text-base font-bold text-gray-900">{products.length}</p>
-                </div>
+          <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-3 sm:p-4">
+            <div className="flex items-center">
+              <div className="p-2.5 bg-purple-50 border border-purple-100 rounded-xl text-purple-600">
+                <Filter className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+              <div className="ml-3">
+                <p className="text-xs font-semibold text-slate-500">Categories</p>
+                <p className="text-lg sm:text-2xl font-bold text-slate-900">
+                  {new Set(products.map(p => p.category)).size}
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
-              <div className="flex items-center">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Eye className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-xs font-medium text-gray-600">Active Products</p>
-                  <p className="text-sm sm:text-base font-bold text-gray-900">
-                    {products.filter(p => p.isActive).length}
-                  </p>
-                </div>
+          <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-3 sm:p-4">
+            <div className="flex items-center">
+              <div className="p-2.5 bg-orange-50 border border-orange-100 rounded-xl text-orange-600">
+                <Users className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
-              <div className="flex items-center">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Filter className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-xs font-medium text-gray-600">Categories</p>
-                  <p className="text-sm sm:text-base font-bold text-gray-900">
-                    {new Set(products.map(p => p.category)).size}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
-              <div className="flex items-center">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Users className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-xs font-medium text-gray-600">With Variants</p>
-                  <p className="text-sm sm:text-base font-bold text-gray-900">
-                    {products.filter(p => p.hasVariants).length}
-                  </p>
-                </div>
+              <div className="ml-3">
+                <p className="text-xs font-semibold text-slate-500">With Variants</p>
+                <p className="text-lg sm:text-2xl font-bold text-slate-900">
+                  {products.filter(p => p.hasVariants).length}
+                </p>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
+      {/* Module Grid Links */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
         {/* Canva Subscriptions Management */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Canva Subscriptions</h3>
-            <Users className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-5 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Canva Subscriptions</h3>
+              <div className="p-2 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100">
+                <Users className="w-5 h-5" />
+              </div>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4">Manage Canva subscription plans, client licenses, and user access</p>
           </div>
-          <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Manage Canva subscription plans and user access</p>
           <div className="flex gap-3">
             <Link
               to="/admin/add-canva-subscription"
-              className="flex-1 bg-green-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm"
+              className="flex-1 bg-emerald-600 text-white px-3 py-2.5 rounded-xl hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold shadow-sm shadow-emerald-600/10"
             >
-              <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
-              Add Subscription
+              <Plus className="w-4 h-4" />
+              Add Subs
             </Link>
             <Link
               to="/admin/canva-subscriptions"
-              className="flex-1 bg-gray-100 text-gray-700 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm"
+              className="flex-1 bg-slate-100 text-slate-700 px-3 py-2.5 rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold"
             >
-              <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+              <Eye className="w-4 h-4" />
               View All
             </Link>
           </div>
         </div>
 
-        {/* Sales Section - similar styling to Canva block */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Sales</h3>
-            <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600" />
+        {/* Sales Section */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-5 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Sales Dashboard</h3>
+              <div className="p-2 bg-blue-50 text-blue-600 rounded-xl border border-blue-100">
+                <BarChart3 className="w-5 h-5" />
+              </div>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4">Add new sales transactions and monitor daily or monthly summaries</p>
           </div>
-          <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Add new sales and view daily summaries</p>
-          <div className="flex gap-3 justify-start">
+          <div className="flex gap-3">
             <Link
               to="/admin/sales/add"
-              className="flex-1 bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm"
+              className="flex-1 bg-blue-600 text-white px-3 py-2.5 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold shadow-sm shadow-blue-600/10"
             >
-              <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+              <Plus className="w-4 h-4" />
               Add Sale
             </Link>
             <Link
               to="/admin/sales"
-              className="flex-1 bg-gray-100 text-gray-700 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm"
+              className="flex-1 bg-slate-100 text-slate-700 px-3 py-2.5 rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold"
             >
-              <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+              <Eye className="w-4 h-4" />
               View Sales
             </Link>
           </div>
         </div>
 
-        {/* Expenses */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Expenses</h3>
-            <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600" />
+        {/* Expenses Section */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-5 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900">Expenses Log</h3>
+              <div className="p-2 bg-rose-50 text-rose-600 rounded-xl border border-rose-100">
+                <CreditCard className="w-5 h-5" />
+              </div>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-500 mb-4">Log daily business expenses and filter statements by date or category</p>
           </div>
-          <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Add new expense</p>
-          <div className="flex gap-3 justify-start">
+          <div className="flex gap-3">
             <Link
               to="/admin/expenses"
-              className="flex-1 bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm"
+              className="w-full bg-rose-600 text-white px-3 py-2.5 rounded-xl hover:bg-rose-700 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold shadow-sm shadow-rose-600/10"
             >
-              <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
-              Add Expense
+              <Plus className="w-4 h-4" />
+              Add & View Expenses
             </Link>
-            {/* <Link
-              to="/admin/sales"
-              className="flex-1 bg-gray-100 text-gray-700 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm"
-            >
-              <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-              View Sales
-            </Link> */}
           </div>
         </div>
+      </div>
 
         {/* Sales Management Quick Links */}
         {/* <div className="bg-white rounded-lg shadow mb-4 sm:mb-6 p-4 sm:p-6">

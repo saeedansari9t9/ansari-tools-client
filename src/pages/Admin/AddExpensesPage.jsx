@@ -37,7 +37,6 @@ export default function AddExpensesPage() {
     amount: "",
     date: today,
     note: "",
-    note: "",
     category: "",
   });
   const [showAddModal, setShowAddModal] = useState(false);

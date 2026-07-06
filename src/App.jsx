@@ -36,6 +36,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminGuard from "./components/AdminGuard";
+import AdminLayout from "./components/AdminLayout";
 import "./index.css";
 
 import HomePage from "./pages/HomePage";
@@ -81,103 +82,27 @@ function App() {
           {/* Admin Auth routes - hidden from public access */}
           <Route path="/admin/login" element={<AdminLoginPage />} />
 
-          {/* Admin Routes - Protected by AdminGuard */}
+          {/* Admin Routes - Protected by AdminGuard & styled with AdminLayout */}
           <Route
-            path="/admin"
             element={
               <AdminGuard>
-                <AdminDashboard />
+                <AdminLayout />
               </AdminGuard>
             }
-          />
-          <Route
-            path="/admin/add-product"
-            element={
-              <AdminGuard>
-                <AddProductPage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/edit-product/:id"
-            element={
-              <AdminGuard>
-                <EditProductPage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/canva-subscriptions"
-            element={
-              <AdminGuard>
-                <CanvaSubscriptionsPage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/add-canva-subscription"
-            element={
-              <AdminGuard>
-                <AddCanvaSubscriptionPage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/add-admin"
-            element={
-              <AdminGuard>
-                <AddAdminPage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/edit-profile"
-            element={
-              <AdminGuard>
-                <EditProfilePage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/change-password"
-            element={
-              <AdminGuard>
-                <ChangePasswordPage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/sales/add"
-            element={
-              <AdminGuard>
-                <AddSalePage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/sales"
-            element={
-              <AdminGuard>
-                <SalesDashboardPage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/sales/monthly"
-            element={
-              <AdminGuard>
-                <MonthlySalesSummaryPage />
-              </AdminGuard>
-            }
-          />
-          <Route
-            path="/admin/expenses"
-            element={
-              <AdminGuard>
-                <AddExpensesPage />
-              </AdminGuard>
-            }
-          />
+          >
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/add-product" element={<AddProductPage />} />
+            <Route path="/admin/edit-product/:id" element={<EditProductPage />} />
+            <Route path="/admin/canva-subscriptions" element={<CanvaSubscriptionsPage />} />
+            <Route path="/admin/add-canva-subscription" element={<AddCanvaSubscriptionPage />} />
+            <Route path="/admin/add-admin" element={<AddAdminPage />} />
+            <Route path="/admin/edit-profile" element={<EditProfilePage />} />
+            <Route path="/admin/change-password" element={<ChangePasswordPage />} />
+            <Route path="/admin/sales" element={<SalesDashboardPage />} />
+            <Route path="/admin/sales/add" element={<AddSalePage />} />
+            <Route path="/admin/sales/monthly" element={<MonthlySalesSummaryPage />} />
+            <Route path="/admin/expenses" element={<AddExpensesPage />} />
+          </Route>
           <Route
             path="/profile"
             element={

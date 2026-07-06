@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<title>Ansari Tools - Loader</title>
+<style>
+  :root{
+    --bg-1:#0a0420;
+    --bg-2:#1a0a3a;
+    --stripe:#cfd3e8;
+    --accent-1:#6a5cff;
+    --accent-2:#c84fff;
+  }
+  html,body{
+    margin:0;
+    height:100%;
+    background:radial-gradient(circle at 30% 40%, var(--bg-2), var(--bg-1) 70%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    font-family:'Segoe UI', sans-serif;
+  }
+  .loader-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+  }
+  svg{
+    width:260px;
+    height:260px;
+    overflow:visible;
+  }
+  .stripe{
+    fill:none;
+    stroke:var(--stripe);
+    stroke-width:5;
+    stroke-linecap:round;
+    stroke-dasharray:1;
+    stroke-dashoffset:1;
+    animation:draw 2.4s ease-in-out infinite;
+    filter:drop-shadow(0 0 6px rgba(255,255,255,0.25));
+  }
+  .stripe.t{
+    stroke:url(#tGrad);
+  }
+  /* stagger each stripe */
+  .s1{animation-delay:0s;}
+  .s2{animation-delay:.08s;}
+  .s3{animation-delay:.16s;}
+  .s4{animation-delay:.24s;}
+  .s5{animation-delay:.32s;}
+  .t1{animation-delay:.1s;}
+  .t2{animation-delay:.18s;}
+  .t3{animation-delay:.26s;}
+
+  @keyframes draw{
+    0%{stroke-dashoffset:1; opacity:0;}
+    15%{opacity:1;}
+    45%{stroke-dashoffset:0; opacity:1;}
+    70%{stroke-dashoffset:0; opacity:1;}
+    90%{stroke-dashoffset:-1; opacity:0;}
+    100%{stroke-dashoffset:-1; opacity:0;}
+  }
+
+  .underline{
+    width:140px;
+    height:5px;
+    border-radius:4px;
+    background:linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    background-size:200% 100%;
+    animation:slide 1.6s ease-in-out infinite, glow 1.6s ease-in-out infinite;
+  }
+  @keyframes slide{
+    0%{background-position:0% 50%;}
+    100%{background-position:100% 50%;}
+  }
+  @keyframes glow{
+    0%,100%{opacity:.5; transform:scaleX(.7);}
+    50%{opacity:1; transform:scaleX(1);}
+  }
+
+  .brand{
+    color:#fff;
+    font-weight:700;
+    font-size:22px;
+    letter-spacing:1px;
+    opacity:.9;
+  }
+  .brand span{
+    background:linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .tagline{
+    color:#a9a3c9;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    opacity:.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="loader-wrap">
+  <svg viewBox="0 0 226 200">
+    <defs>
+      <linearGradient id="tGrad" gradientUnits="userSpaceOnUse" x1="108" y1="0" x2="200" y2="0">
+        <stop offset="0%" stop-color="#6a5cff"/>
+        <stop offset="100%" stop-color="#c84fff"/>
+      </linearGradient>
+    </defs>
+
+    <!-- T: top bar, 3 parallel horizontal stripes (drawn first = behind) -->
+    <path class="stripe t t1" d="M110 44 L196 44" pathLength="1" />
+    <path class="stripe t t2" d="M110 56 L196 56" pathLength="1" />
+    <path class="stripe t t3" d="M110 68 L196 68" pathLength="1" />
+
+    <!-- T: legs, 4 vertical stripes hanging from bar -->
+    <path class="stripe t t1" d="M132 68 L132 168" pathLength="1" />
+    <path class="stripe t t2" d="M144 68 L144 168" pathLength="1" />
+    <path class="stripe t t3" d="M156 68 L156 168" pathLength="1" />
+    <path class="stripe t t1" d="M168 68 L168 168" pathLength="1" />
+
+    <!-- A: 4 nested chevrons (V-shapes), each translated right (drawn after = in front) -->
+    <path class="stripe s1" d="M24 168 L70 44 L116 168" pathLength="1" />
+    <path class="stripe s2" d="M34 168 L80 44 L126 168" pathLength="1" />
+    <path class="stripe s3" d="M44 168 L90 44 L136 168" pathLength="1" />
+    <path class="stripe s4" d="M54 168 L100 44 L146 168" pathLength="1" />
+
+    <!-- A: crossbar, two short stripes on the leftmost chevron -->
+    <path class="stripe s3" d="M46 116 L94 116" pathLength="1" />
+    <path class="stripe s4" d="M42 131 L98 131" pathLength="1" />
+  </svg>
+
+  <div class="underline"></div>
+  <div class="brand">Ansari <span>Tools</span></div>
+  <div class="tagline">Loading...</div>
+</div>
+
+</body>
+</html>

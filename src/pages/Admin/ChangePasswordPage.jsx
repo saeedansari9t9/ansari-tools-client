@@ -78,12 +78,10 @@ const ChangePasswordPage = () => {
 
     setLoading(true);
     try {
-      const adminToken = localStorage.getItem('adminToken');
       const response = await fetch(`https://api.ansaritools.com/api/admins/${user.id}/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${adminToken}`,
         },
         body: JSON.stringify({
           currentPassword: formData.currentPassword,
