@@ -16,7 +16,7 @@ import { API_BASE_URL } from "../../services/api";
 const EXPENSE_CATEGORIES = [
   "Food & Drinks",
   "Saturday Night",
-  "Innovative Network",
+  "QF Network",
   "Travel",
   "Shopping",
   "Dining Out",
