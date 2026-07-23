@@ -1,25 +1,30 @@
 import React from "react";
-import { Search, PenTool, Palette, Image as ImageIcon, Headphones, Video, ArrowRight } from "lucide-react";
+import { Search, PenTool, Palette, Image as ImageIcon, Headphones, Video, ArrowRight, Layers, Sparkles } from "lucide-react";
 
-const CategoryCard = ({ color, icon, title, items, iconStyle }) => (
-  <div className="group bg-white rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200">
-    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 ${color}`} style={iconStyle}>
+const CategoryCard = ({ icon, title, items, gradient, iconColor }) => (
+  <div className="group relative bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(43,13,102,0.12)] transition-all duration-500 overflow-hidden border border-gray-100 hover:-translate-y-1">
+    <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${gradient} rounded-bl-full opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-500`}></div>
+    
+    <div className={`mb-6 ${iconColor} group-hover:rotate-6 transition-transform duration-300 inline-block`}>
       {icon}
     </div>
-    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 group-hover:opacity-80 transition-colors duration-200">
+    
+    <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-[#2b0d66] transition-colors duration-300 relative z-10">
       {title}
     </h3>
-    <ul className="space-y-2 mb-6">
+    
+    <ul className="space-y-3 mb-8 relative z-10">
       {items.map((it) => (
-        <li key={it} className="text-sm text-gray-600 font-medium flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--color-dark)' }}></div>
+        <li key={it} className="text-sm font-medium text-gray-600 flex items-center gap-3">
+          <div className="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
           {it}
         </li>
       ))}
     </ul>
+    
     <a 
-      href="#" 
-      className="inline-flex items-center gap-2 text-sm font-semibold hover:opacity-80 transition-colors duration-200 group-hover:gap-3" style={{ color: 'var(--color-dark)' }}
+      href="#tools" 
+      className="inline-flex items-center gap-2 text-sm font-bold text-[#2b0d66] hover:text-purple-600 transition-colors duration-200 group-hover:gap-3 relative z-10"
     >
       View All <ArrowRight className="w-4 h-4" strokeWidth={3} />
     </a>
@@ -27,82 +32,94 @@ const CategoryCard = ({ color, icon, title, items, iconStyle }) => (
 );
 
 const ToolsCategoriesComponent = () => (
-  <section id="tools" className="py-12 sm:py-16 lg:py-20" style={{ backgroundColor: 'var(--color-light)' }}>
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="tools" className="py-10 lg:py-16 relative overflow-hidden bg-white">
+    
+    {/* Decorative Background */}
+    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-full max-h-[800px] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-100/50 via-transparent to-transparent opacity-50 blur-3xl z-0 pointer-events-none"></div>
+
+    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
       {/* Header */}
-      <div className="text-center mb-8 sm:mb-12">
-        <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-dark)' }}>
-          <Search className="w-3 h-3 sm:w-4 sm:h-4" />
+      <div className="text-center mb-16 lg:mb-20">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-6 bg-white text-[#2b0d66] border border-purple-200 shadow-sm mx-auto">
+          <Layers className="w-4 h-4 text-purple-600" />
           Tool Categories
         </div>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6" style={{ color: 'var(--color-dark)' }}>
-          Premium Tools Categories
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+          Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2b0d66] to-purple-500">Premium Tools</span>
         </h2>
-        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-          Explore our comprehensive collection of premium tools organized by category
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          From SEO to AI Design, we have organized our premium tools into categories to help you find exactly what you need.
         </p>
       </div>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto relative">
         <CategoryCard
-          color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
+          gradient="from-blue-500 to-blue-700"
+          iconColor="text-blue-600"
           title="SEO Tools"
-          icon={<Search className="w-6 h-6 text-white" strokeWidth={2.5} />}
-          items={["Semrush","Ahrefs","Moz Pro","Ubersuggest","Surfer SEO"]}
+          icon={<Search className="w-10 h-10" strokeWidth={2} />}
+          items={["Semrush", "Ahrefs", "Moz Pro", "Ubersuggest", "Surfer SEO"]}
         />
         <CategoryCard
-          color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
+          gradient="from-purple-500 to-purple-700"
+          iconColor="text-purple-600"
           title="AI Writing Tools"
-          icon={<PenTool className="w-6 h-6 text-white" />}
-          items={["ChatGPT Plus","Jasper AI","Copy AI","Rytr","Quillbot Premium"]}
+          icon={<PenTool className="w-10 h-10" strokeWidth={2} />}
+          items={["ChatGPT Plus", "Jasper AI", "Copy AI", "Rytr", "Quillbot Premium"]}
         />
         <CategoryCard
-          color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
+          gradient="from-pink-500 to-rose-500"
+          iconColor="text-pink-600"
           title="Design Tools"
-          icon={<Palette className="w-6 h-6 text-white" strokeWidth={2.5} />}
-          items={["Canva Pro","Adobe Creative Cloud","VistaCreate","PicMonkey","Figma Pro"]}
+          icon={<Palette className="w-10 h-10" strokeWidth={2} />}
+          items={["Canva Pro", "Adobe Creative Cloud", "VistaCreate", "PicMonkey", "Figma Pro"]}
         />
         <CategoryCard
-          color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
+          gradient="from-orange-400 to-orange-600"
+          iconColor="text-orange-500"
           title="AI Image Tools"
-          icon={<ImageIcon className="w-6 h-6 text-white" strokeWidth={2.5} />}
-          items={["Midjourney","DALL-E","Stable Diffusion","Leonardo AI","Runway ML"]}
+          icon={<ImageIcon className="w-10 h-10" strokeWidth={2} />}
+          items={["Midjourney", "DALL-E", "Stable Diffusion", "Leonardo AI", "Runway ML"]}
         />
         <CategoryCard
-          color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
+          gradient="from-teal-400 to-emerald-600"
+          iconColor="text-teal-600"
           title="AI Audio Tools"
-          icon={<Headphones className="w-6 h-6 text-white" strokeWidth={2.5} />}
-          items={["ElevenLabs","Descript","Murf AI","Play.ht","Resemble AI"]}
+          icon={<Headphones className="w-10 h-10" strokeWidth={2} />}
+          items={["ElevenLabs", "Descript", "Murf AI", "Play.ht", "Resemble AI"]}
         />
         <CategoryCard
-          color="text-white"
-          iconStyle={{ backgroundColor: 'var(--color-dark)' }}
+          gradient="from-[#2b0d66] to-[#4c1ba5]"
+          iconColor="text-[#2b0d66]"
           title="AI Video Tools"
-          icon={<Video className="w-6 h-6 text-white" strokeWidth={2.5} />}
-          items={["Synthesia","Pictory","InVideo AI","Runway ML","Descript"]}
+          icon={<Video className="w-10 h-10" strokeWidth={2} />}
+          items={["Synthesia", "Pictory", "InVideo AI", "Runway ML", "Descript"]}
         />
       </div>
 
       {/* Bottom CTA */}
-      <div className="text-center mt-8 sm:mt-12">
-        <div className="bg-white/80 backdrop-blur-sm border-2 border-white/50 rounded-2xl p-4 sm:p-6 shadow-xl max-w-3xl mx-auto">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
-            Ready to Access All These Tools?
-          </h3>
-          <p className="text-sm sm:text-base text-gray-600 mb-4">
-            Get unlimited access to all premium tools with our affordable subscription plans
-          </p>
-          <button className="text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-200" style={{ backgroundColor: 'var(--color-dark)' }}>
-            View All Tools
-          </button>
+      <div className="mt-16 lg:mt-24 text-center">
+        <div className="inline-block relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-[#2b0d66] blur-xl opacity-30 rounded-full"></div>
+          <div className="relative bg-white/80 backdrop-blur-xl border border-white rounded-[2rem] p-8 sm:p-10 shadow-2xl max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-8">
+            <div className="text-left">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                Ready to Access All Tools?
+              </h3>
+              <p className="text-gray-600 font-medium">
+                Get unlimited access to all premium tools with our affordable subscription plans.
+              </p>
+            </div>
+            <a href="#pricing" className="px-8 py-4 shrink-0 rounded-xl font-bold text-white shadow-lg bg-[#2b0d66] hover:bg-[#1e0947] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              View Pricing
+            </a>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 );

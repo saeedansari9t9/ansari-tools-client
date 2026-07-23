@@ -16,8 +16,8 @@ const Item = ({ icon, title, desc, color, iconStyle }) => (
 );
 
 const WhyChooseUsComponent = () => (
-  <section className="py-12 sm:py-16 lg:py-20" style={{ backgroundColor: 'var(--color-light)' }}>
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section className="py-10 lg:py-16 relative overflow-hidden bg-white">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       {/* Header */}
       <div className="text-center mb-8 sm:mb-12">
         <div className="inline-flex items-center gap-2 text-white px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 shadow-lg" style={{ backgroundColor: 'var(--color-dark)' }}>

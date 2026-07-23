@@ -45,6 +45,7 @@ import ToolsPage from "./pages/ToolsPage";
 import WhyChoosePage from "./pages/WhyChoosePage";
 import TestimonialsPage from "./pages/TestimonialsPage";
 import FAQPage from "./pages/FAQPage";
+import AboutUsPage from "./pages/AboutUsPage";
 import ProductPage from "./pages/ProductPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -79,6 +80,7 @@ function App() {
           <Route path="/why" element={<WhyChoosePage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/about" element={<AboutUsPage />} />
           {/* Admin Auth routes - hidden from public access */}
           <Route path="/admin/login" element={<AdminLoginPage />} />
 
