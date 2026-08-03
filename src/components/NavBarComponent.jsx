@@ -344,40 +344,9 @@ const NavBarComponent = () => {
             >
               {item.icon}
               <span>{item.label}</span>
-              <ChevronRight className="w-4 h-4 ml-auto opacity-30" />
             </NavLink>
           ))}
 
-          {isAuthenticated && (
-            <>
-              <p className="ec-drawer__section-label" style={{ marginTop: "16px" }}>Admin</p>
-              <Link to="/admin" onClick={() => setMobileOpen(false)} className="ec-drawer__link">
-                <Shield className="w-4 h-4" /><span>Admin Panel</span><ChevronRight className="w-4 h-4 ml-auto opacity-30" />
-              </Link>
-              <Link to="/admin/edit-profile" onClick={() => setMobileOpen(false)} className="ec-drawer__link">
-                <User className="w-4 h-4" /><span>Edit Profile</span><ChevronRight className="w-4 h-4 ml-auto opacity-30" />
-              </Link>
-              {isMainAdmin && (
-                <Link to="/admin/add-admin" onClick={() => setMobileOpen(false)} className="ec-drawer__link">
-                  <UserPlus className="w-4 h-4" /><span>New Admin</span><ChevronRight className="w-4 h-4 ml-auto opacity-30" />
-                </Link>
-              )}
-              <button onClick={async () => { setMobileOpen(false); await logout(); }} className="ec-drawer__link ec-drawer__link--danger">
-                <LogOut className="w-4 h-4" /><span>Logout</span>
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Drawer CTA */}
-        <div className="ec-drawer__footer">
-          <Link to="/product" onClick={() => setMobileOpen(false)} className="ec-drawer__cta">
-            <ShoppingBag className="w-4 h-4" />
-            Browse All Products
-          </Link>
-          <a href="https://wa.me/923000000000" target="_blank" rel="noopener noreferrer" className="ec-drawer__whatsapp">
-            📲 WhatsApp Support
-          </a>
         </div>
       </nav>
     </>
