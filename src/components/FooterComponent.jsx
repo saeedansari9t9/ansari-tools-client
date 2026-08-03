@@ -1,14 +1,38 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { Facebook, Twitter, Instagram, LinkedinIcon, Mail, Phone, MessageCircle } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Facebook, Twitter, Instagram, LinkedinIcon, Mail, Phone } from "lucide-react";
 import footerLogo from "../assets/images/Ansari Tools Logo.png";
 
 const FooterComponent = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [clickCount, setClickCount] = useState(0);
+  const timerRef = useRef(null);
+
   if (location.pathname.startsWith("/admin")) {
     return null;
   }
-  
+
+  const handleLogoClick = () => {
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+
+    // Reset timer on each click
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    if (newCount >= 5) {
+      // 5 clicks ho gaye - Admin Login par jao!
+      setClickCount(0);
+      navigate("/admin/login");
+      return;
+    }
+
+    // 3 seconds mein 5 clicks nahi hue to reset
+    timerRef.current = setTimeout(() => {
+      setClickCount(0);
+    }, 3000);
+  };
+
   return (
     <footer className="text-white" style={{ backgroundColor: 'var(--color-dark)' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -16,45 +40,58 @@ const FooterComponent = () => {
           {/* Logo and Description */}
           <div className="lg:col-span-1">
             <div className="flex items-center space-x-2 mb-4">
-              <img 
-                src={footerLogo} 
-                alt="AnsariTools Logo" 
-                className="h-12 w-auto"
-              />
-              {/* <span className="text-lg sm:text-xl font-bold text-white">
-                ANSARI TOOLS
-              </span> */}
+              {/* Easter Egg: 5 baar tap karo → Admin Login */}
+              <div className="relative cursor-pointer select-none" onClick={handleLogoClick}>
+                <img
+                  src={footerLogo}
+                  alt="AnsariTools Logo"
+                  className="h-12 w-auto"
+                  draggable={false}
+                />
+                {/* Subtle dot indicator - sirf 2nd click ke baad dikhe */}
+                {clickCount >= 2 && (
+                  <div className="absolute -top-1 -right-1 flex gap-0.5">
+                    {[...Array(clickCount)].map((_, i) => (
+                      <span
+                        key={i}
+                        className="block w-1 h-1 rounded-full opacity-40"
+                        style={{ backgroundColor: 'var(--color-light)' }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-light)' }}>
               Premium digital tools at unbeatable prices. Save up to 90% on your
               favorite software subscriptions.
             </p>
             <div className="flex space-x-3">
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
-                style={{ backgroundColor: 'var(--color-light)' , color: 'var(--color-dark)' }}
+                style={{ backgroundColor: 'var(--color-light)', color: 'var(--color-dark)' }}
               >
                 <Facebook className="w-4 h-4" />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
-                style={{ backgroundColor: 'var(--color-light)' , color: 'var(--color-dark)' }}
+                style={{ backgroundColor: 'var(--color-light)', color: 'var(--color-dark)' }}
               >
                 <Twitter className="w-4 h-4" />
               </a>
-              <a 
-                href="https://www.instagram.com/lexorasolution/" 
+              <a
+                href="https://www.instagram.com/lexorasolution/"
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
-                style={{ backgroundColor: 'var(--color-light)' , color: 'var(--color-dark)' }}
+                style={{ backgroundColor: 'var(--color-light)', color: 'var(--color-dark)' }}
               >
                 <Instagram className="w-4 h-4" />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
-                style={{ backgroundColor: 'var(--color-light)' , color: 'var(--color-dark)' }}
+                style={{ backgroundColor: 'var(--color-light)', color: 'var(--color-dark)' }}
               >
                 <LinkedinIcon className="w-4 h-4" />
               </a>
@@ -66,8 +103,8 @@ const FooterComponent = () => {
             <h4 className="text-base font-bold mb-4 text-white">PAGES</h4>
             <ul className="space-y-2">
               <li>
-                <a 
-                  href="/" 
+                <a
+                  href="/"
                   className="text-sm transition-colors duration-200 hover:opacity-80"
                   style={{ color: 'var(--color-light)' }}
                 >
@@ -75,8 +112,8 @@ const FooterComponent = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="/pricing" 
+                <a
+                  href="/pricing"
                   className="text-sm transition-colors duration-200 hover:opacity-80"
                   style={{ color: 'var(--color-light)' }}
                 >
@@ -84,8 +121,8 @@ const FooterComponent = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="/tools" 
+                <a
+                  href="/tools"
                   className="text-sm transition-colors duration-200 hover:opacity-80"
                   style={{ color: 'var(--color-light)' }}
                 >
@@ -93,8 +130,8 @@ const FooterComponent = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="/why" 
+                <a
+                  href="/why"
                   className="text-sm transition-colors duration-200 hover:opacity-80"
                   style={{ color: 'var(--color-light)' }}
                 >
@@ -102,8 +139,8 @@ const FooterComponent = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="/testimonials" 
+                <a
+                  href="/testimonials"
                   className="text-sm transition-colors duration-200 hover:opacity-80"
                   style={{ color: 'var(--color-light)' }}
                 >
@@ -111,8 +148,8 @@ const FooterComponent = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="/faq" 
+                <a
+                  href="/faq"
                   className="text-sm transition-colors duration-200 hover:opacity-80"
                   style={{ color: 'var(--color-light)' }}
                 >
@@ -127,8 +164,8 @@ const FooterComponent = () => {
             <h4 className="text-base font-bold mb-4 text-white">CONTACT</h4>
             <ul className="space-y-3">
               <li>
-                <a 
-                  href="mailto:ansaritools3@gmail.com" 
+                <a
+                  href="mailto:ansaritools3@gmail.com"
                   className="text-sm text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
                 >
                   <Mail className="w-4 h-4" />
@@ -136,8 +173,8 @@ const FooterComponent = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="tel:+923102204842" 
+                <a
+                  href="tel:+923102204842"
                   className="text-sm text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
                 >
                   <Phone className="w-4 h-4" />
