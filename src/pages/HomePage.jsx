@@ -7,6 +7,7 @@ import WhyChooseUsComponent from "../components/WhyChooseUsComponent";
 import CTAComponent from "../components/CTAComponent";
 import TestimonialsComponent from "../components/TestimonialsComponent";
 import FAQComponent from "../components/FAQComponent";
+import OfferPopup from "../components/OfferPopup";
 
 const HomePage = () => {
   const location = useLocation();
@@ -25,6 +26,9 @@ const HomePage = () => {
 
   return (
     <>
+      {/* Special Offer Popup - har visit pe show hoga */}
+      <OfferPopup />
+
       <HeroComponent />
       <div id="pricing">
         <PricingComponent />
