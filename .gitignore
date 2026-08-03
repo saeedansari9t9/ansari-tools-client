@@ -78,7 +78,8 @@ Thumbs.db
 
 # Gatsby files
 .cache/
-public
+# public  ← Vite mein public/ source folder hai, ignore mat karo
+
 
 # Storybook build outputs
 .out
