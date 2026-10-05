@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Lock, Eye, EyeOff, XCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuth';
+import { API_BASE_URL } from '../../services/api';
 
 const ChangePasswordPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { logout } = useAuth();
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -53,10 +54,10 @@ const ChangePasswordPage = () => {
     
     if (!formData.newPassword) {
       newErrors.newPassword = 'New password is required';
-    } else if (formData.newPassword.length < 8) {
-      newErrors.newPassword = 'Password must be at least 8 characters long';
-    } else if (!/[A-Z]/.test(formData.newPassword)) {
-      newErrors.newPassword = 'Password must contain at least one capital letter';
+    } else if (formData.newPassword.length < 12) {
+      newErrors.newPassword = 'Password must be at least 12 characters long';
+    } else if (!/[a-z]/.test(formData.newPassword) || !/[A-Z]/.test(formData.newPassword) || !/\d/.test(formData.newPassword) || !/[^A-Za-z0-9]/.test(formData.newPassword)) {
+      newErrors.newPassword = 'Use uppercase, lowercase, number, and special character';
     }
     
     if (!formData.confirmPassword) {
@@ -78,8 +79,9 @@ const ChangePasswordPage = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`https://api.ansaritools.com/api/admins/${user.id}/change-password`, {
+      const response = await fetch(`${API_BASE_URL}/admins/change-password`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -91,8 +93,9 @@ const ChangePasswordPage = () => {
 
       const data = await response.json();
       if (response.ok) {
-        toast.success('Password changed successfully!');
-        navigate('/admin');
+        logout();
+        toast.success('Password changed. Please log in again.');
+        navigate('/admin/login');
       } else {
         if (data.message === 'Current password is incorrect') {
           setErrors({

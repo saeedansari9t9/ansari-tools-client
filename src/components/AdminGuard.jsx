@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import CustomLoader from './CustomLoader';
+import { API_BASE_URL } from '../services/api';
 
 const AdminGuard = ({ children }) => {
   const navigate = useNavigate();
@@ -21,8 +22,9 @@ const AdminGuard = ({ children }) => {
         }
 
         // Verify token with backend (cookies automatically attached via fetch wrapper)
-        const response = await fetch('https://api.ansaritools.com/api/admins/verify', {
+        const response = await fetch(`${API_BASE_URL}/admins/verify`, {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },

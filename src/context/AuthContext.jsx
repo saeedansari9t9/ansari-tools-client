@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AuthContext } from './AuthContextDefinition';
+import { API_BASE_URL } from '../services/api';
 
 export const AuthProvider = ({ children }) => {
   const [admin, setAdmin] = useState(null);
@@ -18,8 +19,9 @@ export const AuthProvider = ({ children }) => {
 
           // Background verification check with backend
           try {
-            const response = await fetch('https://api.ansaritools.com/api/admins/verify', {
+            const response = await fetch(`${API_BASE_URL}/admins/verify`, {
               method: 'GET',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
               },

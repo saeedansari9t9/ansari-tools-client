@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, User, Mail, Phone, Save, X } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuth';
+import { API_BASE_URL } from '../../services/api';
 
 const EditProfilePage = () => {
   const navigate = useNavigate();
@@ -73,8 +74,9 @@ const EditProfilePage = () => {
     setLoading(true);
     
     try {
-      const response = await fetch(`https://api.ansaritools.com/api/admins/${user.id}`, {
+      const response = await fetch(`${API_BASE_URL}/admins/${user.id}`, {
         method: 'PUT',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

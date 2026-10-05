@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, UserPlus, Mail, Shield, CheckCircle, XCircle, User, Phone, Lock } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { API_BASE_URL } from '../../services/api';
 
 const AddAdminPage = () => {
   const navigate = useNavigate();
@@ -66,10 +67,10 @@ const AddAdminPage = () => {
       case 'password':
         if (!value) {
           error = 'Password is required';
-        } else if (value.length < 8) {
-          error = 'Password must be at least 8 characters long';
-        } else if (!/[A-Z]/.test(value)) {
-          error = 'Password must contain at least one capital letter';
+        } else if (value.length < 12) {
+          error = 'Password must be at least 12 characters long';
+        } else if (!/[a-z]/.test(value) || !/[A-Z]/.test(value) || !/\d/.test(value) || !/[^A-Za-z0-9]/.test(value)) {
+          error = 'Use uppercase, lowercase, number, and special character';
         }
         break;
       case 'confirmPassword':
@@ -96,11 +97,11 @@ const AddAdminPage = () => {
   };
 
   const validatePassword = (password) => {
-    if (password.length < 8) {
-      return { valid: false, message: 'Password must be at least 8 characters long' };
+    if (password.length < 12) {
+      return { valid: false, message: 'Password must be at least 12 characters long' };
     }
-    if (!/[A-Z]/.test(password)) {
-      return { valid: false, message: 'Password must contain at least one capital letter' };
+    if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+      return { valid: false, message: 'Use uppercase, lowercase, number, and special character' };
     }
     return { valid: true, message: '' };
   };
@@ -179,8 +180,9 @@ const AddAdminPage = () => {
         isAdmin: true
       });
 
-      const response = await fetch('https://api.ansaritools.com/api/admins', {
+      const response = await fetch(`${API_BASE_URL}/admins`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -399,7 +401,7 @@ const AddAdminPage = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required
-                    minLength={8}
+                    minLength={12}
                     className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent ${
                       errors.password 
                         ? 'border-red-500 focus:ring-red-500' 
@@ -414,7 +416,7 @@ const AddAdminPage = () => {
                     {errors.password}
                   </p>
                 ) : (
-                  <p className="text-xs text-gray-500 mt-1">Minimum 8 characters with at least 1 capital letter</p>
+                  <p className="text-xs text-gray-500 mt-1">Minimum 12 characters with uppercase, lowercase, number, and symbol</p>
                 )}
               </div>
 
@@ -431,7 +433,7 @@ const AddAdminPage = () => {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required
-                    minLength={8}
+                    minLength={12}
                     className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent ${
                       errors.confirmPassword 
                         ? 'border-red-500 focus:ring-red-500' 
