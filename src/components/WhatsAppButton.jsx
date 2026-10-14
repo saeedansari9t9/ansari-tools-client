@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import MagneticButton from "./MagneticButton";
 
 const WhatsAppButton = () => {
   const location = useLocation();
@@ -8,8 +9,8 @@ const WhatsAppButton = () => {
   if (location.pathname.startsWith('/admin')) {
     return null;
   }
-  const phoneNumber = "+923102204842";
-  const message = "Hello! I'm interested in your premium tools. Can you help me?";
+  const phoneNumber = "+923227866655";
+  const message = "Hello Ansari Tools, I am contacting you through your website.";
   
   const handleWhatsAppClick = () => {
     const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${encodeURIComponent(message)}`;
@@ -17,11 +18,14 @@ const WhatsAppButton = () => {
   };
 
   return (
-    <button
-      onClick={handleWhatsAppClick}
-      className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 group cursor-pointer"
-      aria-label="Contact us on WhatsApp"
-    >
+    <div className="fixed bottom-6 right-6 z-50">
+      <MagneticButton strength={0.3}>
+        <button
+          onClick={handleWhatsAppClick}
+          className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 group cursor-pointer"
+          aria-label="Contact us on WhatsApp"
+          data-cursor-text="CHAT"
+        >
       {/* WhatsApp SVG Icon */}
       <svg 
         className="w-7 h-7" 
@@ -41,7 +45,9 @@ const WhatsAppButton = () => {
         <div className="absolute left-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-l-gray-900"></div>
       </div>
     </button>
-  );
+    </MagneticButton>
+  </div>
+);
 };
 
 export default WhatsAppButton;

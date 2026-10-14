@@ -779,10 +779,10 @@ const Footer = () => (
                 </a>
               </li>
               <li>
-                <a href="#">Live Chat</a>
+                <a href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website." target="_blank" rel="noopener noreferrer">Live Chat</a>
               </li>
               <li>
-                <a href="#">+923102204842</a>
+                <a href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website." target="_blank" rel="noopener noreferrer">+92 322 7866655</a>
               </li>
             </ul>
           </div>

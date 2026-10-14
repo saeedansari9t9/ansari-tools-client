@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useProducts } from "../hooks/useProducts";
+import useCardGlow from "../hooks/useCardGlow";
 import {
   Check,
   Zap,
@@ -23,6 +24,9 @@ import {
 
 export default function ProductsComponent() {
   const navigate = useNavigate();
+  const gridRef = useRef(null);
+  useCardGlow(gridRef);
+
   const [hoveredCard, setHoveredCard] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("popular");
@@ -71,7 +75,7 @@ export default function ProductsComponent() {
 
   // WhatsApp redirect function
   const handleGetStarted = (productName) => {
-    const phoneNumber = "+923102204842";
+    const phoneNumber = "+923227866655";
     const message = `Hello! I'm interested in purchasing ${productName}. Can you please provide me with more details and help me get started?`;
     const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -380,7 +384,7 @@ export default function ProductsComponent() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+        <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
           {loading ? (
             // Show skeleton loading state
             Array.from({ length: 10 }).map((_, index) => (
@@ -390,19 +394,19 @@ export default function ProductsComponent() {
             currentProducts.map((product) => (
               <div
                 key={product.id}
-                className={`bg-white rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_30px_rgb(43,13,102,0.12)] border border-gray-100 transition-all duration-500 overflow-hidden group flex flex-col ${
-                  hoveredCard === product.id ? "transform -translate-y-2" : ""
-                }`}
-                onMouseEnter={() => setHoveredCard(product.id)}
-                onMouseLeave={() => setHoveredCard(null)}
+                className="glow-card bg-white rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgb(43,13,102,0.14)] border border-gray-100 transition-all duration-300 overflow-hidden group flex flex-col"
               >
                 {/* Product Image */}
-                <Link to={`/product/${product.id}`} className="relative overflow-hidden aspect-[4/3] block bg-[#fcfaff] p-6 flex items-center justify-center">
+                <Link
+                  to={`/product/${product.id}`}
+                  className="relative overflow-hidden aspect-[4/3] block bg-[#fcfaff] p-6 flex items-center justify-center cursor-pointer"
+                  data-cursor-text="VIEW"
+                >
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-sm"
+                    className="w-full h-full object-contain relative z-10 group-hover:scale-105 transition-transform duration-500 drop-shadow-sm"
                   />
                   {/* Badge */}
                   <div className="absolute top-3 left-3 z-20">
@@ -419,7 +423,8 @@ export default function ProductsComponent() {
                         e.stopPropagation();
                         navigate(`/product/${product.id}`);
                       }}
-                      className="bg-white/90 backdrop-blur-sm hover:bg-white text-[#2b0d66] p-2 rounded-xl shadow-lg transition-all duration-300 hover:scale-110"
+                      className="bg-white/90 backdrop-blur-sm hover:bg-white text-[#2b0d66] p-2 rounded-xl shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer"
+                      title="Quick View"
                     >
                       <Eye className="w-4 h-4" />
                     </button>
@@ -455,7 +460,8 @@ export default function ProductsComponent() {
 
                     <button
                       onClick={() => handleGetStarted(product.name)}
-                      className="w-full text-white py-2.5 px-4 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg bg-gradient-to-r from-[#2b0d66] to-purple-600 hover:-translate-y-0.5"
+                      className="btn-shimmer-effect w-full text-white py-2.5 px-4 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg bg-gradient-to-r from-[#2b0d66] to-purple-600 hover:-translate-y-0.5 cursor-pointer"
+                      data-cursor-text="BUY"
                     >
                       <ShoppingCart className="w-4 h-4" />
                       Buy Now

@@ -93,7 +93,11 @@ const NavBarComponent = () => {
       const id = path.substring(2);
       const el = document.getElementById(id);
       if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (window.__lenis) {
+          window.__lenis.scrollTo(el, { offset: -90, duration: 1.1 });
+        } else {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
         window.history.pushState(null, "", path);
       }
     }
@@ -106,14 +110,44 @@ const NavBarComponent = () => {
           └────────────────────────────────────────────────────────────┘ */}
       <header className={`ec-header ${scrolled ? "ec-header--scrolled" : ""}`}>
 
+        {/* ── SITE-WIDE ANNOUNCEMENT BAR ── */}
+        <aside aria-label="WhatsApp Contact Update" className="ec-announcement-bar">
+          <div className="ec-announcement-bar__inner">
+            <div className="ec-announcement-bar__content">
+              <span className="ec-announcement-bar__badge">
+                <span className="ec-announcement-bar__pulse" />
+                UPDATE
+              </span>
+              <span className="ec-announcement-bar__text">
+                📢 Our WhatsApp number has changed — New Official WhatsApp:{" "}
+                <strong className="ec-announcement-bar__number">0322 7866655</strong>
+              </span>
+            </div>
+            <a
+              href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ec-announcement-bar__cta"
+            >
+              <span>Contact Now</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </aside>
+
         {/* ── ROW 1: Top utility bar ── */}
         <div className="ec-topbar">
           <div className="ec-topbar__inner">
             {/* Left: WhatsApp */}
             <div className="ec-topbar__left">
-              <a href="https://wa.me/923102204842" target="_blank" rel="noopener noreferrer" className="ec-topbar__link">
-                <Phone className="w-3 h-3" />
-                <span>24/7 Support</span>
+              <a
+                href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ec-topbar__link"
+              >
+                <Phone className="w-3 h-3 text-emerald-400" />
+                <span>WhatsApp: 0322 7866655</span>
               </a>
             </div>
 
@@ -347,6 +381,20 @@ const NavBarComponent = () => {
             </NavLink>
           ))}
 
+        </div>
+
+        {/* Drawer footer with updated WhatsApp button */}
+        <div className="ec-drawer__footer">
+          <a
+            href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ec-drawer__whatsapp"
+            onClick={() => setMobileOpen(false)}
+          >
+            <Phone className="w-4 h-4 text-emerald-400 mr-2" />
+            <span>WhatsApp: 0322 7866655</span>
+          </a>
         </div>
       </nav>
     </>

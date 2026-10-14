@@ -97,7 +97,7 @@ export default function ProductDetailPage() {
   }
 
   const handleGetStarted = () => {
-    const phoneNumber = "+923102204842";
+    const phoneNumber = "+923227866655";
     const productName = selectedVariant ? `${currentProduct.name} - ${selectedVariant.name}` : currentProduct.name;
     const message = `Hello! I'm interested in purchasing ${productName}. Can you please provide me with more details and help me get started?`;
     const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${encodeURIComponent(message)}`;

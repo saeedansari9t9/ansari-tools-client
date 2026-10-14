@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Facebook, Twitter, Instagram, LinkedinIcon, Mail, Phone } from "lucide-react";
 import footerLogo from "../assets/images/Ansari Tools Logo.png";
+import useScrollReveal from "../hooks/useScrollReveal";
 
 const FooterComponent = () => {
   const location = useLocation();
@@ -33,19 +34,42 @@ const FooterComponent = () => {
     }, 3000);
   };
 
+  useScrollReveal({
+    selector: ".footer-col-reveal",
+    stagger: 0.1,
+    y: 25,
+    duration: 0.75,
+  });
+
+  const handleLinkClick = (e, path) => {
+    if (path.startsWith("/#") && location.pathname === "/") {
+      e.preventDefault();
+      const id = path.substring(2);
+      const el = document.getElementById(id);
+      if (el) {
+        if (window.__lenis) {
+          window.__lenis.scrollTo(el, { offset: -90, duration: 1.1 });
+        } else {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+        window.history.pushState(null, "", path);
+      }
+    }
+  };
+
   return (
     <footer className="text-white" style={{ backgroundColor: 'var(--color-dark)' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Logo and Description */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 footer-col-reveal">
             <div className="flex items-center space-x-2 mb-4">
               {/* Easter Egg: 5 baar tap karo → Admin Login */}
               <div className="relative cursor-pointer select-none" onClick={handleLogoClick}>
                 <img
                   src={footerLogo}
                   alt="AnsariTools Logo"
-                  className="h-12 w-auto"
+                  className="h-12 w-auto transition-transform hover:scale-105"
                   draggable={false}
                 />
                 {/* Subtle dot indicator - sirf 2nd click ke baad dikhe */}
@@ -69,28 +93,30 @@ const FooterComponent = () => {
             <div className="flex space-x-3">
               <a
                 href="#"
-                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 hover:opacity-80 hover:scale-110"
                 style={{ backgroundColor: 'var(--color-light)', color: 'var(--color-dark)' }}
               >
                 <Facebook className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 hover:opacity-80 hover:scale-110"
                 style={{ backgroundColor: 'var(--color-light)', color: 'var(--color-dark)' }}
               >
                 <Twitter className="w-4 h-4" />
               </a>
               <a
                 href="https://www.instagram.com/lexorasolution/"
-                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 hover:opacity-80 hover:scale-110"
                 style={{ backgroundColor: 'var(--color-light)', color: 'var(--color-dark)' }}
               >
                 <Instagram className="w-4 h-4" />
               </a>
               <a
                 href="#"
-                className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 hover:opacity-80"
+                className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 hover:opacity-80 hover:scale-110"
                 style={{ backgroundColor: 'var(--color-light)', color: 'var(--color-dark)' }}
               >
                 <LinkedinIcon className="w-4 h-4" />
@@ -99,7 +125,7 @@ const FooterComponent = () => {
           </div>
 
           {/* Available Pages */}
-          <div>
+          <div className="footer-col-reveal">
             <h4 className="text-base font-bold mb-4 text-white">PAGES</h4>
             <ul className="space-y-2">
               <li>
@@ -160,7 +186,7 @@ const FooterComponent = () => {
           </div>
 
           {/* Contact */}
-          <div>
+          <div className="footer-col-reveal">
             <h4 className="text-base font-bold mb-4 text-white">CONTACT</h4>
             <ul className="space-y-3">
               <li>
@@ -174,11 +200,13 @@ const FooterComponent = () => {
               </li>
               <li>
                 <a
-                  href="tel:+923102204842"
+                  href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website."
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-2"
                 >
-                  <Phone className="w-4 h-4" />
-                  +92 310 220 4842
+                  <Phone className="w-4 h-4 text-emerald-400" />
+                  <span>+92 322 7866655</span>
                 </a>
               </li>
             </ul>

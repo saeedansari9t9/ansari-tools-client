@@ -33,6 +33,8 @@ import NavBarComponent from "./components/NavBarComponent";
 import FooterComponent from "./components/FooterComponent";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ScrollToTop from "./components/ScrollToTop";
+import SmoothScroll from "./components/SmoothScroll";
+import InteractiveCursor from "./components/InteractiveCursor";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminGuard from "./components/AdminGuard";
@@ -68,68 +70,71 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <ScrollToTop />
-        {/* head tags (fonts/icons) go in public/index.html */}
-        <NavBarComponent />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/product" element={<ProductPage />} />
-          <Route path="/product/:id" element={<ProductDetailPage />} />
-          <Route path="/tools" element={<ToolsPage />} />
-          <Route path="/why" element={<WhyChoosePage />} />
-          <Route path="/testimonials" element={<TestimonialsPage />} />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/about" element={<AboutUsPage />} />
-          {/* Admin Auth routes - hidden from public access */}
-          <Route path="/admin/login" element={<AdminLoginPage />} />
+        <SmoothScroll>
+          <InteractiveCursor />
+          <ScrollToTop />
+          {/* head tags (fonts/icons) go in public/index.html */}
+          <NavBarComponent />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/product" element={<ProductPage />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
+            <Route path="/tools" element={<ToolsPage />} />
+            <Route path="/why" element={<WhyChoosePage />} />
+            <Route path="/testimonials" element={<TestimonialsPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
+            {/* Admin Auth routes - hidden from public access */}
+            <Route path="/admin/login" element={<AdminLoginPage />} />
 
-          {/* Admin Routes - Protected by AdminGuard & styled with AdminLayout */}
-          <Route
-            element={
-              <AdminGuard>
-                <AdminLayout />
-              </AdminGuard>
-            }
-          >
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/add-product" element={<AddProductPage />} />
-            <Route path="/admin/edit-product/:id" element={<EditProductPage />} />
-            <Route path="/admin/canva-subscriptions" element={<CanvaSubscriptionsPage />} />
-            <Route path="/admin/add-canva-subscription" element={<AddCanvaSubscriptionPage />} />
-            <Route path="/admin/add-admin" element={<AddAdminPage />} />
-            <Route path="/admin/edit-profile" element={<EditProfilePage />} />
-            <Route path="/admin/change-password" element={<ChangePasswordPage />} />
-            <Route path="/admin/sales" element={<SalesDashboardPage />} />
-            <Route path="/admin/sales/add" element={<AddSalePage />} />
-            <Route path="/admin/sales/monthly" element={<MonthlySalesSummaryPage />} />
-            <Route path="/admin/expenses" element={<AddExpensesPage />} />
-          </Route>
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute>
-                <ProfilePage />
-              </PrivateRoute>
-            }
+            {/* Admin Routes - Protected by AdminGuard & styled with AdminLayout */}
+            <Route
+              element={
+                <AdminGuard>
+                  <AdminLayout />
+                </AdminGuard>
+              }
+            >
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/add-product" element={<AddProductPage />} />
+              <Route path="/admin/edit-product/:id" element={<EditProductPage />} />
+              <Route path="/admin/canva-subscriptions" element={<CanvaSubscriptionsPage />} />
+              <Route path="/admin/add-canva-subscription" element={<AddCanvaSubscriptionPage />} />
+              <Route path="/admin/add-admin" element={<AddAdminPage />} />
+              <Route path="/admin/edit-profile" element={<EditProfilePage />} />
+              <Route path="/admin/change-password" element={<ChangePasswordPage />} />
+              <Route path="/admin/sales" element={<SalesDashboardPage />} />
+              <Route path="/admin/sales/add" element={<AddSalePage />} />
+              <Route path="/admin/sales/monthly" element={<MonthlySalesSummaryPage />} />
+              <Route path="/admin/expenses" element={<AddExpensesPage />} />
+            </Route>
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <ProfilePage />
+                </PrivateRoute>
+              }
+            />
+            {/* Catch-all route - redirect any non-existent page to home */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+            {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
+          </Routes>
+          <FooterComponent />
+          <WhatsAppButton />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
           />
-          {/* Catch-all route - redirect any non-existent page to home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-          {/* <PrivateRoute path="/dashboard" element={<DashboardPage />} /> */}
-        </Routes>
-        <FooterComponent />
-        <WhatsAppButton />
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+        </SmoothScroll>
       </BrowserRouter>
     </AuthProvider>
   );
