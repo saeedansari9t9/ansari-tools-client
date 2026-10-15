@@ -15,7 +15,7 @@
         },
         {
           "key": "Content-Disposition",
-          "value": "inline; filename=\"Ansari Tools.vcf\""
+          "value": "attachment; filename=\"Ansari Tools.vcf\""
         },
         {
           "key": "Cache-Control",

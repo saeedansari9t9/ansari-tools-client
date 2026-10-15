@@ -344,7 +344,7 @@ const OfferPopup = () => {
             {/* 1-Tap Save to Contacts Button for iPhone and Android */}
             <a
               href="/ansari-tools.vcf"
-              download={deviceType === "ios" ? undefined : "Ansari Tools.vcf"}
+              download="Ansari Tools.vcf"
               onClick={handleSaveContact}
               className="wa-btn-save-contact"
             >
@@ -352,7 +352,9 @@ const OfferPopup = () => {
                 <>
                   <Check className="w-4 h-4 text-emerald-300 flex-shrink-0 stroke-[3]" />
                   <span>
-                    {deviceType === "android"
+                    {deviceType === "ios"
+                      ? 'Card Ready! Tap "Download" to Save'
+                      : deviceType === "android"
                       ? 'Card Ready! Tap "Open" to Save'
                       : "Contact Card Ready! Tap Save"}
                   </span>
@@ -362,7 +364,7 @@ const OfferPopup = () => {
                   <UserPlus className="w-4 h-4 flex-shrink-0 text-white" />
                   <span>
                     {deviceType === "ios"
-                      ? "Save Contact to iPhone (1-Tap)"
+                      ? "Save Contact to iPhone"
                       : deviceType === "android"
                       ? "Save Contact to Android Phone"
                       : "Save Contact to Phone (iPhone & Android)"}
@@ -376,10 +378,10 @@ const OfferPopup = () => {
               <Sparkles className="w-3 h-3 text-amber-500" />
               <span>
                 {deviceType === "ios"
-                  ? "Directly opens Contact Card on your iPhone"
+                  ? 'Tap button -> Tap "Download" -> Tap file to Save Contact'
                   : deviceType === "android"
                   ? 'Tap button, then tap "Open" to save into Contacts'
-                  : 'iPhone: Direct Card | Android: Tap "Open" to save'}
+                  : 'Tap button and tap "Open/Download" to save contact'}
               </span>
             </div>
 
