@@ -14,7 +14,17 @@ const OfferPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [contactSaved, setContactSaved] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [deviceType, setDeviceType] = useState("generic");
+  const [deviceType, setDeviceType] = useState(() => {
+    if (typeof navigator === "undefined") return "generic";
+    const ua = navigator.userAgent || "";
+    if (/iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) {
+      return "ios";
+    }
+    if (/android/i.test(ua)) {
+      return "android";
+    }
+    return "generic";
+  });
 
   useEffect(() => {
     // Clear previously stored suppression keys so popup appears on every refresh as requested
@@ -24,7 +34,10 @@ const OfferPopup = () => {
     } catch (e) {}
 
     const ua = navigator.userAgent || "";
-    if (/iphone|ipad|ipod/i.test(ua)) {
+    const isIOSDevice =
+      /iphone|ipad|ipod/i.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (isIOSDevice) {
       setDeviceType("ios");
     } else if (/android/i.test(ua)) {
       setDeviceType("android");
@@ -60,11 +73,14 @@ const OfferPopup = () => {
     setContactSaved(true);
 
     const ua = navigator.userAgent || "";
-    const isIOS = /iphone|ipad|ipod/i.test(ua);
+    const isIOS =
+      deviceType === "ios" ||
+      /iphone|ipad|ipod/i.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
-    // 1. iPhone (iOS): Native Safari contact preview
+    // 1. iPhone (iOS): Native Safari contact preview (opens Contact Sheet directly)
     if (isIOS) {
-      // Default link href="/ansari-tools.vcf" handles iOS contact card opening
+      // Default link href="/ansari-tools.vcf" with inline Content-Disposition triggers native iOS contact card
       setTimeout(() => setContactSaved(false), 5000);
       return;
     }
@@ -328,7 +344,7 @@ const OfferPopup = () => {
             {/* 1-Tap Save to Contacts Button for iPhone and Android */}
             <a
               href="/ansari-tools.vcf"
-              download="Ansari Tools.vcf"
+              download={deviceType === "ios" ? undefined : "Ansari Tools.vcf"}
               onClick={handleSaveContact}
               className="wa-btn-save-contact"
             >

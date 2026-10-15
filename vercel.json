@@ -7,6 +7,23 @@
   ],
   "headers": [
     {
+      "source": "/ansari-tools.vcf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/vcard; charset=utf-8"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "inline; filename=\"Ansari Tools.vcf\""
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
       "source": "/sitemap.xml",
       "headers": [
         {
