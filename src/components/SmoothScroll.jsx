@@ -12,15 +12,26 @@ if (typeof window !== "undefined") {
 const SmoothScroll = ({ children }) => {
   const location = useLocation();
   const lenisRef = useRef(null);
+  const isAdmin = location.pathname.startsWith("/admin");
 
   useEffect(() => {
+    // If on admin panel, destroy Lenis so native mouse wheel & touchpad scroll work smoothly
+    if (isAdmin) {
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+        window.__lenis = null;
+      }
+      return;
+    }
+
     // Respect user reduced-motion preference
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
       return;
     }
 
-    // Initialize Lenis with refined easing
+    // Initialize Lenis with refined easing for public website
     const lenis = new Lenis({
       duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -52,10 +63,12 @@ const SmoothScroll = ({ children }) => {
       lenisRef.current = null;
       window.__lenis = null;
     };
-  }, []);
+  }, [isAdmin]);
 
   // Handle route change & hash navigation
   useEffect(() => {
+    if (isAdmin) return;
+
     if (location.hash) {
       const id = location.hash.substring(1);
       const timer = setTimeout(() => {
@@ -76,7 +89,7 @@ const SmoothScroll = ({ children }) => {
         window.scrollTo(0, 0);
       }
     }
-  }, [location.pathname, location.hash]);
+  }, [isAdmin, location.pathname, location.hash]);
 
   return <>{children}</>;
 };

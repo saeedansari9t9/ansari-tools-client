@@ -64,6 +64,7 @@ import SalesDashboardPage from "./pages/Admin/SalesDashboardPage";
 import MonthlySalesSummaryPage from "./pages/Admin/MonthlySalesSummaryPage";
 import ProfilePage from "./pages/ProfilePage";
 import AddExpensesPage from "./pages/Admin/AddExpensesPage";
+import EmailBroadcastPage from "./pages/Admin/EmailBroadcastPage";
 
 
 function App() {
@@ -101,6 +102,7 @@ function App() {
               <Route path="/admin/edit-product/:id" element={<EditProductPage />} />
               <Route path="/admin/canva-subscriptions" element={<CanvaSubscriptionsPage />} />
               <Route path="/admin/add-canva-subscription" element={<AddCanvaSubscriptionPage />} />
+              <Route path="/admin/email-broadcast" element={<EmailBroadcastPage />} />
               <Route path="/admin/add-admin" element={<AddAdminPage />} />
               <Route path="/admin/edit-profile" element={<EditProfilePage />} />
               <Route path="/admin/change-password" element={<ChangePasswordPage />} />

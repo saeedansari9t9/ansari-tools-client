@@ -14,7 +14,8 @@ import {
   Calendar,
   Tag,
   BarChart3,
-  CreditCard
+  CreditCard,
+  Mail
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useProducts } from '../../hooks/useProducts';
@@ -312,20 +313,29 @@ export default function AdminDashboard() {
             </div>
             <p className="text-xs sm:text-sm text-gray-500 mb-4">Manage Canva subscription plans, client licenses, and user access</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <Link
+                to="/admin/add-canva-subscription"
+                className="flex-1 bg-emerald-600 text-white px-3 py-2.5 rounded-xl hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold shadow-sm shadow-emerald-600/10"
+              >
+                <Plus className="w-4 h-4" />
+                Add Subs
+              </Link>
+              <Link
+                to="/admin/canva-subscriptions"
+                className="flex-1 bg-slate-100 text-slate-700 px-3 py-2.5 rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold"
+              >
+                <Eye className="w-4 h-4" />
+                View All
+              </Link>
+            </div>
             <Link
-              to="/admin/add-canva-subscription"
-              className="flex-1 bg-emerald-600 text-white px-3 py-2.5 rounded-xl hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold shadow-sm shadow-emerald-600/10"
+              to="/admin/email-broadcast"
+              className="w-full bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 px-3 py-2 rounded-xl transition-colors flex items-center justify-center gap-1.5 text-xs font-bold"
             >
-              <Plus className="w-4 h-4" />
-              Add Subs
-            </Link>
-            <Link
-              to="/admin/canva-subscriptions"
-              className="flex-1 bg-slate-100 text-slate-700 px-3 py-2.5 rounded-xl hover:bg-slate-200 transition-colors flex items-center justify-center gap-1.5 text-xs sm:text-sm font-semibold"
-            >
-              <Eye className="w-4 h-4" />
-              View All
+              <Mail className="w-3.5 h-3.5 text-emerald-600" />
+              📢 Broadcast Custom Emails
             </Link>
           </div>
         </div>

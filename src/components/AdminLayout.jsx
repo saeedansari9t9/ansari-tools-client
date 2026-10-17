@@ -14,7 +14,8 @@ import {
   Menu,
   X,
   Shield,
-  ChevronDown
+  ChevronDown,
+  Mail
 } from "lucide-react";
 import logo from "../assets/images/logo.png";
 import { logoutAll } from "../services/logout";
@@ -51,6 +52,11 @@ export default function AdminLayout() {
       to: "/admin/canva-subscriptions",
       label: "Canva Subscriptions",
       icon: Users
+    },
+    {
+      to: "/admin/email-broadcast",
+      label: "Email Broadcast",
+      icon: Mail
     },
     {
       to: "/admin/sales",
@@ -226,7 +232,7 @@ export default function AdminLayout() {
         </header>
 
         {/* Scrollable Page Body */}
-        <main className="flex-1 overflow-y-auto bg-slate-50 p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto bg-slate-50 p-6 lg:p-8" data-lenis-prevent="true">
           <Outlet />
         </main>
       </div>

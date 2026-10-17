@@ -340,14 +340,21 @@ const CanvaSubscriptionsPage = () => {
             </div>
           </div>
 
-          {/* Add Subscription Button */}
-          <div className="mb-4">
+          {/* Action Buttons */}
+          <div className="mb-4 flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => navigate('/admin/add-canva-subscription')}
-              className="w-full sm:w-auto px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 text-xs sm:text-base"
+              className="w-full sm:w-auto px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 text-xs sm:text-base cursor-pointer shadow-sm"
             >
               <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>Add Subscription</span>
+            </button>
+            <button
+              onClick={() => navigate('/admin/email-broadcast')}
+              className="w-full sm:w-auto px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg font-medium hover:from-emerald-700 hover:to-teal-700 transition-all duration-200 flex items-center justify-center space-x-2 text-xs sm:text-base cursor-pointer shadow-sm"
+            >
+              <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span>📢 Broadcast Custom Email</span>
             </button>
           </div>
 
