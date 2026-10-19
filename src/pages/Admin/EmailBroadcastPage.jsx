@@ -38,6 +38,7 @@ const TEMPLATES = {
   numberChange: {
     id: 'numberChange',
     name: '📱 WhatsApp Number Change & Warranty Notice',
+    heading: 'Official Support Notice – you’re just a message away',
     subject: 'Ansari Tools: Customer Support & Official WhatsApp Update',
     message: `Assalam-o-Alaikum / Hello,
 
@@ -56,6 +57,7 @@ Ansari Tools Team`
   renewalDeal: {
     id: 'renewalDeal',
     name: '🎁 Subscription Renewal & Discount Offer',
+    heading: 'Exclusive Canva Pro Renewal & Warranty Support',
     subject: 'Ansari Tools: Exclusive Canva Pro Renewal & Warranty Support',
     message: `Assalam-o-Alaikum / Hello Valued Customer,
 
@@ -74,6 +76,7 @@ Ansari Tools Team`
   custom: {
     id: 'custom',
     name: '✍️ Custom Blank Message',
+    heading: '',
     subject: '',
     message: ''
   }
@@ -101,13 +104,43 @@ const EmailBroadcastPage = () => {
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [customSelectCount, setCustomSelectCount] = useState(10);
 
+  // Read persisted draft from localStorage on initial render
+  const getInitialDraft = () => {
+    try {
+      const saved = localStorage.getItem('ansari_broadcast_draft');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      // ignore
+    }
+    return null;
+  };
+
+  const initialDraft = getInitialDraft();
+
   // Composer Form
-  const [activeTemplate, setActiveTemplate] = useState('numberChange');
-  const [subject, setSubject] = useState(TEMPLATES.numberChange.subject);
-  const [customMessage, setCustomMessage] = useState(TEMPLATES.numberChange.message);
-  const [newWhatsApp, setNewWhatsApp] = useState(DEFAULT_WHATSAPP_NUMBER);
-  const [newWhatsAppDisplay, setNewWhatsAppDisplay] = useState(DEFAULT_WHATSAPP_DISPLAY);
-  const [delayMs, setDelayMs] = useState(1000);
+  const [activeTemplate, setActiveTemplate] = useState(initialDraft?.activeTemplate || 'numberChange');
+  const [heading, setHeading] = useState(
+    initialDraft?.heading !== undefined 
+      ? initialDraft.heading 
+      : TEMPLATES.numberChange.heading
+  );
+  const [subject, setSubject] = useState(
+    initialDraft?.subject !== undefined 
+      ? initialDraft.subject 
+      : TEMPLATES.numberChange.subject
+  );
+  const [customMessage, setCustomMessage] = useState(
+    initialDraft?.customMessage !== undefined 
+      ? initialDraft.customMessage 
+      : TEMPLATES.numberChange.message
+  );
+  const [newWhatsApp, setNewWhatsApp] = useState(initialDraft?.newWhatsApp || DEFAULT_WHATSAPP_NUMBER);
+  const [newWhatsAppDisplay, setNewWhatsAppDisplay] = useState(initialDraft?.newWhatsAppDisplay || DEFAULT_WHATSAPP_DISPLAY);
+  const [delayMs, setDelayMs] = useState(initialDraft?.delayMs || 1000);
+
+  // Auto-save status
+  const [saveStatus, setSaveStatus] = useState('saved'); // 'saved', 'saving', 'error'
+  const [lastSavedAt, setLastSavedAt] = useState(null);
 
   // Test email state
   const [testEmail, setTestEmail] = useState('');
@@ -166,14 +199,102 @@ const EmailBroadcastPage = () => {
     fetchSubscribers();
   }, [fetchSubscribers]);
 
+  // Sync draft from MongoDB on mount
+  useEffect(() => {
+    const fetchSavedDraft = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/canva-subscriptions/broadcast/config`, {
+          credentials: 'include'
+        });
+        const data = await res.json();
+        if (res.ok && data.config) {
+          const cfg = data.config;
+          // If localStorage didn't have custom values, use server values
+          if (!localStorage.getItem('ansari_broadcast_draft')) {
+            if (cfg.activeTemplate) setActiveTemplate(cfg.activeTemplate);
+            if (cfg.heading !== undefined) setHeading(cfg.heading);
+            if (cfg.subject !== undefined) setSubject(cfg.subject);
+            if (cfg.customMessage !== undefined) setCustomMessage(cfg.customMessage);
+            if (cfg.newWhatsApp) setNewWhatsApp(cfg.newWhatsApp);
+            if (cfg.newWhatsAppDisplay) setNewWhatsAppDisplay(cfg.newWhatsAppDisplay);
+            if (cfg.delayMs) setDelayMs(cfg.delayMs);
+          }
+          if (cfg.updatedAt) {
+            setLastSavedAt(new Date(cfg.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+          }
+        }
+      } catch (err) {
+        console.warn('Could not load broadcast config from server:', err);
+      }
+    };
+    fetchSavedDraft();
+  }, []);
+
+  // Save to MongoDB helper
+  const saveDraftToServer = useCallback(async (draftData) => {
+    try {
+      setSaveStatus('saving');
+      const res = await fetch(`${API_BASE_URL}/canva-subscriptions/broadcast/config`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(draftData)
+      });
+      if (res.ok) {
+        setSaveStatus('saved');
+        setLastSavedAt(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      } else {
+        setSaveStatus('error');
+      }
+    } catch (e) {
+      setSaveStatus('error');
+    }
+  }, []);
+
+  // Debounced Auto-save to localStorage & MongoDB whenever composer state changes
+  useEffect(() => {
+    const draft = {
+      activeTemplate,
+      heading,
+      subject,
+      customMessage,
+      newWhatsApp,
+      newWhatsAppDisplay,
+      delayMs
+    };
+
+    // Instant save to localStorage so refresh never loses user changes
+    try {
+      localStorage.setItem('ansari_broadcast_draft', JSON.stringify(draft));
+    } catch (e) {
+      // ignore
+    }
+
+    setSaveStatus('saving');
+    const timer = setTimeout(() => {
+      saveDraftToServer(draft);
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [activeTemplate, heading, subject, customMessage, newWhatsApp, newWhatsAppDisplay, delayMs, saveDraftToServer]);
+
   // Handle template selection change
   const handleTemplateChange = (templateId) => {
     setActiveTemplate(templateId);
     const tmpl = TEMPLATES[templateId];
     if (tmpl) {
+      if (tmpl.heading !== undefined) setHeading(tmpl.heading);
       setSubject(tmpl.subject);
       setCustomMessage(tmpl.message);
     }
+  };
+
+  const handleResetToDefaultTemplate = () => {
+    const tmpl = TEMPLATES[activeTemplate] || TEMPLATES.numberChange;
+    setHeading(tmpl.heading || '');
+    setSubject(tmpl.subject || '');
+    setCustomMessage(tmpl.message || '');
+    toast.info('Template text reset to original default');
   };
 
   // Toggle selection for a single subscriber
@@ -282,6 +403,7 @@ const EmailBroadcastPage = () => {
         credentials: 'include',
         body: JSON.stringify({
           testEmail: testEmail.trim(),
+          heading,
           subject,
           message: customMessage,
           newWhatsApp,
@@ -313,7 +435,8 @@ const EmailBroadcastPage = () => {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
-          subscribers: [{ id: sub._id, email: sub.email, duration: sub.duration }],
+          subscribers: [{ id: sub._id, email: sub.email, duration: sub.duration, date: sub.date, status: sub.status }],
+          heading,
           subject,
           message: customMessage,
           newWhatsApp,
@@ -348,7 +471,7 @@ const EmailBroadcastPage = () => {
 
     const selectedSubs = subscribers
       .filter(s => selectedIds.has(s._id))
-      .map(s => ({ id: s._id, email: s.email, duration: s.duration }));
+      .map(s => ({ id: s._id, email: s.email, duration: s.duration, date: s.date, status: s.status }));
 
     const confirmMsg = `Are you sure you want to send this broadcast email to ${selectedSubs.length} selected subscribers?\n\nTip: Each email will be sent individually with a ${delayMs / 1000}s delay to ensure high inbox delivery and protect your Gmail limit.`;
     if (!window.confirm(confirmMsg)) return;
@@ -387,6 +510,7 @@ const EmailBroadcastPage = () => {
           credentials: 'include',
           body: JSON.stringify({
             subscribers: chunk,
+            heading,
             subject,
             message: customMessage,
             newWhatsApp,
@@ -632,14 +756,31 @@ const EmailBroadcastPage = () => {
         {/* Left Column: Composer & Message Settings (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
           <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-sm space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
               <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-emerald-600" />
                 Email Message Composer
               </h2>
-              <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                Gmail SMTP
-              </span>
+              <div className="flex items-center gap-2">
+                {saveStatus === 'saving' && (
+                  <span className="text-[11px] font-medium text-amber-600 flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-md">
+                    <RefreshCw className="w-3 h-3 animate-spin" /> Saving...
+                  </span>
+                )}
+                {saveStatus === 'saved' && (
+                  <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md flex items-center gap-1 border border-emerald-200/60">
+                    <Check className="w-3 h-3 text-emerald-600" /> Auto-saved {lastSavedAt ? `(${lastSavedAt})` : ''}
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={handleResetToDefaultTemplate}
+                  className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-slate-100 border border-slate-200 transition cursor-pointer"
+                  title="Reset to original template text"
+                >
+                  <RotateCcw className="w-3 h-3" /> Reset Template
+                </button>
+              </div>
             </div>
 
             {/* Template Selector */}
@@ -697,6 +838,21 @@ const EmailBroadcastPage = () => {
             </div>
 
             {/* Email Subject */}
+            {/* Email Headline / Main Heading */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                Email Headline (Main Heading)
+              </label>
+              <input
+                type="text"
+                value={heading}
+                onChange={(e) => setHeading(e.target.value)}
+                placeholder="Official Support Notice – you’re just a message away"
+                className="w-full text-xs sm:text-sm px-3.5 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 font-semibold text-slate-900"
+              />
+            </div>
+
+            {/* Email Subject Line */}
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                 Email Subject Line
@@ -1229,20 +1385,20 @@ const EmailBroadcastPage = () => {
             }`}>
               <div className="max-w-xl mx-auto rounded-2xl shadow-xl overflow-hidden bg-white border border-slate-200 text-slate-900">
                 
-                {/* Email Header: Left-aligned Black Logo on Clean White Canvas */}
-                <div className="pt-8 px-7 pb-4">
+                {/* Email Header: Centered Logo on Clean White Canvas */}
+                <div className="pt-8 px-7 pb-4 flex justify-center text-center">
                   <img
-                    src={blackLogo}
+                    src={purpleLogo}
                     alt="Ansari Tools"
-                    className="h-10 sm:h-11 w-auto object-contain"
+                    className="h-10 sm:h-11 w-auto object-contain mx-auto"
                   />
                 </div>
 
                 {/* Main Email Content */}
                 <div className="px-7 pb-7 pt-2">
-                  {/* Headline (Hostinger style) */}
+                  {/* Headline (Dynamic) */}
                   <h1 className="text-2xl sm:text-[26px] font-extrabold text-slate-900 tracking-tight leading-snug mb-3">
-                    Official Support Notice – you’re just a message away
+                    {heading || 'Official Support Notice – you’re just a message away'}
                   </h1>
 
                   {/* Formatted Message Body */}
@@ -1299,10 +1455,29 @@ const EmailBroadcastPage = () => {
                     </div>
                   </div>
 
-                  {/* Recipient Metadata */}
-                  <div className="bg-[#fafbfc] border border-[#f1f3f5] rounded-xl px-4 py-2.5 text-xs text-slate-500 flex justify-between items-center mb-6">
-                    <div><span className="font-semibold text-slate-700">Recipient:</span> customer@example.com</div>
-                    <div><span className="font-semibold text-slate-700">Plan:</span> 6 Months</div>
+                  {/* Recipient Subscription Details & Status Card */}
+                  <div className="bg-[#fafbfc] border border-[#e5e7eb] rounded-xl p-4 text-xs mb-6">
+                    <div className="flex justify-between items-center pb-2 border-b border-slate-100 font-semibold">
+                      <span className="text-slate-800">Canva Pro Subscription Status</span>
+                      <span className="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full text-[10px] uppercase">● Active (245 Days Remaining)</span>
+                    </div>
+                    <div className="pt-2.5 space-y-1.5 text-slate-600">
+                      <div className="flex justify-between">
+                        <span>Recipient Email:</span>
+                        <span className="font-semibold text-slate-900">customer@example.com</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Plan Duration:</span>
+                        <span className="font-semibold text-slate-900">1 Year</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Valid Until:</span>
+                        <span className="font-semibold text-slate-900">Dec 31, 2026</span>
+                      </div>
+                    </div>
+                    <div className="mt-2.5 pt-2 border-t border-slate-100 text-[11px] text-emerald-700 font-medium">
+                      ✓ Aapka subscription plan active hai. Kisi bhi query ya warranty replacement ke liye WhatsApp par message karein.
+                    </div>
                   </div>
 
                   {/* Clean Divider */}
