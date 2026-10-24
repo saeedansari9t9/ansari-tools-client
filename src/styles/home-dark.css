@@ -1,0 +1,661 @@
+/* ==========================================================================
+   Ansari Tools — Dark Editorial Home Theme
+   Scoped to the home route via <body class="home-dark">.
+   Every selector is namespaced so other pages keep their original styling.
+   ========================================================================== */
+
+.home-dark {
+  --ht-bg: #0a0612;
+  --ht-bg-2: #0d0818;
+  --ht-surface: #150d24;
+  --ht-surface-2: #1b1130;
+  --ht-line: rgba(255, 255, 255, 0.07);
+  --ht-line-strong: rgba(255, 255, 255, 0.14);
+  --ht-violet: #7c3aed;
+  --ht-violet-lt: #a78bfa;
+  --ht-violet-dk: #4c1d95;
+  --ht-text: #f6f4ff;
+  --ht-muted: #9c92b8;
+  --ht-muted-dk: #6b6184;
+  --ht-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  background: var(--ht-bg);
+  color: var(--ht-text);
+}
+
+/* Paint the document shell dark so overscroll / rubber-band areas match. */
+html.home-dark-root,
+html.home-dark-root body {
+  background: #0a0612;
+}
+
+.ht-section {
+  position: relative;
+  background: var(--ht-bg);
+}
+
+/* --- Mono micro-label ---------------------------------------------------- */
+.ht-label {
+  font-family: var(--ht-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ht-muted-dk);
+}
+.ht-label__num {
+  color: var(--ht-violet-lt);
+}
+
+/* --- Texture layers ------------------------------------------------------ */
+/* Hairline grid. Larger cells than the usual 24px to read as editorial. */
+.ht-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+}
+
+/* Film grain — kills the flat "AI gradient" look. */
+.ht-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* Soft violet bloom used behind headings and cards. */
+.ht-glow {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+/* --- Display type -------------------------------------------------------- */
+.ht-display {
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+/* Violet gradient fill for the emphasised word. */
+.ht-display__accent {
+  background: linear-gradient(110deg, #a78bfa 0%, #7c3aed 45%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Clip-mask line reveal: wrapper hides the overflow, inner line slides up. */
+.ht-reveal-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.ht-reveal-line {
+  display: block;
+  will-change: transform, opacity;
+}
+
+/* Fallback so content is never invisible if GSAP fails to run. */
+@media (prefers-reduced-motion: reduce) {
+  .ht-reveal-line,
+  .ht-fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* --- Brand marquee ------------------------------------------------------- */
+.ht-marquee {
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+.ht-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: ht-scroll 42s linear infinite;
+}
+.ht-marquee:hover .ht-marquee__track {
+  animation-play-state: paused;
+}
+@keyframes ht-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* Track holds the list twice; -50% loops seamlessly. */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ht-marquee__track {
+    animation: none;
+  }
+}
+
+/* --- Surfaces ------------------------------------------------------------ */
+.ht-card {
+  position: relative;
+  background: linear-gradient(180deg, var(--ht-surface) 0%, var(--ht-bg-2) 100%);
+  border: 1px solid var(--ht-line);
+  border-radius: 20px;
+  transition: border-color 0.45s ease, transform 0.45s ease, box-shadow 0.45s ease;
+}
+.ht-card:hover {
+  border-color: rgba(167, 139, 250, 0.32);
+  box-shadow: 0 20px 60px -20px rgba(124, 58, 237, 0.4);
+}
+
+/* Cursor-tracked radial sheen. --mx/--my are set from JS on pointer move. */
+.ht-card__sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(124, 58, 237, 0.16),
+    transparent 62%
+  );
+}
+.ht-card:hover .ht-card__sheen {
+  opacity: 1;
+}
+
+/* Featured plan gets a persistent violet edge. */
+.ht-card--featured {
+  background: linear-gradient(180deg, #1d1235 0%, #130c22 100%);
+  border-color: rgba(167, 139, 250, 0.28);
+  box-shadow: 0 30px 80px -30px rgba(124, 58, 237, 0.55);
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+.ht-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-weight: 650;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease, border-color 0.35s ease, background-color 0.35s ease;
+}
+.ht-btn:hover {
+  transform: translateY(-2px);
+}
+.ht-btn:focus-visible {
+  outline: 2px solid var(--ht-violet-lt);
+  outline-offset: 3px;
+}
+
+.ht-btn--primary {
+  background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+  color: #fff;
+  box-shadow: 0 10px 34px -10px rgba(124, 58, 237, 0.75);
+}
+.ht-btn--primary:hover {
+  box-shadow: 0 18px 46px -12px rgba(124, 58, 237, 0.9);
+}
+
+.ht-btn--ghost {
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--ht-text);
+  border: 1px solid var(--ht-line-strong);
+}
+.ht-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(167, 139, 250, 0.4);
+}
+
+/* Sweep highlight that crosses the button on hover. */
+.ht-btn__sweep::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  transform: skewX(-22deg);
+  transition: left 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ht-btn__sweep:hover::after {
+  left: 135%;
+}
+
+/* --- Shared chrome re-skin (home route only) ----------------------------- */
+/* The header/footer are global components, so they are re-themed rather
+   than rebuilt. Scoping to .home-dark leaves every other page untouched. */
+.home-dark .ec-header {
+  background: rgba(10, 6, 18, 0.72);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-bottom: 1px solid var(--ht-line);
+  box-shadow: none;
+}
+.home-dark .ec-header--scrolled {
+  background: rgba(10, 6, 18, 0.9);
+  box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.8);
+}
+
+.home-dark .ec-logo__name {
+  color: #fff;
+}
+.home-dark .ec-logo__sub,
+.home-dark .ec-topbar__tagline {
+  color: var(--ht-muted);
+}
+
+.home-dark .ec-search__input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--ht-line-strong);
+  color: #fff;
+}
+.home-dark .ec-search__input::placeholder {
+  color: var(--ht-muted-dk);
+}
+
+/* Logo lockup sits on glass now, so give the mark a little separation. */
+.home-dark .ec-logo__img {
+  filter: drop-shadow(0 2px 10px rgba(124, 58, 237, 0.45));
+}
+
+/* Profile control */
+.home-dark .ec-profile__btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--ht-line-strong);
+}
+.home-dark .ec-profile__name {
+  color: #fff;
+}
+.home-dark .ec-profile__role {
+  color: var(--ht-muted);
+}
+
+/* Hamburger (renders a lucide icon, so colour the button + currentColor) */
+.home-dark .ec-hamburger {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--ht-line-strong);
+  color: #fff;
+}
+.home-dark .ec-hamburger:hover {
+  background: rgba(124, 58, 237, 0.22);
+  border-color: rgba(167, 139, 250, 0.45);
+}
+
+/* Topbar already uses the deep brand purple; align it to the new canvas. */
+.home-dark .ec-topbar {
+  background: #150d24;
+}
+
+/* --- FAQ accordion ------------------------------------------------------- */
+.ht-acc__panel {
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  will-change: height, opacity;
+}
+
+.ht-acc__icon {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ht-acc__row[data-open="true"] .ht-acc__icon {
+  transform: rotate(180deg);
+}
+.ht-acc__row {
+  border-bottom: 1px solid var(--ht-line);
+  transition: background-color 0.4s ease;
+}
+.ht-acc__row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* --- Tool logo tile ------------------------------------------------------ */
+.ht-tile {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid var(--ht-line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease, background-color 0.4s ease;
+}
+.ht-tile:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: rgba(167, 139, 250, 0.45);
+  background: rgba(124, 58, 237, 0.1);
+}
+
+/* Floating drift for the hero tiles, offset per-tile via animation-delay. */
+.ht-float {
+  animation: ht-drift 7s ease-in-out infinite;
+}
+@keyframes ht-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-11px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ht-float {
+    animation: none;
+  }
+}
+
+/* --- Scroll progress rail ------------------------------------------------ */
+.ht-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  z-index: 200;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #7c3aed, #a78bfa, #e9d5ff);
+  pointer-events: none;
+}
+
+/* --- Section divider ----------------------------------------------------- */
+.ht-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ht-line-strong),
+    transparent
+  );
+}
+
+/* --- Footer styling for home dark mode ------------------------------------ */
+.home-dark footer {
+  background-color: #07040d !important;
+  border-top: 1px solid var(--ht-line);
+}
+.home-dark footer p,
+.home-dark footer span {
+  color: var(--ht-muted) !important;
+}
+.home-dark footer h3,
+.home-dark footer h4 {
+  color: #fff !important;
+}
+.home-dark footer a {
+  color: var(--ht-muted) !important;
+  transition: color 0.2s ease;
+}
+.home-dark footer a:hover {
+  color: #fff !important;
+}
+
+/* --- Theme Toggle Pill Button ------------------------------------------ */
+.ht-theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  user-select: none;
+}
+.ht-theme-toggle:hover {
+  background: rgba(124, 58, 237, 0.3);
+  border-color: #a78bfa;
+  transform: translateY(-1px);
+  box-shadow: 0 0 14px rgba(124, 58, 237, 0.4);
+}
+
+/* ==========================================================================
+   Ansari Tools — Light Editorial Home Theme (.home-light)
+   ========================================================================== */
+.home-light {
+  --ht-bg: #f8f6fc;
+  --ht-bg-2: #ffffff;
+  --ht-surface: #ffffff;
+  --ht-surface-2: #f0ebff;
+  --ht-line: rgba(43, 13, 102, 0.09);
+  --ht-line-strong: rgba(43, 13, 102, 0.18);
+  --ht-violet: #6c3ce6;
+  --ht-violet-lt: #8b5cf6;
+  --ht-violet-dk: #2b0d66;
+  --ht-text: #180b2d;
+  --ht-muted: #594b75;
+  --ht-muted-dk: #83759e;
+
+  background: var(--ht-bg);
+  color: var(--ht-text);
+}
+
+html.home-light-root,
+html.home-light-root body {
+  background: #f8f6fc;
+  color: #180b2d;
+}
+
+.home-light .ht-section {
+  background: var(--ht-bg);
+}
+
+.home-light .ht-grid {
+  background-image: linear-gradient(
+      to right,
+      rgba(108, 60, 230, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(108, 60, 230, 0.04) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 100%);
+}
+
+.home-light .ht-display,
+.home-light h1,
+.home-light h2,
+.home-light h3 {
+  color: #180b2d !important;
+}
+
+.home-light .ht-label {
+  color: #83759e;
+}
+.home-light .ht-label__num {
+  color: #7c3aed;
+}
+
+.home-light .hero-sub {
+  color: #554472 !important;
+}
+
+.home-light .hero-stat dd {
+  color: #180b2d !important;
+}
+.home-light .hero-stat dt {
+  color: #6c5d8a !important;
+}
+
+.home-light .ht-card {
+  background: #ffffff;
+  border-color: rgba(43, 13, 102, 0.09);
+  box-shadow: 0 10px 30px -10px rgba(43, 13, 102, 0.06);
+}
+.home-light .ht-card:hover {
+  border-color: rgba(108, 60, 230, 0.35);
+  box-shadow: 0 20px 44px -14px rgba(108, 60, 230, 0.16);
+}
+.home-light .ht-card--featured {
+  background: linear-gradient(180deg, #faf7ff 0%, #ffffff 100%);
+  border-color: rgba(124, 58, 237, 0.35);
+  box-shadow: 0 24px 60px -16px rgba(108, 60, 230, 0.22);
+}
+
+.home-light .ht-card__sheen {
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(108, 60, 230, 0.09),
+    transparent 62%
+  );
+}
+
+.home-light .ht-tile {
+  background: #ffffff;
+  border-color: rgba(43, 13, 102, 0.09);
+  box-shadow: 0 4px 14px rgba(43, 13, 102, 0.06);
+}
+.home-light .ht-tile span {
+  color: #2b0d66 !important;
+}
+
+.home-light .ht-btn--ghost {
+  background: #ffffff;
+  color: #2b0d66;
+  border: 1px solid rgba(43, 13, 102, 0.16);
+  box-shadow: 0 4px 14px rgba(43, 13, 102, 0.05);
+}
+.home-light .ht-btn--ghost:hover {
+  background: #f0ebff;
+  border-color: #6c3ce6;
+}
+
+.home-light .ht-rule {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(43, 13, 102, 0.14),
+    transparent
+  );
+}
+
+.home-light .ht-marquee__track span {
+  color: #62537e !important;
+}
+.home-light .ht-marquee__track span:hover {
+  color: #180b2d !important;
+}
+
+.home-light .ec-header {
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(43, 13, 102, 0.08);
+}
+.home-light .ec-header--scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 40px -12px rgba(43, 13, 102, 0.12);
+}
+
+.home-light .ec-topbar {
+  background: #230a52;
+  color: #ffffff;
+}
+.home-light .ec-logo__name {
+  color: #2b0d66;
+}
+.home-light .ec-logo__sub {
+  color: #6b5a8e;
+}
+.home-light .ec-search__input {
+  background: #f3eefc;
+  border-color: rgba(43, 13, 102, 0.12);
+  color: #1a0f30;
+}
+.home-light .ec-search__input::placeholder {
+  color: #8c7fa8;
+}
+
+.home-light .ht-theme-toggle {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+.home-light .ht-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+}
+
+.home-light footer {
+  background-color: #180b2d !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Mobile tuning ------------------------------------------------------- */
+@media (max-width: 640px) {
+  .ht-grid {
+    background-size: 44px 44px;
+  }
+  .ht-glow {
+    filter: blur(58px);
+  }
+  /* Grain is costly to composite on low-end phones. */
+  .ht-grain {
+    opacity: 0.1;
+  }
+  .ht-marquee {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+  }
+  .ht-marquee__track {
+    animation-duration: 26s;
+  }
+}
+

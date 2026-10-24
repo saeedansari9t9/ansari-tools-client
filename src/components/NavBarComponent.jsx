@@ -5,11 +5,13 @@ import {
   Menu, X, User, LogOut, ChevronDown,
   UserPlus, Shield, Lock, LayoutDashboard,
   Search, ShoppingBag, Phone, ChevronRight,
-  Star, Tag, Wrench, HelpCircle, Home, Package
+  Star, Tag, Wrench, HelpCircle, Home, Package,
+  Sun, Moon, Sparkles, Zap
 } from "lucide-react";
 import logo from "../assets/images/ansari-tools-logo-purple.png";
 import { logoutAll } from "../services/logout";
 import { useProducts } from "../hooks/useProducts";
+import { useTheme } from "../context/ThemeContext";
 
 const NavBarComponent = () => {
   const location = useLocation();
@@ -27,6 +29,7 @@ const NavBarComponent = () => {
   const { isAuthenticated, user } = useAuth();
   const isMainAdmin = user && user.email === "saeedansari9t9@gmail.com";
   
+  const { theme, toggleTheme, isDark } = useTheme();
   const { products } = useProducts();
   
   const filteredProducts = searchQuery.trim() 
@@ -105,79 +108,78 @@ const NavBarComponent = () => {
 
   return (
     <>
-      {/* ┌────────────────────────────────────────────────────────────┐
-          │  MAIN NAVBAR                                               │
-          └────────────────────────────────────────────────────────────┘ */}
       <header className={`ec-header ${scrolled ? "ec-header--scrolled" : ""}`}>
-
-        {/* ── SITE-WIDE ANNOUNCEMENT BAR ── */}
-        <aside aria-label="WhatsApp Contact Update" className="ec-announcement-bar">
-          <div className="ec-announcement-bar__inner">
-            <div className="ec-announcement-bar__content">
-              <span className="ec-announcement-bar__badge">
-                <span className="ec-announcement-bar__pulse" />
-                UPDATE
+        {/* ── REDESIGNED UNIFIED HIGH-TECH TOP UTILITY BAR ── */}
+        <div className="ec-topbar border-b border-white/[0.08] transition-colors duration-300">
+          <div className="ec-topbar__inner flex items-center justify-between py-2 px-4 sm:px-6 max-w-7xl mx-auto text-xs">
+            {/* Left: Operational status & WhatsApp hotline */}
+            <div className="flex items-center gap-3 sm:gap-5">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-400">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                24/7 Live Delivery
               </span>
-              <span className="ec-announcement-bar__text">
-                📢 Our WhatsApp number has changed — New Official WhatsApp:{" "}
-                <strong className="ec-announcement-bar__number">0322 7866655</strong>
-              </span>
-            </div>
-            <a
-              href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ec-announcement-bar__cta"
-            >
-              <span>Contact Now</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </aside>
 
-        {/* ── ROW 1: Top utility bar ── */}
-        <div className="ec-topbar">
-          <div className="ec-topbar__inner">
-            {/* Left: WhatsApp */}
-            <div className="ec-topbar__left">
               <a
                 href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ec-topbar__link"
+                className="hidden sm:inline-flex items-center gap-1.5 text-white/80 hover:text-white transition-colors"
               >
-                <Phone className="w-3 h-3 text-emerald-400" />
-                <span>WhatsApp: 0322 7866655</span>
+                <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                <span>WhatsApp: <strong className="text-white font-bold">0322 7866655</strong></span>
               </a>
             </div>
 
-            {/* Center: Nav Links */}
-            <nav className="ec-topbar__nav">
-              {navLinks.map((item, index) => (
-                <React.Fragment key={item.path}>
-                  <NavLink
-                    to={item.path}
-                    onClick={(e) => handleNavClick(e, item.path)}
-                    className={({ isActive }) => `ec-topbar__nav-link ${isActive && item.path !== "/#pricing" && item.path !== "/#tools" && item.path !== "/#reviews" && item.path !== "/#faq" ? "ec-topbar__nav-link--active" : ""}`}
-                  >
-                    {item.label}
-                  </NavLink>
-                  {index < navLinks.length - 1 && (
-                    <span className="ec-topbar__nav-divider">|</span>
-                  )}
-                </React.Fragment>
-              ))}
-            </nav>
+            {/* Center: Live Promotion Ticker */}
+            <div className="hidden lg:flex items-center gap-2 text-white/70">
+              <span className="inline-flex items-center gap-1 rounded bg-[#7c3aed]/25 border border-[#a78bfa]/30 px-2 py-0.5 text-[10px] font-bold text-[#c4b5fd]">
+                <Sparkles className="w-3 h-3 text-[#a78bfa]" />
+                EXCLUSIVE
+              </span>
+              <span className="text-[12px]">Save up to 90% on Semrush, Canva Pro & ChatGPT Plus • Genuine Private Accounts</span>
+            </div>
 
-            {/* Right: Tagline or Admin */}
-            <div className="ec-topbar__right">
-              {isAuthenticated ? (
-                <span className="ec-topbar__link">
-                  <User className="w-3 h-3" />
-                  {user?.firstName || "Admin"}
+            {/* Right: Quick Anchors + Theme Toggle + User */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              <nav className="hidden md:flex items-center gap-3 text-white/75">
+                <a href="/#pricing" onClick={(e) => handleNavClick(e, "/#pricing")} className="hover:text-white transition-colors">Pricing</a>
+                <span className="opacity-30">/</span>
+                <a href="/#tools" onClick={(e) => handleNavClick(e, "/#tools")} className="hover:text-white transition-colors">Tools</a>
+                <span className="opacity-30">/</span>
+                <a href="/#faq" onClick={(e) => handleNavClick(e, "/#faq")} className="hover:text-white transition-colors">FAQ</a>
+              </nav>
+
+              {/* Theme Toggle Button in Topbar */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+                className="ht-theme-toggle group flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wider uppercase transition-all duration-300"
+                title={`Switch to ${isDark ? "Light" : "Dark"} Mode`}
+                data-cursor-text="THEME"
+              >
+                {isDark ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-300 transition-transform group-hover:rotate-45" />
+                    <span className="hidden sm:inline">Light</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5 text-[#7c3aed] transition-transform group-hover:-rotate-12" />
+                    <span className="hidden sm:inline">Dark</span>
+                  </>
+                )}
+              </button>
+
+              {/* Authenticated Admin pill */}
+              {isAuthenticated && (
+                <span className="inline-flex items-center gap-1.5 text-white font-medium">
+                  <User className="w-3.5 h-3.5 text-[#a78bfa]" />
+                  <span>{user?.firstName || "Admin"}</span>
                 </span>
-              ) : (
-                <span className="ec-topbar__tagline">✦ Premium Digital Tools</span>
               )}
             </div>
           </div>
@@ -196,8 +198,8 @@ const NavBarComponent = () => {
               </div>
             </Link>
 
-            {/* Spacer to push search center and actions right */}
-            <div style={{flex:1}} />
+            {/* Spacer */}
+            <div style={{ flex: 1 }} />
 
             {/* Center Search Bar with Dropdown Container */}
             <div className="ec-search-container">
@@ -225,7 +227,7 @@ const NavBarComponent = () => {
                         <Link key={product._id} to={`/product/${product._id}`} className="ec-search-dropdown__item">
                           <div className="ec-search-dropdown__img-wrapper">
                             {product.image ? (
-                              <img src={product.image} alt={product.name} style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px'}} />
+                              <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} />
                             ) : (
                               <Search className="w-4 h-4" />
                             )}
@@ -237,7 +239,7 @@ const NavBarComponent = () => {
                         </Link>
                       ))
                     ) : (
-                      <div className="ec-search-dropdown__item" style={{justifyContent: 'center', color: '#6b7280', fontSize: '13px'}}>
+                      <div className="ec-search-dropdown__item" style={{ justifyContent: 'center', color: '#6b7280', fontSize: '13px' }}>
                         No exact tools found
                       </div>
                     )}
@@ -252,11 +254,22 @@ const NavBarComponent = () => {
             </div>
 
             {/* Spacer */}
-            <div style={{flex:1}} />
+            <div style={{ flex: 1 }} />
 
             {/* Right actions */}
-            <div className="ec-navbar__actions">
-              {/* Profile / Admin */}
+            <div className="ec-navbar__actions flex items-center gap-2 sm:gap-3">
+              {/* Quick Theme Toggle for fast access */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="ht-theme-toggle p-2 rounded-xl transition-all sm:hidden"
+                title="Toggle Theme"
+              >
+                {isDark ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-[#7c3aed]" />}
+              </button>
+
+              {/* Profile / Store CTA */}
               {isAuthenticated ? (
                 <div className="ec-profile" ref={profileRef}>
                   <button className="ec-profile__btn" onClick={() => setProfileOpen(!profileOpen)}>
@@ -311,7 +324,7 @@ const NavBarComponent = () => {
                 </Link>
               )}
 
-              {/* Mobile toggle */}
+              {/* Mobile hamburger toggle */}
               <button
                 ref={mobileToggleRef}
                 className="ec-hamburger"
@@ -324,8 +337,6 @@ const NavBarComponent = () => {
 
           </div>
         </div>
-
-
       </header>
 
       {/* ┌─────────────────────────────────────────────────────────────┐
@@ -341,12 +352,26 @@ const NavBarComponent = () => {
         className={`ec-mobile-drawer ${mobileOpen ? "ec-mobile-drawer--open" : ""}`}
       >
         {/* Drawer header */}
-        <div className="ec-drawer__header">
-          <img src={logo} alt="Ansari Tools" className="h-8 w-auto" />
-          <span className="ec-drawer__brand">Ansari Tools</span>
-          <button className="ec-drawer__close" onClick={() => setMobileOpen(false)}>
-            <X className="w-5 h-5" />
-          </button>
+        <div className="ec-drawer__header flex items-center justify-between p-4 border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="Ansari Tools" className="h-8 w-auto" />
+            <span className="ec-drawer__brand font-bold text-white">Ansari Tools</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Drawer Theme Toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="ht-theme-toggle p-2 rounded-lg"
+              title="Toggle Theme"
+            >
+              {isDark ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-[#7c3aed]" />}
+            </button>
+            <button className="ec-drawer__close p-1 text-white/70 hover:text-white" onClick={() => setMobileOpen(false)}>
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Mobile search */}
@@ -365,7 +390,7 @@ const NavBarComponent = () => {
 
         {/* Mobile links */}
         <div className="ec-drawer__links">
-          <p className="ec-drawer__section-label">Menu</p>
+          <p className="ec-drawer__section-label">Navigation Menu</p>
           {navLinks.map((item) => (
             <NavLink
               key={item.path}
@@ -380,19 +405,18 @@ const NavBarComponent = () => {
               <span>{item.label}</span>
             </NavLink>
           ))}
-
         </div>
 
         {/* Drawer footer with updated WhatsApp button */}
-        <div className="ec-drawer__footer">
+        <div className="ec-drawer__footer p-4 border-t border-white/10">
           <a
             href="https://wa.me/923227866655?text=Hello%20Ansari%20Tools%2C%20I%20am%20contacting%20you%20through%20your%20website."
             target="_blank"
             rel="noopener noreferrer"
-            className="ec-drawer__whatsapp"
+            className="ec-drawer__whatsapp flex items-center justify-center py-3 rounded-xl bg-emerald-600 text-white font-semibold shadow-lg"
             onClick={() => setMobileOpen(false)}
           >
-            <Phone className="w-4 h-4 text-emerald-400 mr-2" />
+            <Phone className="w-4 h-4 text-white mr-2" />
             <span>WhatsApp: 0322 7866655</span>
           </a>
         </div>

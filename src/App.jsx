@@ -36,6 +36,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import SmoothScroll from "./components/SmoothScroll";
 import InteractiveCursor from "./components/InteractiveCursor";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminGuard from "./components/AdminGuard";
 import AdminLayout from "./components/AdminLayout";
@@ -69,7 +70,8 @@ import EmailBroadcastPage from "./pages/Admin/EmailBroadcastPage";
 
 function App() {
   return (
-    <AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
       <BrowserRouter>
         <SmoothScroll>
           <InteractiveCursor />
@@ -139,6 +141,7 @@ function App() {
         </SmoothScroll>
       </BrowserRouter>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 
