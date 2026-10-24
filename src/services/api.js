@@ -25,6 +25,20 @@ export const API = axios.create({
   },
 });
 
+// Auto-retry up to 2 times if database was temporarily reconnecting (503)
+API.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const config = error.config;
+    if (error.response?.status === 503 && (!config?.__retryCount || config.__retryCount < 2)) {
+      config.__retryCount = (config.__retryCount || 0) + 1;
+      await new Promise((resolve) => setTimeout(resolve, 800 * config.__retryCount));
+      return API(config);
+    }
+    return Promise.reject(error);
+  }
+);
+
 class ApiService {
   // Products API
   static async getProducts(category = null) {

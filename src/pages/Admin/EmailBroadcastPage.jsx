@@ -487,12 +487,12 @@ const EmailBroadcastPage = () => {
       isFinished: false
     });
 
-    const CHUNK_SIZE = 15;
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     let successfulCount = 0;
     let failedCount = 0;
     let processedCount = 0;
 
-    for (let i = 0; i < selectedSubs.length; i += CHUNK_SIZE) {
+    for (let i = 0; i < selectedSubs.length; i++) {
       if (stopSendingRef.current) {
         setBatchProgress(prev => ({
           ...prev,
@@ -501,7 +501,7 @@ const EmailBroadcastPage = () => {
         break;
       }
 
-      const chunk = selectedSubs.slice(i, i + CHUNK_SIZE);
+      const sub = selectedSubs[i];
 
       try {
         const res = await fetch(`${API_BASE_URL}/canva-subscriptions/broadcast/send-batch`, {
@@ -509,63 +509,70 @@ const EmailBroadcastPage = () => {
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({
-            subscribers: chunk,
+            subscribers: [sub],
             heading,
             subject,
             message: customMessage,
             newWhatsApp,
             newWhatsAppDisplay,
-            delayMs
+            delayMs: 0
           })
         });
 
         const data = await res.json();
+        processedCount++;
 
-        if (res.ok && data.results) {
-          data.results.forEach(item => {
-            processedCount++;
-            if (item.success) {
-              successfulCount++;
-              setBatchProgress(prev => ({
-                ...prev,
-                current: processedCount,
-                successful: successfulCount,
-                logs: [...prev.logs, `[${new Date().toLocaleTimeString()}] ✅ Sent to: ${item.email}`]
-              }));
-            } else {
-              failedCount++;
-              setBatchProgress(prev => ({
-                ...prev,
-                current: processedCount,
-                failed: failedCount,
-                logs: [...prev.logs, `[${new Date().toLocaleTimeString()}] ❌ Failed for: ${item.email} (${item.error || 'Unknown error'})`]
-              }));
-            }
-          });
+        const isSuccess = res.ok && data.successful > 0;
+        const resultError = data.results?.[0]?.error || data.message || 'Unknown error';
+
+        if (isSuccess) {
+          successfulCount++;
+          setBatchProgress(prev => ({
+            ...prev,
+            current: processedCount,
+            successful: successfulCount,
+            logs: [...prev.logs, `[${new Date().toLocaleTimeString()}] ✅ (${processedCount}/${selectedSubs.length}) Sent to: ${sub.email}`]
+          }));
         } else {
-          chunk.forEach(item => {
-            processedCount++;
-            failedCount++;
-            setBatchProgress(prev => ({
-              ...prev,
-              current: processedCount,
-              failed: failedCount,
-              logs: [...prev.logs, `[${new Date().toLocaleTimeString()}] ❌ Batch failed for ${item.email}: ${data.message || 'Server error'}`]
-            }));
-          });
-        }
-      } catch (err) {
-        console.error('Batch error:', err);
-        chunk.forEach(item => {
-          processedCount++;
           failedCount++;
           setBatchProgress(prev => ({
             ...prev,
             current: processedCount,
             failed: failedCount,
-            logs: [...prev.logs, `[${new Date().toLocaleTimeString()}] ❌ Network error for ${item.email}`]
+            logs: [...prev.logs, `[${new Date().toLocaleTimeString()}] ❌ (${processedCount}/${selectedSubs.length}) Failed for: ${sub.email} (${resultError})`]
           }));
-        });
+
+          // Detect Namecheap rate-limiting or hourly cap
+          if (
+            resultError.toLowerCase().includes('too many messages') ||
+            resultError.includes('554 5.7.1')
+          ) {
+            toast.error('Namecheap Hourly Limit Reached! Pausing batch.');
+            setBatchProgress(prev => ({
+              ...prev,
+              logs: [
+                ...prev.logs,
+                `[${new Date().toLocaleTimeString()}] ⚠️ PAUSED: Namecheap outgoing email limit reached (max emails allowed in 60 minutes). Please wait for the 60-min window to reset or use Brevo/SendGrid.`
+              ]
+            }));
+            break;
+          }
+        }
+      } catch (err) {
+        console.error('Batch error:', err);
+        processedCount++;
+        failedCount++;
+        setBatchProgress(prev => ({
+          ...prev,
+          current: processedCount,
+          failed: failedCount,
+          logs: [...prev.logs, `[${new Date().toLocaleTimeString()}] ❌ (${processedCount}/${selectedSubs.length}) Network error for: ${sub.email}`]
+        }));
+      }
+
+      // Delay between emails to respect SMTP server rate limits
+      if (i < selectedSubs.length - 1 && delayMs > 0 && !stopSendingRef.current) {
+        await sleep(delayMs);
       }
     }
 
