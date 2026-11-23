@@ -42,8 +42,6 @@ const TEMPLATES = {
     subject: 'Important: Ansari Tools WhatsApp Number Has Changed 📢',
     message: `Assalam-o-Alaikum,
 
-Assalam-o-Alaikum,
-
 We’re contacting you as a valued customer of Ansari Tools to inform you that our previous WhatsApp number is no longer active.
 
 📌 Please save our new official WhatsApp number as “Ansari Tools”:
