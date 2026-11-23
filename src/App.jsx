@@ -57,6 +57,8 @@ import CanvaSubscriptionsPage from "./pages/Admin/CanvaSubscriptionsPage";
 import AddCanvaSubscriptionPage from "./pages/Admin/AddCanvaSubscriptionPage";
 import AddAdminPage from "./pages/Admin/AddAdminPage";
 import AdminLoginPage from "./pages/Admin/AdminLoginPage";
+import AdminForgotPasswordPage from "./pages/Admin/AdminForgotPasswordPage";
+import AdminResetPasswordPage from "./pages/Admin/AdminResetPasswordPage";
 import EditProfilePage from "./pages/Admin/EditProfilePage";
 import ChangePasswordPage from "./pages/Admin/ChangePasswordPage";
 import AddSalePage from "./pages/Admin/AddSalePage";
@@ -88,6 +90,8 @@ function App() {
             <Route path="/about" element={<AboutUsPage />} />
             {/* Admin Auth routes - hidden from public access */}
             <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route path="/admin/forgot-password" element={<AdminForgotPasswordPage />} />
+            <Route path="/admin/reset-password" element={<AdminResetPasswordPage />} />
 
             {/* Admin Routes - Protected by AdminGuard & styled with AdminLayout */}
             <Route

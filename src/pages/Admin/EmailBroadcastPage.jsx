@@ -20,7 +20,6 @@ import {
   ShieldCheck,
   Copy,
   Sparkles,
-  Info,
   RotateCcw,
   Sun,
   Moon
@@ -474,7 +473,7 @@ const EmailBroadcastPage = () => {
       .filter(s => selectedIds.has(s._id))
       .map(s => ({ id: s._id, email: s.email, duration: s.duration, date: s.date, status: s.status }));
 
-    const confirmMsg = `Are you sure you want to send this broadcast email to ${selectedSubs.length} selected subscribers?\n\nTip: Each email will be sent individually with a ${delayMs / 1000}s delay to ensure high inbox delivery and protect your Gmail limit.`;
+    const confirmMsg = `Are you sure you want to send this broadcast email to ${selectedSubs.length} selected subscribers?\n\nTip: Each email will be sent individually with a ${delayMs / 1000}s delay to ensure high inbox delivery and respect SMTP rate limits.`;
     if (!window.confirm(confirmMsg)) return;
 
     stopSendingRef.current = false;
@@ -676,38 +675,6 @@ const EmailBroadcastPage = () => {
         </div>
       </div>
 
-      {/* Gmail Quota & Strategy Advisory Banner */}
-      <div className="bg-gradient-to-r from-amber-50 via-amber-50/60 to-emerald-50 border border-amber-200/80 rounded-2xl p-4 sm:p-5 shadow-sm">
-        <div className="flex items-start gap-3.5">
-          <div className="p-2 bg-amber-100/80 text-amber-800 rounded-xl mt-0.5 shrink-0">
-            <Info className="w-5 h-5" />
-          </div>
-          <div className="space-y-1.5 text-xs sm:text-sm">
-            <div className="font-bold text-amber-950 flex items-center gap-2">
-              <span>Gmail 500 Emails/Day Limit & 900+ Subscribers Best Strategy</span>
-              <span className="text-[10px] font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                Recommended
-              </span>
-            </div>
-            <p className="text-amber-900/90 leading-relaxed">
-              Google ki personal Gmail policy ke mutabiq <strong>ansaritools3@gmail.com</strong> se rozana ziada se ziada <strong>500 emails per 24 hours</strong> send ho sakti hain.
-              Aapke paas <strong>{stats.totalCount} subscribers</strong> hain. Is liye safe delivery ke lye:
-            </p>
-            <ul className="list-disc pl-5 text-amber-900/90 space-y-1">
-              <li>
-                <strong>Batch 1 (1–450 emails):</strong> Aaj send karein (100–100 ke 4 batches me).
-              </li>
-              <li>
-                <strong>Batch 2 (Remaining {Math.max(0, stats.totalCount - 450)} emails):</strong> Kal 24 ghante baad send karein.
-              </li>
-              <li>
-                System har recipient ko individual personalized email bhejega (with 1 second delay), jis se email direct <strong>Primary Inbox</strong> me jaegi, Spam me nahi!
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
       {/* 4 Summary Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Total Subscribers */}
@@ -895,7 +862,7 @@ const EmailBroadcastPage = () => {
             <div className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs">
               <div>
                 <span className="font-bold text-slate-800">Sending Throttle (Delay):</span>
-                <p className="text-[11px] text-slate-500">Wait time between emails to protect Gmail account</p>
+                <p className="text-[11px] text-slate-500">Wait time between emails to respect SMTP rate limits</p>
               </div>
               <select
                 value={delayMs}
@@ -1382,7 +1349,7 @@ const EmailBroadcastPage = () => {
                 ? 'bg-slate-900 border-slate-800 text-slate-300' 
                 : 'bg-slate-100 border-slate-200 text-slate-700'
             }`}>
-              <div><strong>From:</strong> Ansari Tools &lt;ansaritools3@gmail.com&gt;</div>
+              <div><strong>From:</strong> Ansari Tools &lt;support@ansaritools.com&gt;</div>
               <div><strong>Subject:</strong> {subject || '(No Subject)'}</div>
               <div><strong>To:</strong> customer@example.com</div>
             </div>
