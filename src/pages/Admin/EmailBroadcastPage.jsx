@@ -38,20 +38,23 @@ const TEMPLATES = {
   numberChange: {
     id: 'numberChange',
     name: '📱 WhatsApp Number Change & Warranty Notice',
-    heading: 'Official Support Notice – you’re just a message away',
-    subject: 'Ansari Tools: Customer Support & Official WhatsApp Update',
-    message: `Assalam-o-Alaikum / Hello,
+    heading: 'Our WhatsApp Number Has Changed',
+    subject: 'Important: Ansari Tools WhatsApp Number Has Changed 📢',
+    message: `Assalam-o-Alaikum,
 
-Yeh zaroori email aapko yeh itla dene ke liye bheja ja raha hai ke Ansari Tools ka official WhatsApp contact number change ho gaya hai.
+Assalam-o-Alaikum,
 
-Aainda tamaam Canva subscription queries, renewal deals, aur warranty claims ke liye brahe meharbani hamare naye number par contact karein.
+We’re contacting you as a valued customer of Ansari Tools to inform you that our previous WhatsApp number is no longer active.
 
-📌 Please save our new number in your phone contacts immediately as "Ansari Tools":
-New WhatsApp Number: 0322 7866655 (+92 322 7866655)
+📌 Please save our new official WhatsApp number as “Ansari Tools”:
++92 322 7866655
 
-Agar aapke Canva account me koi masla ya warranty claim ho, to isi new number par apna email text karein, hum foran solve karenge.
+Going forward, please use this number for all product queries, subscription renewals, support, and warranty claims.
+If you need assistance with an active subscription, simply message us with your registered email address, and our team will assist you.
 
-Shukriya,
+Thank you for choosing Ansari Tools.
+
+Best regards,
 Ansari Tools Team`
   },
   renewalDeal: {
